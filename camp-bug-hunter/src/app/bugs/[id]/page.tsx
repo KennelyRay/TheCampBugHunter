@@ -8,8 +8,9 @@ async function getBug(id: string): Promise<Bug | null> {
   return repo.get(id);
 }
 
-export default async function BugPage({ params }: { params: { id: string } }) {
-  const bug = await getBug(params.id);
+export default async function BugPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const bug = await getBug(id);
   if (!bug) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-10">
