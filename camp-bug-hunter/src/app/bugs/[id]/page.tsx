@@ -13,29 +13,36 @@ export default async function BugPage({ params }: { params: Promise<{ id: string
   const bug = await getBug(id);
   if (!bug) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-10">
-        <h2 className="text-xl font-semibold text-black dark:text-white">Bug Not Found</h2>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">The bug might not exist or the database is not configured.</p>
+      <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Bug Not Found</h2>
+        <p className="mt-2 text-slate-600 dark:text-slate-300">The bug might not exist or the database is not configured.</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
-      <h2 className="text-2xl font-semibold text-black dark:text-white">{bug.title}</h2>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Severity: {bug.severity} • Status: {bug.status.replaceAll("_"," ")}
-      </p>
-      <div className="mt-6 space-y-4">
-        <section>
-          <h3 className="text-lg font-semibold text-black dark:text-white">Description</h3>
-          <p className="mt-1 whitespace-pre-wrap text-zinc-700 dark:text-zinc-300">{bug.description}</p>
+    <div className="mx-auto max-w-3xl space-y-6">
+      <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">{bug.title}</h2>
+          <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+            {bug.status.replaceAll("_", " ")}
+          </span>
+        </div>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Severity: <span className="font-semibold text-slate-800 dark:text-slate-100">{bug.severity}</span>
+        </p>
+      </div>
+      <div className="grid gap-4">
+        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Description</h3>
+          <p className="mt-2 whitespace-pre-wrap text-slate-600 dark:text-slate-300">{bug.description}</p>
         </section>
-        <section>
-          <h3 className="text-lg font-semibold text-black dark:text-white">Reproduction Steps</h3>
-          <p className="mt-1 whitespace-pre-wrap text-zinc-700 dark:text-zinc-300">{bug.reproductionSteps}</p>
+        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Reproduction Steps</h3>
+          <p className="mt-2 whitespace-pre-wrap text-slate-600 dark:text-slate-300">{bug.reproductionSteps}</p>
         </section>
-        <section className="text-sm text-zinc-600 dark:text-zinc-400">
+        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 text-sm text-slate-600 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:text-slate-300 dark:shadow-none">
           Reported by Discord ID {bug.discordId} as Minecraft IGN {bug.minecraftIgn}
         </section>
       </div>

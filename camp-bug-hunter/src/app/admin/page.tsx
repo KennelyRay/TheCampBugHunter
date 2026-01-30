@@ -53,84 +53,86 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <h2 className="text-2xl font-semibold text-black dark:text-white">Admin Dashboard</h2>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Sort by users, severity, and Discord ID. Update bug status.
-      </p>
-      <div className="mt-4 flex flex-wrap items-end gap-3">
-        <div>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
-          <select className="mt-1 w-48 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-white" value={status} onChange={(e) => setStatus(e.target.value as Status | "")}>
-            <option value="">All</option>
-            <option value="BUG">Bug</option>
-            <option value="NOT_A_BUG">Not a Bug</option>
-            <option value="FIXED">Fixed</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Severity</label>
-          <select className="mt-1 w-48 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-white" value={severity} onChange={(e) => setSeverity(e.target.value as Severity | "")}>
-            <option value="">All</option>
-            <option value="LOW">Low</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="HIGH">High</option>
-          </select>
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Discord ID</label>
-          <input className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-white" value={discordId} onChange={(e) => setDiscordId(e.target.value)} />
-        </div>
-        <button className="rounded-md bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200" onClick={load}>
-          Apply
-        </button>
-      </div>
-      <div className="mt-6 grid grid-cols-3 gap-4">
-        <div className="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Total</div>
-          <div className="text-2xl font-semibold text-black dark:text-white">{counts.total}</div>
-        </div>
-        <div className="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">High</div>
-          <div className="text-2xl font-semibold text-black dark:text-white">{counts.high}</div>
-        </div>
-        <div className="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Medium</div>
-          <div className="text-2xl font-semibold text-black dark:text-white">{counts.medium}</div>
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+        <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Admin Dashboard</h2>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+          Sort by users, severity, and Discord ID. Update bug status.
+        </p>
+        <div className="mt-4 flex flex-wrap items-end gap-3">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Status</label>
+            <select className="mt-1 w-48 rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={status} onChange={(e) => setStatus(e.target.value as Status | "")}>
+              <option value="">All</option>
+              <option value="BUG">Bug</option>
+              <option value="NOT_A_BUG">Not a Bug</option>
+              <option value="FIXED">Fixed</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Severity</label>
+            <select className="mt-1 w-48 rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={severity} onChange={(e) => setSeverity(e.target.value as Severity | "")}>
+              <option value="">All</option>
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Discord ID</label>
+            <input className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={discordId} onChange={(e) => setDiscordId(e.target.value)} />
+          </div>
+          <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100" onClick={load}>
+            Apply
+          </button>
         </div>
       </div>
-      <div className="mt-8 overflow-x-auto">
-        {loading && <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading...</p>}
-        {error && <p className="text-sm text-red-600 dark:text-red-300">{error}</p>}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total</div>
+          <div className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">{counts.total}</div>
+        </div>
+        <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">High</div>
+          <div className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">{counts.high}</div>
+        </div>
+        <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Medium</div>
+          <div className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">{counts.medium}</div>
+        </div>
+      </div>
+      <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white/80 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
+        {loading && <p className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">Loading...</p>}
+        {error && <p className="px-6 py-4 text-sm text-red-600 dark:text-red-300">{error}</p>}
         {!loading && !error && (
           <table className="min-w-full border-collapse">
-            <thead>
-              <tr className="text-left text-sm text-zinc-700 dark:text-zinc-300">
-                <th className="border-b border-neutral-200 px-3 py-2 dark:border-neutral-800">User</th>
-                <th className="border-b border-neutral-200 px-3 py-2 dark:border-neutral-800">Title</th>
-                <th className="border-b border-neutral-200 px-3 py-2 dark:border-neutral-800">Severity</th>
-                <th className="border-b border-neutral-200 px-3 py-2 dark:border-neutral-800">Status</th>
-                <th className="border-b border-neutral-200 px-3 py-2 dark:border-neutral-800">Actions</th>
+            <thead className="bg-slate-50/80 dark:bg-slate-900/60">
+              <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">User</th>
+                <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Title</th>
+                <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Severity</th>
+                <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Status</th>
+                <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Actions</th>
               </tr>
             </thead>
             <tbody>
               {bugs.map((b) => (
-                <tr key={b.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-900">
-                  <td className="border-b border-neutral-100 px-3 py-2 dark:border-neutral-900">
+                <tr key={b.id} className="odd:bg-white/60 hover:bg-slate-50/70 dark:odd:bg-slate-950/20 dark:hover:bg-slate-900/60">
+                  <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-900 dark:border-slate-800/60 dark:text-slate-100">
                     {b.minecraftIgn} • {b.discordId}
                   </td>
-                  <td className="border-b border-neutral-100 px-3 py-2 dark:border-neutral-900">{b.title}</td>
-                  <td className="border-b border-neutral-100 px-3 py-2 dark:border-neutral-900">{b.severity}</td>
-                  <td className="border-b border-neutral-100 px-3 py-2 dark:border-neutral-900">{b.status.replaceAll("_"," ")}</td>
-                  <td className="border-b border-neutral-100 px-3 py-2 dark:border-neutral-900">
-                    <div className="flex gap-2">
-                      <button className="rounded-md border border-neutral-300 px-3 py-1 text-xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" onClick={() => updateStatus(b.id, "BUG")}>
+                  <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">{b.title}</td>
+                  <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">{b.severity}</td>
+                  <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">{b.status.replaceAll("_"," ")}</td>
+                  <td className="border-b border-slate-200/60 px-4 py-3 dark:border-slate-800/60">
+                    <div className="flex flex-wrap gap-2">
+                      <button className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900" onClick={() => updateStatus(b.id, "BUG")}>
                         Mark Bug
                       </button>
-                      <button className="rounded-md border border-neutral-300 px-3 py-1 text-xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" onClick={() => updateStatus(b.id, "NOT_A_BUG")}>
+                      <button className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900" onClick={() => updateStatus(b.id, "NOT_A_BUG")}>
                         Not a Bug
                       </button>
-                      <button className="rounded-md border border-neutral-300 px-3 py-1 text-xs hover:bg-neutral-100 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800" onClick={() => updateStatus(b.id, "FIXED")}>
+                      <button className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900" onClick={() => updateStatus(b.id, "FIXED")}>
                         Mark Fixed
                       </button>
                     </div>
@@ -139,7 +141,7 @@ export default function AdminPage() {
               ))}
               {bugs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-3 py-6 text-center text-sm text-zinc-600 dark:text-zinc-400">No items</td>
+                  <td colSpan={5} className="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-300">No items</td>
                 </tr>
               )}
             </tbody>
