@@ -1,36 +1,99 @@
+import Image from "next/image";
+import Link from "next/link";
 import ButtonLink from "@/components/ButtonLink";
+import { BugRepository } from "@/lib/bugRepository";
 
-export default function Home() {
+export default async function Home() {
+  const repo = new BugRepository();
+  const bugs = await repo.list();
+  const recentBugs = bugs.slice(0, 5);
+  const confirmed = bugs.filter((bug) => bug.status === "BUG" || bug.status === "FIXED");
+  const reporterMap = new Map<string, { discordId: string; minecraftIgn: string; count: number }>();
+  for (const bug of confirmed) {
+    const current = reporterMap.get(bug.discordId);
+    if (current) {
+      reporterMap.set(bug.discordId, { ...current, count: current.count + 1 });
+    } else {
+      reporterMap.set(bug.discordId, { discordId: bug.discordId, minecraftIgn: bug.minecraftIgn, count: 1 });
+    }
+  }
+  const topReporters = Array.from(reporterMap.values())
+    .sort((a, b) => b.count - a.count || a.discordId.localeCompare(b.discordId))
+    .slice(0, 5);
+
   return (
     <div className="space-y-10">
-      <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-sm shadow-slate-200/60 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-        <span className="inline-flex items-center rounded-full border border-slate-200/70 bg-white px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-          Bug bounty program
-        </span>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">The Camp Bug Hunter</h1>
-        <p className="mt-3 max-w-2xl text-base text-slate-600 dark:text-slate-300">
-          Report, review, and resolve issues with a clean workflow for The Camp community.
-        </p>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/bugs" variant="primary">View Bugs</ButtonLink>
-          <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
+      <section className="relative overflow-hidden rounded-3xl border border-black/40 bg-[#151a21]/90 shadow-2xl shadow-black/40">
+        <Image src="/LandingPage.png" alt="The Camp world" fill className="object-cover object-center opacity-80" priority />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
+        <div className="relative z-10 p-8 sm:p-12">
+          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
+            The Camp bug bounty
+          </span>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">The Camp Bug Hunter</h1>
+          <p className="mt-3 max-w-2xl text-base text-white/80">
+            Report issues fast, track progress, and keep the server experience polished.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/bugs" variant="primary">View Bugs</ButtonLink>
+            <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
+          </div>
         </div>
       </section>
-      <section className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200/70 bg-white/70 p-5 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/50 dark:shadow-none">
-          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Track</div>
-          <div className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">Structured reports</div>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Capture steps, severity, and context in one place.</p>
+      <section className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Recent Bugs</div>
+            <Link href="/bugs" className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">View all</Link>
+          </div>
+          {recentBugs.length === 0 ? (
+            <p className="mt-4 text-sm text-white/60">No reports yet.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {recentBugs.map((bug) => (
+                <li key={bug.id} className="flex items-start justify-between gap-3 rounded-xl border border-black/30 bg-[#141922] px-4 py-3">
+                  <div>
+                    <Link href={`/bugs/${bug.id}`} className="text-sm font-semibold text-white hover:text-[#f3a46b]">
+                      {bug.title}
+                    </Link>
+                    <div className="mt-1 text-xs text-white/60">
+                      {bug.discordId} · {bug.severity}
+                    </div>
+                  </div>
+                  <div className="text-xs text-white/50">{new Date(bug.createdAt).toLocaleDateString()}</div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <div className="rounded-2xl border border-slate-200/70 bg-white/70 p-5 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/50 dark:shadow-none">
-          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Prioritize</div>
-          <div className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">Clear severity signals</div>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Focus on the highest impact issues first.</p>
-        </div>
-        <div className="rounded-2xl border border-slate-200/70 bg-white/70 p-5 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/50 dark:shadow-none">
-          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Resolve</div>
-          <div className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">Actionable details</div>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Keep triage smooth with consistent, readable data.</p>
+        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Confirmed Reporters</div>
+          {topReporters.length === 0 ? (
+            <p className="mt-4 text-sm text-white/60">No confirmed reports yet.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {topReporters.map((reporter) => (
+                <li key={reporter.discordId} className="flex items-center justify-between rounded-xl border border-black/30 bg-[#141922] px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={`https://minotar.net/helm/${encodeURIComponent(reporter.minecraftIgn)}/32`}
+                      alt={`${reporter.minecraftIgn} skin`}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full border border-black/40 bg-[#0f131a]"
+                    />
+                    <div>
+                      <div className="text-sm font-semibold text-white">{reporter.minecraftIgn}</div>
+                      <div className="mt-1 text-xs text-white/60">{reporter.discordId}</div>
+                    </div>
+                  </div>
+                  <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                    {reporter.count}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>

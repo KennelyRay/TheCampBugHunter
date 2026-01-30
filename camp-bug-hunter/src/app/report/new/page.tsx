@@ -41,43 +41,43 @@ export default function NewReportPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-        <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Bug Hunter Form</h2>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Provide the details below so we can reproduce the issue quickly.</p>
+      <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
+        <h2 className="text-2xl font-semibold text-white">Bug Hunter Form</h2>
+        <p className="mt-1 text-sm text-white/70">Provide the details below so we can reproduce the issue quickly.</p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Discord ID</label>
-            <input className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={discordId} onChange={(e) => setDiscordId(e.target.value)} />
+            <label className="block text-sm font-medium text-white/80">Discord ID</label>
+            <input className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40" value={discordId} onChange={(e) => setDiscordId(e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Minecraft IGN</label>
-            <input className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={minecraftIgn} onChange={(e) => setMinecraftIgn(e.target.value)} />
+            <label className="block text-sm font-medium text-white/80">Minecraft IGN</label>
+            <input className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40" value={minecraftIgn} onChange={(e) => setMinecraftIgn(e.target.value)} />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Bug Title</label>
-            <input className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <label className="block text-sm font-medium text-white/80">Bug Title</label>
+            <input className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Bug Description</label>
-            <textarea className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} />
+            <label className="block text-sm font-medium text-white/80">Bug Description</label>
+            <textarea className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Bug Reproduction Steps</label>
-            <textarea className="mt-1 w-full rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" rows={4} value={repro} onChange={(e) => setRepro(e.target.value)} />
+            <label className="block text-sm font-medium text-white/80">Bug Reproduction Steps</label>
+            <textarea className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40" rows={4} value={repro} onChange={(e) => setRepro(e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">Severity</label>
-            <select className="mt-1 w-48 rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-100" value={severity} onChange={(e) => setSeverity(e.target.value as Severity)}>
+            <label className="block text-sm font-medium text-white/80">Severity</label>
+            <select className="mt-1 w-48 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]" value={severity} onChange={(e) => setSeverity(e.target.value as Severity)}>
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
             </select>
           </div>
         </div>
-        {error && <p className="mt-4 text-sm text-red-600 dark:text-red-300">{error}</p>}
+        {error && <p className="mt-4 text-sm text-rose-400">{error}</p>}
         <div className="mt-6">
           <button
-            className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-slate-900/20 transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+            className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
             disabled={submitting}
             onClick={submit}
           >

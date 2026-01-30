@@ -5,9 +5,9 @@ import type { Bug } from "@/types/bug";
 
 function StatusBadge({ status }: { status: Bug["status"] }) {
   const map: Record<Bug["status"], string> = {
-    BUG: "bg-red-100 text-red-700 ring-red-200 dark:bg-red-900/30 dark:text-red-200 dark:ring-red-900/50",
-    FIXED: "bg-emerald-100 text-emerald-700 ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-200 dark:ring-emerald-900/50",
-    NOT_A_BUG: "bg-amber-100 text-amber-700 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-200 dark:ring-amber-900/50",
+    BUG: "bg-red-500/15 text-red-300 ring-red-500/30",
+    FIXED: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
+    NOT_A_BUG: "bg-amber-500/15 text-amber-300 ring-amber-500/30",
   };
   return <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${map[status]}`}>{status.replaceAll("_"," ")}</span>;
 }
@@ -42,40 +42,40 @@ export default function BugsTable() {
     return () => window.removeEventListener("bugs:filters", handler as EventListener);
   }, []);
 
-  if (loading) return <p className="text-sm text-slate-600 dark:text-slate-300">Loading...</p>;
-  if (error) return <p className="text-sm text-red-600 dark:text-red-300">{error}</p>;
+  if (loading) return <p className="text-sm text-white/70">Loading...</p>;
+  if (error) return <p className="text-sm text-rose-400">{error}</p>;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200/70 bg-white/70 dark:border-slate-800/60 dark:bg-slate-950/40">
+    <div className="overflow-hidden rounded-xl border border-black/40 bg-[#151a21]/90">
       <table className="min-w-full border-collapse">
-        <thead className="bg-slate-50/80 dark:bg-slate-900/60">
-          <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-            <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Title</th>
-            <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Severity</th>
-            <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Status</th>
-            <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Discord ID</th>
-            <th className="border-b border-slate-200/70 px-4 py-3 dark:border-slate-800/60">Reported</th>
+        <thead className="bg-[#10141b]">
+          <tr className="text-left text-xs font-semibold uppercase tracking-wide text-white/60">
+            <th className="border-b border-black/30 px-4 py-3">Title</th>
+            <th className="border-b border-black/30 px-4 py-3">Severity</th>
+            <th className="border-b border-black/30 px-4 py-3">Status</th>
+            <th className="border-b border-black/30 px-4 py-3">Discord ID</th>
+            <th className="border-b border-black/30 px-4 py-3">Reported</th>
           </tr>
         </thead>
         <tbody>
           {bugs.map((b) => (
-            <tr key={b.id} className="odd:bg-white/60 hover:bg-slate-50/70 dark:odd:bg-slate-950/20 dark:hover:bg-slate-900/60">
-              <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-900 dark:border-slate-800/60 dark:text-slate-100">
-                <Link href={`/bugs/${b.id}`} className="font-semibold text-slate-900 hover:text-indigo-600 dark:text-slate-100 dark:hover:text-indigo-300">
+            <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
+              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
+                <Link href={`/bugs/${b.id}`} className="font-semibold text-white hover:text-[#f3a46b]">
                   {b.title}
                 </Link>
               </td>
-              <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">{b.severity}</td>
-              <td className="border-b border-slate-200/60 px-4 py-3 dark:border-slate-800/60"><StatusBadge status={b.status} /></td>
-              <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">{b.discordId}</td>
-              <td className="border-b border-slate-200/60 px-4 py-3 text-sm text-slate-600 dark:border-slate-800/60 dark:text-slate-300">
+              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.severity}</td>
+              <td className="border-b border-black/30 px-4 py-3"><StatusBadge status={b.status} /></td>
+              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.discordId}</td>
+              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
                 {new Date(b.createdAt).toLocaleString()}
               </td>
             </tr>
           ))}
           {bugs.length === 0 && (
             <tr>
-              <td colSpan={5} className="px-4 py-6 text-center text-sm text-slate-600 dark:text-slate-300">
+              <td colSpan={5} className="px-4 py-6 text-center text-sm text-white/60">
                 No bugs found
               </td>
             </tr>
