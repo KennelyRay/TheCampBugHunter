@@ -115,15 +115,25 @@ export default function LoginPage() {
       >
         <div className="w-full max-w-lg rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
           <div className="flex flex-col items-center text-center">
-            <Image
-              src="/thecamp%20icon.png"
-              alt="The Camp Logo"
-              width={96}
-              height={96}
-              className="mb-5 h-20 w-20"
-              quality={100}
-              priority
-            />
+            <div className="mb-5 flex items-center gap-4">
+              <Image
+                src="/Thecamplogo.png"
+                alt="The Camp Logo"
+                width={140}
+                height={60}
+                className="h-12 w-auto"
+                quality={100}
+                priority
+              />
+              <Image
+                src="/thecamp%20icon.png"
+                alt="The Camp Icon"
+                width={64}
+                height={64}
+                className="h-12 w-12"
+                quality={100}
+              />
+            </div>
             <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
               The Camp access
             </span>
@@ -134,7 +144,7 @@ export default function LoginPage() {
             <div>
               <label className="block text-sm font-medium text-white/80">Minecraft Username</label>
               <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-center text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
                 type="text"
                 placeholder="CampHunter"
                 value={minecraftUsername}
@@ -144,7 +154,7 @@ export default function LoginPage() {
             <div>
               <label className="block text-sm font-medium text-white/80">Password</label>
               <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-center text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
                 type="password"
                 placeholder="••••••••"
                 value={password}
