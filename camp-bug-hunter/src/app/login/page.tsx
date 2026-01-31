@@ -126,7 +126,6 @@ export default function LoginPage() {
                 priority
               />
             </div>
-            <h2 className="mt-4 text-2xl font-semibold text-white">Welcome Back</h2>
             <p className="mt-2 text-sm text-white/70">Sign in to review your reports and track updates.</p>
           </div>
           <div className="mt-6 space-y-4">
