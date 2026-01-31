@@ -116,11 +116,12 @@ export default function LoginPage() {
         <div className="w-full max-w-lg rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
           <div className="flex flex-col items-center text-center">
             <Image
-              src="/Thecamplogo.png"
+              src="/thecamp%20icon.png"
               alt="The Camp Logo"
-              width={64}
-              height={64}
-              className="mb-6 h-16 w-auto"
+              width={96}
+              height={96}
+              className="mb-5 h-20 w-20"
+              quality={100}
               priority
             />
             <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">

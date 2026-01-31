@@ -134,14 +134,15 @@ export default function RegisterPage() {
           showLoader || statusMessage ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="w-full max-w-lg rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
+        <div className="w-full max-w-2xl rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
           <div className="flex flex-col items-center text-center">
             <Image
-              src="/Thecamplogo.png"
+              src="/thecamp%20icon.png"
               alt="The Camp Logo"
-              width={64}
-              height={64}
-              className="mb-6 h-16 w-auto"
+              width={96}
+              height={96}
+              className="mb-5 h-20 w-20"
+              quality={100}
               priority
             />
             <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
@@ -150,7 +151,7 @@ export default function RegisterPage() {
             <h2 className="mt-4 text-2xl font-semibold text-white">Create an Account</h2>
             <p className="mt-2 text-sm text-white/70">Join to submit and track bug reports.</p>
           </div>
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-white/80">Email</label>
               <input
@@ -180,7 +181,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
               />
-              <div className="mt-3 grid gap-2 text-xs">
+              <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2">
                 {passwordChecks.map((check) => (
                   <div key={check.label} className={`flex items-center gap-2 ${check.met ? "text-emerald-400" : "text-white/50"}`}>
                     <span className={`h-2 w-2 rounded-full ${check.met ? "bg-emerald-400" : "bg-white/30"}`}></span>
