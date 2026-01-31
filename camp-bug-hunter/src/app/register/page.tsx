@@ -146,14 +146,6 @@ export default function RegisterPage() {
                 quality={100}
                 priority
               />
-              <Image
-                src="/thecamp%20icon.png"
-                alt="The Camp Icon"
-                width={64}
-                height={64}
-                className="h-12 w-12"
-                quality={100}
-              />
             </div>
             <h2 className="mt-4 text-2xl font-semibold text-white">Create an Account</h2>
             <p className="mt-2 text-sm text-white/70">Join to submit and track bug reports.</p>

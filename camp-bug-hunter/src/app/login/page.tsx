@@ -125,18 +125,7 @@ export default function LoginPage() {
                 quality={100}
                 priority
               />
-              <Image
-                src="/thecamp%20icon.png"
-                alt="The Camp Icon"
-                width={64}
-                height={64}
-                className="h-12 w-12"
-                quality={100}
-              />
             </div>
-            <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
-              The Camp access
-            </span>
             <h2 className="mt-4 text-2xl font-semibold text-white">Welcome Back</h2>
             <p className="mt-2 text-sm text-white/70">Sign in to review your reports and track updates.</p>
           </div>
