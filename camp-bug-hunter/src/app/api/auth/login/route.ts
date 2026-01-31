@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         id: user.id,
         email: user.email,
         minecraftUsername: user.minecraftUsername,
+        isAdmin: user.isAdmin,
         createdAt: user.createdAt,
       },
       { status: 200 }

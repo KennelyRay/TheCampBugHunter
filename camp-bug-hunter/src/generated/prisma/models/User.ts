@@ -30,6 +30,7 @@ export type UserMinAggregateOutputType = {
   email: string | null
   minecraftUsername: string | null
   passwordHash: string | null
+  isAdmin: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   minecraftUsername: string | null
   passwordHash: string | null
+  isAdmin: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -46,6 +48,7 @@ export type UserCountAggregateOutputType = {
   email: number
   minecraftUsername: number
   passwordHash: number
+  isAdmin: number
   _all: number
 }
 
@@ -56,6 +59,7 @@ export type UserMinAggregateInputType = {
   email?: true
   minecraftUsername?: true
   passwordHash?: true
+  isAdmin?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -64,6 +68,7 @@ export type UserMaxAggregateInputType = {
   email?: true
   minecraftUsername?: true
   passwordHash?: true
+  isAdmin?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -72,6 +77,7 @@ export type UserCountAggregateInputType = {
   email?: true
   minecraftUsername?: true
   passwordHash?: true
+  isAdmin?: true
   _all?: true
 }
 
@@ -153,6 +159,7 @@ export type UserGroupByOutputType = {
   email: string
   minecraftUsername: string
   passwordHash: string
+  isAdmin: boolean
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -182,6 +189,7 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   minecraftUsername?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
+  isAdmin?: Prisma.BoolFilter<"User"> | boolean
 }
 
 export type UserOrderByWithRelationInput = {
@@ -190,6 +198,7 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -201,6 +210,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHash?: Prisma.StringFilter<"User"> | string
+  isAdmin?: Prisma.BoolFilter<"User"> | boolean
 }, "id" | "email" | "minecraftUsername">
 
 export type UserOrderByWithAggregationInput = {
@@ -209,6 +219,7 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -223,6 +234,7 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   minecraftUsername?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
+  isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
@@ -231,6 +243,7 @@ export type UserCreateInput = {
   email: string
   minecraftUsername: string
   passwordHash: string
+  isAdmin?: boolean
 }
 
 export type UserUncheckedCreateInput = {
@@ -239,6 +252,7 @@ export type UserUncheckedCreateInput = {
   email: string
   minecraftUsername: string
   passwordHash: string
+  isAdmin?: boolean
 }
 
 export type UserUpdateInput = {
@@ -247,6 +261,7 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateInput = {
@@ -255,6 +270,7 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCreateManyInput = {
@@ -263,6 +279,7 @@ export type UserCreateManyInput = {
   email: string
   minecraftUsername: string
   passwordHash: string
+  isAdmin?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -271,6 +288,7 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -279,6 +297,7 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -287,6 +306,7 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -295,6 +315,7 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -303,6 +324,11 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isAdmin?: Prisma.SortOrder
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 
@@ -313,6 +339,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   minecraftUsername?: boolean
   passwordHash?: boolean
+  isAdmin?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -321,6 +348,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   minecraftUsername?: boolean
   passwordHash?: boolean
+  isAdmin?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -329,6 +357,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   minecraftUsername?: boolean
   passwordHash?: boolean
+  isAdmin?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -337,9 +366,10 @@ export type UserSelectScalar = {
   email?: boolean
   minecraftUsername?: boolean
   passwordHash?: boolean
+  isAdmin?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "minecraftUsername" | "passwordHash", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "minecraftUsername" | "passwordHash" | "isAdmin", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -350,6 +380,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string
     minecraftUsername: string
     passwordHash: string
+    isAdmin: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -778,6 +809,7 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly minecraftUsername: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 

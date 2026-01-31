@@ -66,11 +66,13 @@ export default function LoginPage() {
           JSON.stringify({
             email: data.email ?? "",
             minecraftUsername: data.minecraftUsername ?? minecraftUsername.trim(),
+            isAdmin: Boolean(data.isAdmin),
           })
         );
         window.dispatchEvent(new Event("camp-auth"));
       }
-      showStatus("Successfully logged in, please wait!", "/");
+      const nextPath = data.isAdmin ? "/admin" : "/";
+      showStatus("Successfully logged in, please wait!", nextPath);
     } catch {
       setError("Login failed. Ensure database is configured.");
     } finally {
