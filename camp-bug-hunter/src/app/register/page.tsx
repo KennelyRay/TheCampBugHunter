@@ -147,7 +147,6 @@ export default function RegisterPage() {
                 priority
               />
             </div>
-            <h2 className="mt-4 text-2xl font-semibold text-white">Create an Account</h2>
             <p className="mt-2 text-sm text-white/70">Join to submit and track bug reports.</p>
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
