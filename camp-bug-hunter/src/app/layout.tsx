@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen bg-[#12151b] text-foreground">
+        <div className="min-h-screen bg-[#12151b] text-foreground flex flex-col">
           <header className="sticky top-0 z-40 border-b border-black/40 bg-gradient-to-r from-[#12161d] via-[#171d25] to-[#12161d] shadow-lg shadow-black/30 backdrop-blur">
             <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-3">
@@ -42,10 +42,10 @@ export default function RootLayout({
               <NavBar />
             </div>
           </header>
-          <main className="mx-auto max-w-6xl px-6 py-10">
+          <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
             <PageTransition>{children}</PageTransition>
           </main>
-          <footer className="mt-16 border-t border-white/10 bg-gradient-to-r from-[#141922] via-[#1a202a] to-[#141922] py-10 text-white/70">
+          <footer className="relative z-20 mt-16 border-t border-white/10 bg-gradient-to-r from-[#141922] via-[#1a202a] to-[#141922] py-10 text-white/70">
             <div className="mx-auto max-w-6xl px-6 grid gap-6 sm:grid-cols-3">
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">

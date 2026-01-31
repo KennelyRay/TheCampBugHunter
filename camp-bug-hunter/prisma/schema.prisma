@@ -40,3 +40,13 @@ model Bug {
   @@index([discordId])
   @@map("bugs")
 }
+
+model User {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  email             String   @unique
+  minecraftUsername String   @unique
+  passwordHash      String
+
+  @@map("users")
+}
