@@ -113,7 +113,7 @@ export default function LoginPage() {
           showLoader || statusMessage ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="w-full max-w-lg rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
+        <div className="w-full max-w-md rounded-2xl border border-black/40 bg-[#151a21]/85 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
           <div className="flex flex-col items-center text-center">
             <div className="mb-5 flex items-center gap-4">
               <Image
