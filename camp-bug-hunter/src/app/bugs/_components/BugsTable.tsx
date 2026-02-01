@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Bug } from "@/types/bug";
@@ -11,6 +12,13 @@ function StatusBadge({ status }: { status: Bug["status"] }) {
   };
   return <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${map[status]}`}>{status.replaceAll("_"," ")}</span>;
 }
+
+const severityMeta: Record<Bug["severity"], { label: string; icon: string }> = {
+  LOW: { label: "Low", icon: "/Low.svg" },
+  MEDIUM: { label: "Medium", icon: "/Medium.svg" },
+  HIGH: { label: "High", icon: "/High.svg" },
+  URGENT: { label: "Urgent", icon: "/Urgent.svg" },
+};
 
 export default function BugsTable() {
   const [bugs, setBugs] = useState<Bug[]>([]);
@@ -65,7 +73,12 @@ export default function BugsTable() {
                   {b.title}
                 </Link>
               </td>
-              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.severity}</td>
+              <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
+                <div className="flex items-center gap-2">
+                  <Image src={severityMeta[b.severity].icon} alt="" width={16} height={16} className="h-4 w-4" />
+                  <span>{severityMeta[b.severity].label}</span>
+                </div>
+              </td>
               <td className="border-b border-black/30 px-4 py-3"><StatusBadge status={b.status} /></td>
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.discordId}</td>
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">

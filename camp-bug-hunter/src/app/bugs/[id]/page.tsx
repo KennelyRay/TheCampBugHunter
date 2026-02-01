@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { BugRepository } from "@/lib/bugRepository";
 import type { Bug } from "@/types/bug";
 
@@ -20,6 +21,13 @@ export default async function BugPage({ params }: { params: Promise<{ id: string
     );
   }
 
+  const severityMeta: Record<Bug["severity"], { label: string; icon: string }> = {
+    LOW: { label: "Low", icon: "/Low.svg" },
+    MEDIUM: { label: "Medium", icon: "/Medium.svg" },
+    HIGH: { label: "High", icon: "/High.svg" },
+    URGENT: { label: "Urgent", icon: "/Urgent.svg" },
+  };
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
@@ -29,9 +37,11 @@ export default async function BugPage({ params }: { params: Promise<{ id: string
             {bug.status.replaceAll("_", " ")}
           </span>
         </div>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-          Severity: <span className="font-semibold text-slate-800 dark:text-slate-100">{bug.severity}</span>
-        </p>
+        <div className="mt-2 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+          <span>Severity:</span>
+          <Image src={severityMeta[bug.severity].icon} alt="" width={16} height={16} className="h-4 w-4" />
+          <span className="font-semibold text-slate-800 dark:text-slate-100">{severityMeta[bug.severity].label}</span>
+        </div>
       </div>
       <div className="grid gap-4">
         <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">

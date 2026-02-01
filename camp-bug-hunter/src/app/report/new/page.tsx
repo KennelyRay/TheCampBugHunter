@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Severity } from "@/types/bug";
@@ -16,11 +17,11 @@ export default function NewReportPage() {
   const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const severityOptions: { value: Severity; label: string; description: string }[] = [
-    { value: "LOW", label: "Low", description: "Minor issue, cosmetic, or typo." },
-    { value: "MEDIUM", label: "Medium", description: "Gameplay impact but not blocking." },
-    { value: "HIGH", label: "High", description: "Major impact or exploitable behavior." },
-    { value: "URGENT", label: "Urgent", description: "Game breaking, can ruin server economy." },
+  const severityOptions: { value: Severity; label: string; description: string; icon: string }[] = [
+    { value: "LOW", label: "Low", description: "Minor issue, cosmetic, or typo.", icon: "/Low.svg" },
+    { value: "MEDIUM", label: "Medium", description: "Gameplay impact but not blocking.", icon: "/Medium.svg" },
+    { value: "HIGH", label: "High", description: "Major impact or exploitable behavior.", icon: "/High.svg" },
+    { value: "URGENT", label: "Urgent", description: "Game breaking, can ruin server economy.", icon: "/Urgent.svg" },
   ];
 
   async function submit() {
@@ -187,7 +188,10 @@ export default function NewReportPage() {
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span>{option.label}</span>
+                        <div className="flex items-center gap-2">
+                          <Image src={option.icon} alt="" width={18} height={18} className="h-4 w-4" />
+                          <span>{option.label}</span>
+                        </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
                             isActive ? "bg-[#f3a46b]" : "bg-white/30"
@@ -262,9 +266,12 @@ export default function NewReportPage() {
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Severity guide</div>
             <div className="mt-4 space-y-3 text-sm text-white/70">
               {severityOptions.map((option) => (
-                <div key={option.value}>
-                  <div className="font-semibold text-white">{option.label}</div>
+                <div key={option.value} className="flex items-start gap-3">
+                  <Image src={option.icon} alt="" width={20} height={20} className="mt-0.5 h-5 w-5" />
+                  <div>
+                    <div className="font-semibold text-white">{option.label}</div>
                   <div>{option.description}</div>
+                  </div>
                 </div>
               ))}
             </div>

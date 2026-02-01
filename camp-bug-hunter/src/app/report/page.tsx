@@ -73,7 +73,7 @@ export default function ReportIntroPage() {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <div className="text-sm font-semibold text-white">Provide your details: correct Discord ID and Minecraft IGN.</div>
-              <ButtonLink href="https://www.youtube.com/watch?v=vI-Ld9ls-fs" variant="secondary">
+              <ButtonLink href="https://www.youtube.com/watch?v=vI-Ld9ls-fs" variant="secondary" openInNewTab>
                 How get discord id
               </ButtonLink>
             </div>

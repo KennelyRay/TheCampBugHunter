@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { Bug, Severity, Status } from "@/types/bug";
 
@@ -108,19 +109,31 @@ export default function AdminPage() {
           <div className="mt-2 text-2xl font-semibold">{counts.total}</div>
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Urgent</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+            <Image src="/Urgent.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <span>Urgent</span>
+          </div>
           <div className="mt-2 text-2xl font-semibold">{counts.urgent}</div>
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">High</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+            <Image src="/High.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <span>High</span>
+          </div>
           <div className="mt-2 text-2xl font-semibold">{counts.high}</div>
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Medium</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+            <Image src="/Medium.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <span>Medium</span>
+          </div>
           <div className="mt-2 text-2xl font-semibold">{counts.medium}</div>
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Low</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+            <Image src="/Low.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <span>Low</span>
+          </div>
           <div className="mt-2 text-2xl font-semibold">{counts.low}</div>
         </div>
       </div>
