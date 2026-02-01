@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ButtonLink from "@/components/ButtonLink";
 import type { Severity } from "@/types/bug";
 
 export default function NewReportPage() {
@@ -160,7 +161,8 @@ export default function NewReportPage() {
           </div>
         </div>
         {error && <p className="mt-4 text-sm text-rose-400">{error}</p>}
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap gap-3">
+          <ButtonLink href="/report" variant="secondary">Back</ButtonLink>
           <button
             className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
             disabled={submitting}

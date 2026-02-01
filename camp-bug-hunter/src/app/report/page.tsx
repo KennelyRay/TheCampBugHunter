@@ -97,7 +97,8 @@ export default function ReportIntroPage() {
               />
               <span>I fully read and understood the guidelines.</span>
             </label>
-            <div className="mt-5">
+            <div className="mt-5 flex flex-wrap gap-3">
+              <ButtonLink href="/" variant="secondary">Back</ButtonLink>
               <button
                 type="button"
                 disabled={!acknowledged}
@@ -108,7 +109,7 @@ export default function ReportIntroPage() {
                     : "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
                 }`}
               >
-                I Understand
+                Next
               </button>
             </div>
           </div>

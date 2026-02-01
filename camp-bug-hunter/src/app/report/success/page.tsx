@@ -39,6 +39,7 @@ export default function ReportSuccessPage() {
           Your report has been submitted and will appear in the admin dashboard after review.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
+          <ButtonLink href="/report/new" variant="secondary">Back</ButtonLink>
           <ButtonLink href="/bugs" variant="secondary">View Bugs</ButtonLink>
           <ButtonLink href="/" variant="primary">Back to Home</ButtonLink>
         </div>
