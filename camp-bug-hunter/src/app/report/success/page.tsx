@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ButtonLink from "@/components/ButtonLink";
 
 export default function ReportSuccessPage() {
@@ -39,7 +40,12 @@ export default function ReportSuccessPage() {
           Your report has been submitted and will appear in the admin dashboard after review.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <ButtonLink href="/report/new" variant="secondary">Back</ButtonLink>
+          <Link
+            href="/report/new"
+            className="inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#f3a46b]/60 text-[#f3a46b] hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:shadow-[#f3a46b]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Back
+          </Link>
           <ButtonLink href="/bugs" variant="secondary">View Bugs</ButtonLink>
           <ButtonLink href="/" variant="primary">Back to Home</ButtonLink>
         </div>
