@@ -84,7 +84,7 @@ export default function LoginPage() {
     <div className="relative isolate min-h-[calc(100vh-12rem)]">
       {isClient &&
         createPortal(
-          <div
+          <div 
             className={`fixed inset-0 z-50 flex items-center justify-center bg-[#0f131a]/90 backdrop-blur transition-opacity duration-500 ${
               showLoader || statusMessage ? "opacity-100" : "pointer-events-none opacity-0"
             }`}

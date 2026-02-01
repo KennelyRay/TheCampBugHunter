@@ -33,6 +33,8 @@ export async function POST(request: Request) {
       title: body.title,
       description: body.description,
       reproductionSteps: body.reproductionSteps,
+      evidenceFileNames: Array.isArray(body.evidenceFileNames) ? body.evidenceFileNames : [],
+      videoEvidence: typeof body.videoEvidence === "string" ? body.videoEvidence : null,
       severity: body.severity as Severity,
       status: body.status as Status | undefined,
     });

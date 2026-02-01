@@ -41,6 +41,8 @@ export class BugRepository {
       title: payload.title,
       description: payload.description,
       reproductionSteps: payload.reproductionSteps,
+      evidenceFileNames: payload.evidenceFileNames,
+      videoEvidence: payload.videoEvidence ?? null,
       severity: payload.severity,
       status,
     };

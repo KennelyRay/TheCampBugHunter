@@ -33,6 +33,8 @@ model Bug {
   title             String
   description       String
   reproductionSteps String
+  evidenceFileNames String[] @default([])
+  videoEvidence     String?
   severity          Severity
   status            Status   @default(BUG)
 

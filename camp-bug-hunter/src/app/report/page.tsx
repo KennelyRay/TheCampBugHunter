@@ -21,7 +21,14 @@ export default function ReportIntroPage() {
               <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-white/60">
                 2
               </span>
-              <span>Submit</span>
+              <span>Report</span>
+            </div>
+            <span className="h-px w-8 bg-white/20"></span>
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-white/60">
+                3
+              </span>
+              <span>Summary</span>
             </div>
           </div>
         </div>
