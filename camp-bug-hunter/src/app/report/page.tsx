@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ButtonLink from "@/components/ButtonLink";
 
 export default function ReportIntroPage() {
+  const router = useRouter();
+  const [acknowledged, setAcknowledged] = useState(false);
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
@@ -82,8 +88,28 @@ export default function ReportIntroPage() {
           <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
             <h4 className="text-base font-semibold text-white">Ready to submit?</h4>
             <p className="mt-2 text-sm text-white/70">Proceed to the report form once you&apos;ve reviewed the guidelines.</p>
+            <label className="mt-4 flex items-center gap-3 text-sm text-white/80">
+              <input
+                type="checkbox"
+                checked={acknowledged}
+                onChange={(event) => setAcknowledged(event.target.checked)}
+                className="h-4 w-4 rounded border border-white/30 bg-[#0f131a]/80 text-[#f3a46b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              />
+              <span>I fully read and understood the guidelines.</span>
+            </label>
             <div className="mt-5">
-              <ButtonLink href="/report/new" variant="primary">I Understand</ButtonLink>
+              <button
+                type="button"
+                disabled={!acknowledged}
+                onClick={() => router.push("/report/new")}
+                className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                  acknowledged
+                    ? "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40 active:translate-y-0 active:scale-[0.98]"
+                    : "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                }`}
+              >
+                I Understand
+              </button>
             </div>
           </div>
         </div>
