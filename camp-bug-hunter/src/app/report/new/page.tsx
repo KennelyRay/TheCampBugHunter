@@ -267,7 +267,7 @@ export default function NewReportPage() {
             <div className="mt-4 space-y-3 text-sm text-white/70">
               {severityOptions.map((option) => (
                 <div key={option.value} className="flex items-start gap-3">
-                  <Image src={option.icon} alt="" width={20} height={20} className="mt-0.5 h-5 w-5" />
+                  <Image src={option.icon} alt="" width={16} height={16} className="mt-0.5 h-4 w-4" />
                   <div>
                     <div className="font-semibold text-white">{option.label}</div>
                   <div>{option.description}</div>
