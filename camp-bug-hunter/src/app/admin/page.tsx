@@ -38,6 +38,7 @@ export default function AdminPage() {
       low: bugs.filter((b) => b.severity === "LOW").length,
       medium: bugs.filter((b) => b.severity === "MEDIUM").length,
       high: bugs.filter((b) => b.severity === "HIGH").length,
+      urgent: bugs.filter((b) => b.severity === "URGENT").length,
     };
   }, [bugs]);
 
@@ -82,6 +83,7 @@ export default function AdminPage() {
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
             </select>
           </div>
           <div className="flex-1">
@@ -100,10 +102,14 @@ export default function AdminPage() {
           </button>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-5">
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Total</div>
           <div className="mt-2 text-2xl font-semibold">{counts.total}</div>
+        </div>
+        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Urgent</div>
+          <div className="mt-2 text-2xl font-semibold">{counts.urgent}</div>
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">High</div>

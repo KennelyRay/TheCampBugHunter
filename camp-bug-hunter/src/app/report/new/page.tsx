@@ -16,6 +16,12 @@ export default function NewReportPage() {
   const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const severityOptions: { value: Severity; label: string; description: string }[] = [
+    { value: "LOW", label: "Low", description: "Minor issue, cosmetic, or typo." },
+    { value: "MEDIUM", label: "Medium", description: "Gameplay impact but not blocking." },
+    { value: "HIGH", label: "High", description: "Major impact or exploitable behavior." },
+    { value: "URGENT", label: "Urgent", description: "Game breaking, can ruin server economy." },
+  ];
 
   async function submit() {
     setSubmitting(true);
@@ -166,17 +172,32 @@ export default function NewReportPage() {
             <div>
               <div className="text-base font-semibold text-white">Severity</div>
               <div className="mt-1 text-xs text-white/50">Choose the impact level of this bug.</div>
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-white/80">Severity level</label>
-                <select
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] sm:w-64"
-                  value={severity}
-                  onChange={(e) => setSeverity(e.target.value as Severity)}
-                >
-                  <option value="LOW">Low</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="HIGH">High</option>
-                </select>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {severityOptions.map((option) => {
+                  const isActive = severity === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setSeverity(option.value)}
+                      className={`rounded-lg border px-4 py-3 text-left text-sm font-semibold transition-all duration-200 ease-out ${
+                        isActive
+                          ? "border-[#f3a46b] bg-[#f3a46b]/15 text-[#f3a46b] shadow-lg shadow-black/30"
+                          : "border-black/40 bg-[#0f131a]/80 text-white/80 hover:border-[#f3a46b]/60 hover:bg-[#151b23]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{option.label}</span>
+                        <span
+                          className={`h-2 w-2 rounded-full ${
+                            isActive ? "bg-[#f3a46b]" : "bg-white/30"
+                          }`}
+                        ></span>
+                      </div>
+                      <div className="mt-2 text-xs font-normal text-white/60">{option.description}</div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
             <div className="rounded-xl border border-black/40 bg-[#121722]/80 p-4">
@@ -240,18 +261,12 @@ export default function NewReportPage() {
           <div className="rounded-2xl border border-black/40 bg-[#141922]/90 p-6 text-white shadow-lg shadow-black/30">
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Severity guide</div>
             <div className="mt-4 space-y-3 text-sm text-white/70">
-              <div>
-                <div className="font-semibold text-white">Low</div>
-                <div>Minor issue, cosmetic, or typo.</div>
-              </div>
-              <div>
-                <div className="font-semibold text-white">Medium</div>
-                <div>Gameplay impact but not blocking.</div>
-              </div>
-              <div>
-                <div className="font-semibold text-white">High</div>
-                <div>Major impact or exploitable behavior.</div>
-              </div>
+              {severityOptions.map((option) => (
+                <div key={option.value}>
+                  <div className="font-semibold text-white">{option.label}</div>
+                  <div>{option.description}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

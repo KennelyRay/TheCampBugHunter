@@ -1,4 +1,4 @@
-export type Severity = "LOW" | "MEDIUM" | "HIGH";
+export type Severity = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 export type Status = "BUG" | "FIXED" | "NOT_A_BUG";
 
 export interface Bug {

@@ -32,6 +32,7 @@ export default function FilterBar() {
           <option value="LOW">Low</option>
           <option value="MEDIUM">Medium</option>
           <option value="HIGH">High</option>
+          <option value="URGENT">Urgent</option>
         </select>
       </div>
       <div className="flex-1">

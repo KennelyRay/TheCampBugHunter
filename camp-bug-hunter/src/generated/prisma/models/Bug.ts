@@ -32,6 +32,7 @@ export type BugMinAggregateOutputType = {
   title: string | null
   description: string | null
   reproductionSteps: string | null
+  videoEvidence: string | null
   severity: $Enums.Severity | null
   status: $Enums.Status | null
 }
@@ -44,6 +45,7 @@ export type BugMaxAggregateOutputType = {
   title: string | null
   description: string | null
   reproductionSteps: string | null
+  videoEvidence: string | null
   severity: $Enums.Severity | null
   status: $Enums.Status | null
 }
@@ -56,6 +58,8 @@ export type BugCountAggregateOutputType = {
   title: number
   description: number
   reproductionSteps: number
+  evidenceFileNames: number
+  videoEvidence: number
   severity: number
   status: number
   _all: number
@@ -70,6 +74,7 @@ export type BugMinAggregateInputType = {
   title?: true
   description?: true
   reproductionSteps?: true
+  videoEvidence?: true
   severity?: true
   status?: true
 }
@@ -82,6 +87,7 @@ export type BugMaxAggregateInputType = {
   title?: true
   description?: true
   reproductionSteps?: true
+  videoEvidence?: true
   severity?: true
   status?: true
 }
@@ -94,6 +100,8 @@ export type BugCountAggregateInputType = {
   title?: true
   description?: true
   reproductionSteps?: true
+  evidenceFileNames?: true
+  videoEvidence?: true
   severity?: true
   status?: true
   _all?: true
@@ -179,6 +187,8 @@ export type BugGroupByOutputType = {
   title: string
   description: string
   reproductionSteps: string
+  evidenceFileNames: string[]
+  videoEvidence: string | null
   severity: $Enums.Severity
   status: $Enums.Status
   _count: BugCountAggregateOutputType | null
@@ -212,6 +222,8 @@ export type BugWhereInput = {
   title?: Prisma.StringFilter<"Bug"> | string
   description?: Prisma.StringFilter<"Bug"> | string
   reproductionSteps?: Prisma.StringFilter<"Bug"> | string
+  evidenceFileNames?: Prisma.StringNullableListFilter<"Bug">
+  videoEvidence?: Prisma.StringNullableFilter<"Bug"> | string | null
   severity?: Prisma.EnumSeverityFilter<"Bug"> | $Enums.Severity
   status?: Prisma.EnumStatusFilter<"Bug"> | $Enums.Status
 }
@@ -224,6 +236,8 @@ export type BugOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reproductionSteps?: Prisma.SortOrder
+  evidenceFileNames?: Prisma.SortOrder
+  videoEvidence?: Prisma.SortOrderInput | Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -239,6 +253,8 @@ export type BugWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Bug"> | string
   description?: Prisma.StringFilter<"Bug"> | string
   reproductionSteps?: Prisma.StringFilter<"Bug"> | string
+  evidenceFileNames?: Prisma.StringNullableListFilter<"Bug">
+  videoEvidence?: Prisma.StringNullableFilter<"Bug"> | string | null
   severity?: Prisma.EnumSeverityFilter<"Bug"> | $Enums.Severity
   status?: Prisma.EnumStatusFilter<"Bug"> | $Enums.Status
 }, "id">
@@ -251,6 +267,8 @@ export type BugOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reproductionSteps?: Prisma.SortOrder
+  evidenceFileNames?: Prisma.SortOrder
+  videoEvidence?: Prisma.SortOrderInput | Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.BugCountOrderByAggregateInput
@@ -269,6 +287,8 @@ export type BugScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Bug"> | string
   description?: Prisma.StringWithAggregatesFilter<"Bug"> | string
   reproductionSteps?: Prisma.StringWithAggregatesFilter<"Bug"> | string
+  evidenceFileNames?: Prisma.StringNullableListFilter<"Bug">
+  videoEvidence?: Prisma.StringNullableWithAggregatesFilter<"Bug"> | string | null
   severity?: Prisma.EnumSeverityWithAggregatesFilter<"Bug"> | $Enums.Severity
   status?: Prisma.EnumStatusWithAggregatesFilter<"Bug"> | $Enums.Status
 }
@@ -281,6 +301,8 @@ export type BugCreateInput = {
   title: string
   description: string
   reproductionSteps: string
+  evidenceFileNames?: Prisma.BugCreateevidenceFileNamesInput | string[]
+  videoEvidence?: string | null
   severity: $Enums.Severity
   status?: $Enums.Status
 }
@@ -293,6 +315,8 @@ export type BugUncheckedCreateInput = {
   title: string
   description: string
   reproductionSteps: string
+  evidenceFileNames?: Prisma.BugCreateevidenceFileNamesInput | string[]
+  videoEvidence?: string | null
   severity: $Enums.Severity
   status?: $Enums.Status
 }
@@ -305,6 +329,8 @@ export type BugUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reproductionSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  evidenceFileNames?: Prisma.BugUpdateevidenceFileNamesInput | string[]
+  videoEvidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
 }
@@ -317,6 +343,8 @@ export type BugUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reproductionSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  evidenceFileNames?: Prisma.BugUpdateevidenceFileNamesInput | string[]
+  videoEvidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
 }
@@ -329,6 +357,8 @@ export type BugCreateManyInput = {
   title: string
   description: string
   reproductionSteps: string
+  evidenceFileNames?: Prisma.BugCreateevidenceFileNamesInput | string[]
+  videoEvidence?: string | null
   severity: $Enums.Severity
   status?: $Enums.Status
 }
@@ -341,6 +371,8 @@ export type BugUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reproductionSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  evidenceFileNames?: Prisma.BugUpdateevidenceFileNamesInput | string[]
+  videoEvidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
 }
@@ -353,8 +385,18 @@ export type BugUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   reproductionSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  evidenceFileNames?: Prisma.BugUpdateevidenceFileNamesInput | string[]
+  videoEvidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type BugCountOrderByAggregateInput = {
@@ -365,6 +407,8 @@ export type BugCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reproductionSteps?: Prisma.SortOrder
+  evidenceFileNames?: Prisma.SortOrder
+  videoEvidence?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -377,6 +421,7 @@ export type BugMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reproductionSteps?: Prisma.SortOrder
+  videoEvidence?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -389,8 +434,13 @@ export type BugMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   reproductionSteps?: Prisma.SortOrder
+  videoEvidence?: Prisma.SortOrder
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
+}
+
+export type BugCreateevidenceFileNamesInput = {
+  set: string[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -399,6 +449,15 @@ export type StringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type BugUpdateevidenceFileNamesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type EnumSeverityFieldUpdateOperationsInput = {
@@ -419,6 +478,8 @@ export type BugSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   title?: boolean
   description?: boolean
   reproductionSteps?: boolean
+  evidenceFileNames?: boolean
+  videoEvidence?: boolean
   severity?: boolean
   status?: boolean
 }, ExtArgs["result"]["bug"]>
@@ -431,6 +492,8 @@ export type BugSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   title?: boolean
   description?: boolean
   reproductionSteps?: boolean
+  evidenceFileNames?: boolean
+  videoEvidence?: boolean
   severity?: boolean
   status?: boolean
 }, ExtArgs["result"]["bug"]>
@@ -443,6 +506,8 @@ export type BugSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   title?: boolean
   description?: boolean
   reproductionSteps?: boolean
+  evidenceFileNames?: boolean
+  videoEvidence?: boolean
   severity?: boolean
   status?: boolean
 }, ExtArgs["result"]["bug"]>
@@ -455,11 +520,13 @@ export type BugSelectScalar = {
   title?: boolean
   description?: boolean
   reproductionSteps?: boolean
+  evidenceFileNames?: boolean
+  videoEvidence?: boolean
   severity?: boolean
   status?: boolean
 }
 
-export type BugOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "discordId" | "minecraftIgn" | "title" | "description" | "reproductionSteps" | "severity" | "status", ExtArgs["result"]["bug"]>
+export type BugOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "discordId" | "minecraftIgn" | "title" | "description" | "reproductionSteps" | "evidenceFileNames" | "videoEvidence" | "severity" | "status", ExtArgs["result"]["bug"]>
 
 export type $BugPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Bug"
@@ -472,6 +539,8 @@ export type $BugPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     title: string
     description: string
     reproductionSteps: string
+    evidenceFileNames: string[]
+    videoEvidence: string | null
     severity: $Enums.Severity
     status: $Enums.Status
   }, ExtArgs["result"]["bug"]>
@@ -904,6 +973,8 @@ export interface BugFieldRefs {
   readonly title: Prisma.FieldRef<"Bug", 'String'>
   readonly description: Prisma.FieldRef<"Bug", 'String'>
   readonly reproductionSteps: Prisma.FieldRef<"Bug", 'String'>
+  readonly evidenceFileNames: Prisma.FieldRef<"Bug", 'String[]'>
+  readonly videoEvidence: Prisma.FieldRef<"Bug", 'String'>
   readonly severity: Prisma.FieldRef<"Bug", 'Severity'>
   readonly status: Prisma.FieldRef<"Bug", 'Status'>
 }

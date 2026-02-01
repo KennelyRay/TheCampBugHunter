@@ -12,7 +12,8 @@
 export const Severity = {
   LOW: 'LOW',
   MEDIUM: 'MEDIUM',
-  HIGH: 'HIGH'
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
 } as const
 
 export type Severity = (typeof Severity)[keyof typeof Severity]

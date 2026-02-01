@@ -63,12 +63,12 @@ export default function ReportIntroPage() {
               </ul>
             </div>
             <div>
-              <div className="text-sm font-semibold text-white">Select the correct severity level: Low / Medium / High.</div>
+              <div className="text-sm font-semibold text-white">Select the correct severity level: Low / Medium / High / Urgent.</div>
               <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
                 <li>Low: It doesn&apos;t affect gameplay, grammatical errors and wrong spellings</li>
                 <li>Medium: It affects gameplay but not that much, visual annoyance</li>
                 <li>High: It affects gameplay very much, can be abused if not fixed,</li>
-                <li>Urgent: It can break the game, can be used exploit as an exploit, can ruin game economy</li>
+                <li>Urgent: Game breaking, can ruin server economy</li>
               </ul>
             </div>
             <div className="flex flex-wrap items-center gap-3">
