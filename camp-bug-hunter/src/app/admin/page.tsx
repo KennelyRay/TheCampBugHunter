@@ -117,7 +117,7 @@ export default function AdminPage() {
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-4 text-white shadow-lg shadow-black/20">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
-            <Image src="/High.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <Image src="/High.svg?v=2" alt="" width={16} height={16} className="h-4 w-4" />
             <span>High</span>
           </div>
           <div className="mt-2 text-2xl font-semibold">{counts.high}</div>

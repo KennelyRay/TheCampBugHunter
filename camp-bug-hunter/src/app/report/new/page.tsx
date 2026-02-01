@@ -20,7 +20,7 @@ export default function NewReportPage() {
   const severityOptions: { value: Severity; label: string; description: string; icon: string }[] = [
     { value: "LOW", label: "Low", description: "Minor issue, cosmetic, or typo.", icon: "/Low.svg" },
     { value: "MEDIUM", label: "Medium", description: "Gameplay impact but not blocking.", icon: "/Medium.svg" },
-    { value: "HIGH", label: "High", description: "Major impact or exploitable behavior.", icon: "/High.svg" },
+    { value: "HIGH", label: "High", description: "Major impact or exploitable behavior.", icon: "/High.svg?v=2" },
     { value: "URGENT", label: "Urgent", description: "Game breaking, can ruin server economy.", icon: "/Urgent.svg" },
   ];
 

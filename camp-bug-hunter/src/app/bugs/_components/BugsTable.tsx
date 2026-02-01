@@ -16,7 +16,7 @@ function StatusBadge({ status }: { status: Bug["status"] }) {
 const severityMeta: Record<Bug["severity"], { label: string; icon: string }> = {
   LOW: { label: "Low", icon: "/Low.svg" },
   MEDIUM: { label: "Medium", icon: "/Medium.svg" },
-  HIGH: { label: "High", icon: "/High.svg" },
+  HIGH: { label: "High", icon: "/High.svg?v=2" },
   URGENT: { label: "Urgent", icon: "/Urgent.svg" },
 };
 
