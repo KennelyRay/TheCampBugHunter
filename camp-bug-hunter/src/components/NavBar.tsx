@@ -126,7 +126,7 @@ export default function NavBar() {
         <div className="relative">
           <button
             type="button"
-            className="flex items-center gap-2 rounded-full border border-[#f3a46b]/40 bg-[#0f131a]/80 px-3 py-2 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/10"
+            className="flex items-center gap-2 rounded-full border border-[#f3a46b]/40 bg-[#0f131a]/80 px-3 py-2 text-[#f3a46b] shadow-lg shadow-black/40 transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/10"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <Image
@@ -140,15 +140,46 @@ export default function NavBar() {
             <span className="hidden text-[11px] sm:inline">{user.minecraftUsername}</span>
           </button>
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-xl border border-white/10 bg-[#141922]/95 p-2 shadow-xl shadow-black/40">
-              <div className="px-3 py-2 text-[11px] text-white/60">{user.email || user.minecraftUsername}</div>
-              <button
-                type="button"
-                className="mt-1 w-full rounded-lg border border-white/10 px-3 py-2 text-left text-[11px] text-white/80 transition hover:border-[#f3a46b]/60 hover:text-[#f3a46b]"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+            <div className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-[#f3a46b]/20 bg-[#0f131a]/95 shadow-2xl shadow-black/50">
+              <div className="flex items-center gap-3 border-b border-white/5 px-4 py-3">
+                <Image
+                  src={avatarFailed ? fallbackUrl : avatarUrl}
+                  alt={`${user.minecraftUsername} avatar`}
+                  width={36}
+                  height={36}
+                  className="rounded-lg border border-white/10"
+                  onError={() => setAvatarFailedFor(user.minecraftUsername)}
+                />
+                <div>
+                  <div className="text-sm font-semibold text-white">{user.minecraftUsername}</div>
+                  <div className="text-[11px] text-white/50">{user.email || "No email on file"}</div>
+                </div>
+              </div>
+              <div className="p-2">
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-[#141922] hover:text-white"
+                  onClick={handleLogout}
+                >
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                    <path
+                      d="M8 4h5a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M8 10H3m0 0 2.5-2.5M3 10l2.5 2.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>
