@@ -21,6 +21,8 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationError, setVerificationError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -50,12 +52,12 @@ export default function RegisterPage() {
     { label: "One special character", met: /[^A-Za-z0-9]/.test(password) },
   ];
 
-  async function handleRegister() {
+  function handleRegister() {
     if (submitting) return;
     setError(null);
     setSuccess(null);
 
-    if (!normalizedEmail || !minecraftUsername.trim() || !verificationCode.trim() || !password || !confirmPassword) {
+    if (!normalizedEmail || !minecraftUsername.trim() || !password || !confirmPassword) {
       setError("Fill out all fields.");
       return;
     }
@@ -75,6 +77,21 @@ export default function RegisterPage() {
       return;
     }
 
+    setVerificationError(null);
+    setShowVerificationModal(true);
+  }
+
+  async function confirmVerification() {
+    if (submitting) return;
+    setVerificationError(null);
+    setError(null);
+    setSuccess(null);
+
+    if (!verificationCode.trim()) {
+      setVerificationError("Enter your verification code.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -89,14 +106,19 @@ export default function RegisterPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "Registration failed.");
+        const message = data.error ?? "Registration failed.";
+        setVerificationError(message);
+        setError(message);
         return;
       }
       setSuccess("Account created. You can sign in now.");
       setPassword("");
       setConfirmPassword("");
+      setVerificationCode("");
+      setShowVerificationModal(false);
       showStatus("Successfully registered, please wait!", "/login");
     } catch {
+      setVerificationError("Registration failed. Ensure database is configured.");
       setError("Registration failed. Ensure database is configured.");
     } finally {
       setSubmitting(false);
@@ -129,6 +151,63 @@ export default function RegisterPage() {
           </div>,
           document.body
         )}
+      {showVerificationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#151a21]/95 p-6 text-white shadow-2xl shadow-black/50 sm:p-7">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.35em] text-[#f3a46b]/80">Verification</div>
+                <h2 className="mt-2 text-xl font-semibold text-white">Enter your code</h2>
+              </div>
+              <button
+                type="button"
+                className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-3 py-2 text-xs font-semibold text-white/70 transition hover:border-white/30 hover:text-white"
+                onClick={() => setShowVerificationModal(false)}
+                disabled={submitting}
+              >
+                Close
+              </button>
+            </div>
+            <div className="mt-4 rounded-xl border border-white/10 bg-[#0f131a]/60 p-4">
+              <div className="text-sm font-semibold text-white/90">Get your code in-game</div>
+              <div className="mt-2 grid gap-2 text-xs text-white/70">
+                <div>1. Join the Minecraft server.</div>
+                <div>2. Run <span className="text-[#f3a46b]">/bughunter register</span>.</div>
+                <div>3. Paste the code below within 10 minutes.</div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-white/80">Verification Code</label>
+              <input
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm uppercase tracking-[0.2em] text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                type="text"
+                placeholder="ENTER CODE"
+                value={verificationCode}
+                onChange={(event) => setVerificationCode(event.target.value)}
+              />
+              {verificationError && <div className="mt-2 text-sm text-red-400">{verificationError}</div>}
+            </div>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-white/30 hover:text-white"
+                onClick={() => setShowVerificationModal(false)}
+                disabled={submitting}
+              >
+                Back
+              </button>
+              <button
+                className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                type="button"
+                onClick={confirmVerification}
+                disabled={submitting}
+              >
+                {submitting ? "Submitting..." : "Submit Code"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="fixed inset-0 z-0 h-screen w-screen">
         <Image src="/LandingPage.png" alt="The Camp landscape" fill className="object-cover object-center" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/65 to-black/40"></div>
@@ -172,16 +251,6 @@ export default function RegisterPage() {
                 placeholder="CampHunter"
                 value={minecraftUsername}
                 onChange={(event) => setMinecraftUsername(event.target.value)}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-white/80">Verification Code</label>
-              <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
-                type="text"
-                placeholder="Get this from /bughunter register"
-                value={verificationCode}
-                onChange={(event) => setVerificationCode(event.target.value)}
               />
             </div>
             <div>
