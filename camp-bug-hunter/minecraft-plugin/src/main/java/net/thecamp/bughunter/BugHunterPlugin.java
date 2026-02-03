@@ -67,7 +67,23 @@ public final class BugHunterPlugin extends JavaPlugin {
       HttpResponse<String> response = httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
 
       if (response.statusCode() != 201) {
-        sendMessage(player, ChatColor.RED + "Could not create a verification code.");
+        String detail = "";
+        try {
+          JsonObject errorBody = gson.fromJson(response.body(), JsonObject.class);
+          if (errorBody != null && errorBody.has("error")) {
+            detail = errorBody.get("error").getAsString();
+          }
+        } catch (Exception ignored) {
+        }
+
+        String message = "Registration service returned " + response.statusCode();
+        if (!detail.isBlank()) {
+          message += ": " + detail;
+        }
+        sendMessage(player, ChatColor.RED + message);
+        if (response.statusCode() == 401) {
+          sendMessage(player, ChatColor.RED + "Check the plugin token configuration.");
+        }
         return;
       }
 
