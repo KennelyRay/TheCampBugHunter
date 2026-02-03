@@ -184,7 +184,24 @@ export default function NewReportPage() {
               </div>
             </div>
             <div className="rounded-xl border border-black/40 bg-[#121722]/80 p-4">
-              <div className="text-sm font-semibold text-white">Evidence Links</div>
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">Evidence Links</div>
+                <button
+                  type="button"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
+                  aria-label="Add evidence link"
+                >
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                    <path
+                      d="M10 4v12M4 10h12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
               <div className="mt-3 grid gap-3">
                 {evidenceLinks.map((link, index) => (
                   <div key={`evidence-link-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -207,15 +224,6 @@ export default function NewReportPage() {
                           }
                         >
                           Remove
-                        </button>
-                      )}
-                      {index === evidenceLinks.length - 1 && (
-                        <button
-                          type="button"
-                          className="rounded-lg border border-[#f3a46b]/60 bg-[#f3a46b]/10 px-3 py-2 text-xs font-semibold text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20"
-                          onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
-                        >
-                          Add Link
                         </button>
                       )}
                     </div>
