@@ -29,14 +29,16 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: `Missing field: ${key}` }, { status: 400 });
       }
     }
+    const evidenceLinks = Array.isArray(body.evidenceLinks)
+      ? body.evidenceLinks.filter((link: unknown) => typeof link === "string" && link.trim().length > 0)
+      : [];
     const bug = await repo.create({
       discordId: body.discordId,
       minecraftIgn: body.minecraftIgn,
       title: body.title,
       description: body.description,
       reproductionSteps: body.reproductionSteps,
-      evidenceFileNames: Array.isArray(body.evidenceFileNames) ? body.evidenceFileNames : [],
-      videoEvidence: typeof body.videoEvidence === "string" ? body.videoEvidence : null,
+      evidenceLinks,
       severity: body.severity as Severity,
       status: body.status as Status | undefined,
     });

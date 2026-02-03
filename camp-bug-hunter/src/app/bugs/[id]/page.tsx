@@ -92,12 +92,18 @@ export default async function BugPage({
           <h3 className="text-lg font-semibold text-white">Reproduction Steps</h3>
           <p className="mt-2 whitespace-pre-wrap text-sm text-white/70">{bug.reproductionSteps}</p>
         </section>
-        {bug.videoEvidence && (
+        {bug.evidenceLinks.length > 0 && (
           <section className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
-            <h3 className="text-lg font-semibold text-white">Video Evidence</h3>
-            <a className="mt-2 block text-sm text-[#f3a46b] hover:text-[#ee9960]" href={bug.videoEvidence} target="_blank" rel="noreferrer">
-              {bug.videoEvidence}
-            </a>
+            <h3 className="text-lg font-semibold text-white">Evidence Links</h3>
+            <ul className="mt-3 space-y-2 text-sm text-[#f3a46b]">
+              {bug.evidenceLinks.map((link, index) => (
+                <li key={`${link}-${index}`}>
+                  <a className="hover:text-[#ee9960]" href={link} target="_blank" rel="noreferrer">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
       </div>

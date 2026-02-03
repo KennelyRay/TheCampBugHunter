@@ -9,8 +9,7 @@ export interface Bug {
   title: string;
   description: string;
   reproductionSteps: string;
-  evidenceFileNames: string[];
-  videoEvidence?: string | null;
+  evidenceLinks: string[];
   severity: Severity;
   status: Status;
   hidden: boolean;

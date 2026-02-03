@@ -600,8 +600,7 @@ export const BugScalarFieldEnum = {
   title: 'title',
   description: 'description',
   reproductionSteps: 'reproductionSteps',
-  evidenceFileNames: 'evidenceFileNames',
-  videoEvidence: 'videoEvidence',
+  evidenceLinks: 'evidenceLinks',
   severity: 'severity',
   status: 'status',
   hidden: 'hidden'
@@ -636,14 +635,6 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 

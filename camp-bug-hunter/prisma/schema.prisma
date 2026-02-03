@@ -35,8 +35,7 @@ model Bug {
   title             String
   description       String
   reproductionSteps String
-  evidenceFileNames String[] @default([])
-  videoEvidence     String?
+  evidenceLinks     String[] @default([])
   severity          Severity
   status            Status   @default(BUG)
   hidden            Boolean  @default(false)

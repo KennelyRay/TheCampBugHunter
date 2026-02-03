@@ -13,8 +13,7 @@ export default function NewReportPage() {
   const [description, setDescription] = useState("");
   const [repro, setRepro] = useState("");
   const [severity, setSeverity] = useState<Severity>("LOW");
-  const [videoEvidence, setVideoEvidence] = useState("");
-  const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
+  const [evidenceLinks, setEvidenceLinks] = useState<string[]>([""]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const severityOptions: { value: Severity; label: string; description: string; icon: string }[] = [
@@ -28,26 +27,7 @@ export default function NewReportPage() {
     setSubmitting(true);
     setError(null);
     try {
-      let uploadedFileNames: string[] = [];
-      if (evidenceFiles.length > 0) {
-        const formData = new FormData();
-        for (const file of evidenceFiles) {
-          formData.append("files", file);
-        }
-        const uploadRes = await fetch("/api/evidence/upload", {
-          method: "POST",
-          body: formData,
-        });
-        if (!uploadRes.ok) {
-          throw new Error("Failed to upload evidence");
-        }
-        const uploadData = (await uploadRes.json()) as { files?: { fileName: string }[] };
-        uploadedFileNames = Array.isArray(uploadData.files)
-          ? uploadData.files.map((file) => file.fileName)
-          : [];
-      }
-
-      const trimmedVideoEvidence = videoEvidence.trim();
+      const cleanedLinks = evidenceLinks.map((link) => link.trim()).filter(Boolean);
       const res = await fetch("/api/bugs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -58,8 +38,7 @@ export default function NewReportPage() {
           description,
           reproductionSteps: repro,
           severity,
-          videoEvidence: trimmedVideoEvidence ? trimmedVideoEvidence : null,
-          evidenceFileNames: uploadedFileNames,
+          evidenceLinks: cleanedLinks,
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
@@ -205,34 +184,44 @@ export default function NewReportPage() {
               </div>
             </div>
             <div className="rounded-xl border border-black/40 bg-[#121722]/80 p-4">
-              <div className="text-sm font-semibold text-white">Media</div>
-              <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-white/80">Upload Media</label>
-                  <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 file:mr-4 file:rounded-md file:border-0 file:bg-[#f3a46b] file:px-3 file:py-1 file:text-xs file:font-semibold file:text-[#1f1a16] hover:file:bg-[#ee9960]"
-                    type="file"
-                    multiple
-                    onChange={(e) => setEvidenceFiles(Array.from(e.target.files ?? []))}
-                  />
-                  <p className="mt-2 text-xs text-white/50">Screenshots, logs, or ZIP files work best.</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white/80">Video Link</label>
-                  <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
-                    placeholder="https://"
-                    value={videoEvidence}
-                    onChange={(e) => setVideoEvidence(e.target.value)}
-                  />
-                  <p className="mt-2 text-xs text-white/50">Use Medal, Streamable, or YouTube.</p>
-                </div>
+              <div className="text-sm font-semibold text-white">Evidence Links</div>
+              <div className="mt-3 grid gap-3">
+                {evidenceLinks.map((link, index) => (
+                  <div key={`evidence-link-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <input
+                      className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                      placeholder="https://"
+                      value={link}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setEvidenceLinks((prev) => prev.map((item, i) => (i === index ? value : item)));
+                      }}
+                    />
+                    <div className="flex items-center gap-2">
+                      {evidenceLinks.length > 1 && (
+                        <button
+                          type="button"
+                          className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-3 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                          onClick={() =>
+                            setEvidenceLinks((prev) => prev.filter((_, i) => i !== index))
+                          }
+                        >
+                          Remove
+                        </button>
+                      )}
+                      {index === evidenceLinks.length - 1 && (
+                        <button
+                          type="button"
+                          className="rounded-lg border border-[#f3a46b]/60 bg-[#f3a46b]/10 px-3 py-2 text-xs font-semibold text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20"
+                          onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
+                        >
+                          Add Link
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-              {evidenceFiles.length > 0 && (
-                <div className="mt-3 text-xs text-white/60">
-                  Selected: {evidenceFiles.map((file) => file.name).join(", ")}
-                </div>
-              )}
             </div>
           </div>
           {error && <p className="mt-4 text-sm text-rose-400">{error}</p>}
