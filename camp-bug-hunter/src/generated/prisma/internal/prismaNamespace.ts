@@ -385,7 +385,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Bug: 'Bug',
-  User: 'User'
+  User: 'User',
+  RegistrationCode: 'RegistrationCode'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bug" | "user"
+    modelProps: "bug" | "user" | "registrationCode"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RegistrationCode: {
+      payload: Prisma.$RegistrationCodePayload<ExtArgs>
+      fields: Prisma.RegistrationCodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RegistrationCodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RegistrationCodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        findFirst: {
+          args: Prisma.RegistrationCodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RegistrationCodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        findMany: {
+          args: Prisma.RegistrationCodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>[]
+        }
+        create: {
+          args: Prisma.RegistrationCodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        createMany: {
+          args: Prisma.RegistrationCodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RegistrationCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>[]
+        }
+        delete: {
+          args: Prisma.RegistrationCodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        update: {
+          args: Prisma.RegistrationCodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        deleteMany: {
+          args: Prisma.RegistrationCodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RegistrationCodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RegistrationCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>[]
+        }
+        upsert: {
+          args: Prisma.RegistrationCodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RegistrationCodePayload>
+        }
+        aggregate: {
+          args: Prisma.RegistrationCodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRegistrationCode>
+        }
+        groupBy: {
+          args: Prisma.RegistrationCodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RegistrationCodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RegistrationCodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RegistrationCodeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -621,6 +696,19 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const RegistrationCodeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  minecraftUsername: 'minecraftUsername',
+  playerUuid: 'playerUuid',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt'
+} as const
+
+export type RegistrationCodeScalarFieldEnum = (typeof RegistrationCodeScalarFieldEnum)[keyof typeof RegistrationCodeScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -635,6 +723,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -816,6 +912,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   bug?: Prisma.BugOmit
   user?: Prisma.UserOmit
+  registrationCode?: Prisma.RegistrationCodeOmit
 }
 
 /* Types for Logging */

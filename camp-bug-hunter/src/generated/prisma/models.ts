@@ -10,4 +10,5 @@
  */
 export type * from './models/Bug'
 export type * from './models/User'
+export type * from './models/RegistrationCode'
 export type * from './commonInputTypes'

@@ -16,6 +16,7 @@ export default function RegisterPage() {
   );
   const [email, setEmail] = useState("");
   const [minecraftUsername, setMinecraftUsername] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +55,7 @@ export default function RegisterPage() {
     setError(null);
     setSuccess(null);
 
-    if (!normalizedEmail || !minecraftUsername.trim() || !password || !confirmPassword) {
+    if (!normalizedEmail || !minecraftUsername.trim() || !verificationCode.trim() || !password || !confirmPassword) {
       setError("Fill out all fields.");
       return;
     }
@@ -82,6 +83,7 @@ export default function RegisterPage() {
         body: JSON.stringify({
           email: normalizedEmail,
           minecraftUsername: minecraftUsername.trim(),
+          verificationCode: verificationCode.trim(),
           password,
         }),
       });
@@ -170,6 +172,16 @@ export default function RegisterPage() {
                 placeholder="CampHunter"
                 value={minecraftUsername}
                 onChange={(event) => setMinecraftUsername(event.target.value)}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-white/80">Verification Code</label>
+              <input
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                type="text"
+                placeholder="Get this from /bughunter register"
+                value={verificationCode}
+                onChange={(event) => setVerificationCode(event.target.value)}
               />
             </div>
             <div>

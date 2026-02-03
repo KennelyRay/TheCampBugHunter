@@ -27,3 +27,8 @@ export type Bug = Prisma.BugModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model RegistrationCode
+ * 
+ */
+export type RegistrationCode = Prisma.RegistrationCodeModel

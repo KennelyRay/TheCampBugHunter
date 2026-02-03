@@ -55,3 +55,18 @@ model User {
 
   @@map("users")
 }
+
+model RegistrationCode {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  minecraftUsername String
+  playerUuid        String   @map("player_uuid")
+  codeHash          String   @unique @map("code_hash")
+  expiresAt         DateTime @map("expires_at")
+  usedAt            DateTime? @map("used_at")
+
+  @@index([minecraftUsername])
+  @@index([playerUuid])
+  @@index([expiresAt])
+  @@map("registration_codes")
+}
