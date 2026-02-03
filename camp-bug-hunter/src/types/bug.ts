@@ -13,4 +13,5 @@ export interface Bug {
   videoEvidence?: string | null;
   severity: Severity;
   status: Status;
+  hidden: boolean;
 }

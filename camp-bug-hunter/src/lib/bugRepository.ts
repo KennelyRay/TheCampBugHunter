@@ -5,17 +5,20 @@ export interface BugFilters {
   status?: Status;
   severity?: Severity;
   discordId?: string;
+  includeHidden?: boolean;
 }
 
 export class BugRepository {
   async list(filters: BugFilters = {}): Promise<Bug[]> {
     try {
+      const where = {
+        status: filters.status,
+        severity: filters.severity,
+        discordId: filters.discordId,
+        hidden: filters.includeHidden ? undefined : false,
+      };
       const bugs = await prisma.bug.findMany({
-        where: {
-          status: filters.status,
-          severity: filters.severity,
-          discordId: filters.discordId,
-        },
+        where,
         orderBy: [{ createdAt: "desc" }],
       });
       return bugs as unknown as Bug[];
@@ -24,16 +27,23 @@ export class BugRepository {
     }
   }
 
-  async get(id: string): Promise<Bug | null> {
+  async get(id: string, options?: { includeHidden?: boolean }): Promise<Bug | null> {
     try {
-      const bug = await prisma.bug.findUnique({ where: { id } });
+      const bug = await prisma.bug.findFirst({
+        where: {
+          id,
+          hidden: options?.includeHidden ? undefined : false,
+        },
+      });
       return (bug ?? null) as unknown as Bug | null;
     } catch {
       return null;
     }
   }
 
-  async create(payload: Omit<Bug, "id" | "createdAt" | "status"> & { status?: Status }): Promise<Bug> {
+  async create(
+    payload: Omit<Bug, "id" | "createdAt" | "status" | "hidden"> & { status?: Status; hidden?: boolean }
+  ): Promise<Bug> {
     const status = payload.status ?? "BUG";
     const data = {
       discordId: payload.discordId,
@@ -45,20 +55,30 @@ export class BugRepository {
       videoEvidence: payload.videoEvidence ?? null,
       severity: payload.severity,
       status,
+      hidden: payload.hidden ?? false,
     };
     const bug = await prisma.bug.create({ data });
     return bug as unknown as Bug;
   }
 
-  async updateStatus(id: string, status: Status): Promise<Bug | null> {
+  async update(id: string, data: { status?: Status; hidden?: boolean }): Promise<Bug | null> {
     try {
       const bug = await prisma.bug.update({
         where: { id },
-        data: { status },
+        data,
       });
       return bug as unknown as Bug;
     } catch {
       return null;
+    }
+  }
+
+  async remove(id: string): Promise<boolean> {
+    try {
+      await prisma.bug.delete({ where: { id } });
+      return true;
+    } catch {
+      return false;
     }
   }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "bugs" ADD COLUMN "hidden" BOOLEAN NOT NULL DEFAULT false;

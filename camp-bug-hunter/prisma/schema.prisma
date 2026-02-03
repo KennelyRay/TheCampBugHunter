@@ -38,6 +38,7 @@ model Bug {
   videoEvidence     String?
   severity          Severity
   status            Status   @default(BUG)
+  hidden            Boolean  @default(false)
 
   @@index([status, severity])
   @@index([discordId])

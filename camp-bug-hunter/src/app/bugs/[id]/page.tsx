@@ -4,19 +4,31 @@ import type { Bug } from "@/types/bug";
 
 export const dynamic = "force-dynamic";
 
-async function getBug(id: string): Promise<Bug | null> {
+async function getBug(id: string, includeHidden: boolean): Promise<Bug | null> {
   const repo = new BugRepository();
-  return repo.get(id);
+  return repo.get(id, { includeHidden });
 }
 
-export default async function BugPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function BugPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const { id } = await params;
-  const bug = await getBug(id);
+  const adminFlag = searchParams?.admin;
+  const includeHiddenParam = searchParams?.includeHidden;
+  const includeHidden =
+    adminFlag === "1" ||
+    includeHiddenParam === "true" ||
+    (Array.isArray(includeHiddenParam) && includeHiddenParam.includes("true"));
+  const bug = await getBug(id, includeHidden);
   if (!bug) {
     return (
-      <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Bug Not Found</h2>
-        <p className="mt-2 text-slate-600 dark:text-slate-300">The bug might not exist or the database is not configured.</p>
+      <div className="mx-auto max-w-3xl rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+        <h2 className="text-xl font-semibold text-white">Bug Not Found</h2>
+        <p className="mt-2 text-sm text-white/70">The bug might not exist or the database is not configured.</p>
       </div>
     );
   }
@@ -30,31 +42,46 @@ export default async function BugPage({ params }: { params: Promise<{ id: string
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 backdrop-blur dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">{bug.title}</h2>
-          <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-            {bug.status.replaceAll("_", " ")}
-          </span>
-        </div>
-        <div className="mt-2 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-          <span>Severity:</span>
-          <Image src={severityMeta[bug.severity].icon} alt="" width={16} height={16} className="h-4 w-4" />
-          <span className="font-semibold text-slate-800 dark:text-slate-100">{severityMeta[bug.severity].label}</span>
+      <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Bug report</div>
+            <h2 className="mt-2 text-2xl font-semibold text-white">{bug.title}</h2>
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-white/70">
+              <span className="rounded-full border border-white/10 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/70">
+                {bug.status.replaceAll("_", " ")}
+              </span>
+              <div className="flex items-center gap-2">
+                <Image src={severityMeta[bug.severity].icon} alt="" width={16} height={16} className="h-4 w-4" />
+                <span className="font-semibold text-white">{severityMeta[bug.severity].label}</span>
+              </div>
+              <span className="text-xs text-white/50">{new Date(bug.createdAt).toLocaleString()}</span>
+            </div>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-[#0f131a]/70 px-4 py-3 text-xs text-white/70">
+            <div className="text-[10px] font-semibold uppercase tracking-wide text-white/40">Reporter</div>
+            <div className="mt-2">Discord ID: {bug.discordId}</div>
+            <div>Minecraft IGN: {bug.minecraftIgn}</div>
+          </div>
         </div>
       </div>
       <div className="grid gap-4">
-        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Description</h3>
-          <p className="mt-2 whitespace-pre-wrap text-slate-600 dark:text-slate-300">{bug.description}</p>
+        <section className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+          <h3 className="text-lg font-semibold text-white">Description</h3>
+          <p className="mt-2 whitespace-pre-wrap text-sm text-white/70">{bug.description}</p>
         </section>
-        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:shadow-none">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Reproduction Steps</h3>
-          <p className="mt-2 whitespace-pre-wrap text-slate-600 dark:text-slate-300">{bug.reproductionSteps}</p>
+        <section className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+          <h3 className="text-lg font-semibold text-white">Reproduction Steps</h3>
+          <p className="mt-2 whitespace-pre-wrap text-sm text-white/70">{bug.reproductionSteps}</p>
         </section>
-        <section className="rounded-2xl border border-slate-200/70 bg-white/80 p-6 text-sm text-slate-600 shadow-sm shadow-slate-200/50 dark:border-slate-800/60 dark:bg-slate-900/60 dark:text-slate-300 dark:shadow-none">
-          Reported by Discord ID {bug.discordId} as Minecraft IGN {bug.minecraftIgn}
-        </section>
+        {bug.videoEvidence && (
+          <section className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+            <h3 className="text-lg font-semibold text-white">Video Evidence</h3>
+            <a className="mt-2 block text-sm text-[#f3a46b] hover:text-[#ee9960]" href={bug.videoEvidence} target="_blank" rel="noreferrer">
+              {bug.videoEvidence}
+            </a>
+          </section>
+        )}
       </div>
     </div>
   );

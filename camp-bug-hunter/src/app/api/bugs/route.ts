@@ -9,11 +9,13 @@ export async function GET(request: Request) {
   const status = searchParams.get("status") as Status | null;
   const severity = searchParams.get("severity") as Severity | null;
   const discordId = searchParams.get("discordId");
+  const includeHidden = searchParams.get("includeHidden") === "true";
 
   const bugs = await repo.list({
     status: status ?? undefined,
     severity: severity ?? undefined,
     discordId: discordId ?? undefined,
+    includeHidden,
   });
   return NextResponse.json(bugs);
 }
@@ -39,7 +41,7 @@ export async function POST(request: Request) {
       status: body.status as Status | undefined,
     });
     return NextResponse.json(bug, { status: 201 });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Failed to create bug" }, { status: 500 });
   }
 }

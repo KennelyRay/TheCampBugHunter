@@ -82,7 +82,8 @@ export const BugScalarFieldEnum = {
   evidenceFileNames: 'evidenceFileNames',
   videoEvidence: 'videoEvidence',
   severity: 'severity',
-  status: 'status'
+  status: 'status',
+  hidden: 'hidden'
 } as const
 
 export type BugScalarFieldEnum = (typeof BugScalarFieldEnum)[keyof typeof BugScalarFieldEnum]

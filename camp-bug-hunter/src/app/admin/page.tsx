@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Bug, Severity, Status } from "@/types/bug";
 
 export default function AdminPage() {
@@ -11,13 +12,14 @@ export default function AdminPage() {
   const [severity, setSeverity] = useState<Severity | "">("");
   const [discordId, setDiscordId] = useState<string>("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
       if (status) params.set("status", status);
       if (severity) params.set("severity", severity);
       if (discordId) params.set("discordId", discordId);
+      params.set("includeHidden", "true");
       const res = await fetch(`/api/bugs?${params.toString()}`);
       if (!res.ok) throw new Error("Failed");
       setBugs(await res.json());
@@ -27,11 +29,11 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [status, severity, discordId]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   const counts = useMemo(() => {
     return {
@@ -49,6 +51,26 @@ export default function AdminPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: s }),
     });
+    if (res.ok) {
+      await load();
+    }
+  }
+
+  async function updateHidden(id: string, hidden: boolean) {
+    const res = await fetch(`/api/bugs/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ hidden }),
+    });
+    if (res.ok) {
+      await load();
+    }
+  }
+
+  async function deleteBug(id: string) {
+    const confirmed = window.confirm("Delete this bug permanently?");
+    if (!confirmed) return;
+    const res = await fetch(`/api/bugs/${id}`, { method: "DELETE" });
     if (res.ok) {
       await load();
     }
@@ -157,13 +179,28 @@ export default function AdminPage() {
                   <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
                     {b.minecraftIgn} • {b.discordId}
                   </td>
-                  <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.title}</td>
+                  <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span>{b.title}</span>
+                      {b.hidden && (
+                        <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-200">
+                          Hidden
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">{b.severity}</td>
                   <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
                     {b.status.replaceAll("_", " ")}
                   </td>
                   <td className="border-b border-black/30 px-4 py-3">
                     <div className="flex flex-wrap gap-2">
+                      <Link
+                        href={`/bugs/${b.id}?admin=1`}
+                        className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      >
+                        View
+                      </Link>
                       <button
                         className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
                         onClick={() => updateStatus(b.id, "BUG")}
@@ -181,6 +218,18 @@ export default function AdminPage() {
                         onClick={() => updateStatus(b.id, "FIXED")}
                       >
                         Mark Fixed
+                      </button>
+                      <button
+                        className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                        onClick={() => updateHidden(b.id, !b.hidden)}
+                      >
+                        {b.hidden ? "Unhide" : "Hide"}
+                      </button>
+                      <button
+                        className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-200 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-red-400/70 hover:bg-red-500/20 hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/70"
+                        onClick={() => deleteBug(b.id)}
+                      >
+                        Delete
                       </button>
                     </div>
                   </td>
