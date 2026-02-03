@@ -3,6 +3,8 @@ import Link from "next/link";
 import ButtonLink from "@/components/ButtonLink";
 import { BugRepository } from "@/lib/bugRepository";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const repo = new BugRepository();
   const bugs = await repo.list();
