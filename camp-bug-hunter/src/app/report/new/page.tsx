@@ -205,10 +205,10 @@ export default function NewReportPage() {
               </div>
             </div>
             <div className="rounded-xl border border-black/40 bg-[#121722]/80 p-4">
-              <div className="text-sm font-semibold text-white">Evidence</div>
+              <div className="text-sm font-semibold text-white">Media</div>
               <div className="mt-3 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-white/80">Upload Evidence</label>
+                  <label className="block text-sm font-medium text-white/80">Upload Media</label>
                   <input
                     className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 file:mr-4 file:rounded-md file:border-0 file:bg-[#f3a46b] file:px-3 file:py-1 file:text-xs file:font-semibold file:text-[#1f1a16] hover:file:bg-[#ee9960]"
                     type="file"
@@ -218,7 +218,7 @@ export default function NewReportPage() {
                   <p className="mt-2 text-xs text-white/50">Screenshots, logs, or ZIP files work best.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/80">Video Evidence Link</label>
+                  <label className="block text-sm font-medium text-white/80">Video Link</label>
                   <input
                     className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
                     placeholder="https://"

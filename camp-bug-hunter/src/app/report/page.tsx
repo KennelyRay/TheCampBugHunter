@@ -58,8 +58,8 @@ export default function ReportIntroPage() {
             <div>
               <div className="text-sm font-semibold text-white">Attach relevant screenshots, videos, or logs if available.</div>
               <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
-                <li>Videos should sent via: Medal, Streamable, or Youtube Link (Try to keep video as short as possible).</li>
-                <li>If you have console logs and and Images Compress them to a ZIP fil before uploading to evidence field.</li>
+                <li>Send videos via Medal, Streamable, or YouTube, and keep them short.</li>
+                <li>If you have console logs or images, compress them to a ZIP file before uploading to the media field.</li>
               </ul>
             </div>
             <div>
