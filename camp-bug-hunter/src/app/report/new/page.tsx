@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -7,6 +7,29 @@ import type { Severity } from "@/types/bug";
 
 export default function NewReportPage() {
   const router = useRouter();
+  const authorized = useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === "undefined") return () => {};
+      window.addEventListener("storage", onStoreChange);
+      window.addEventListener("camp-auth", onStoreChange);
+      return () => {
+        window.removeEventListener("storage", onStoreChange);
+        window.removeEventListener("camp-auth", onStoreChange);
+      };
+    },
+    () => {
+      if (typeof window === "undefined") return false;
+      const raw = window.localStorage.getItem("campUser");
+      if (!raw) return false;
+      try {
+        const parsed = JSON.parse(raw);
+        return Boolean(parsed?.minecraftUsername);
+      } catch {
+        return false;
+      }
+    },
+    () => false
+  );
   const [discordId, setDiscordId] = useState("");
   const [minecraftIgn, setMinecraftIgn] = useState("");
   const [title, setTitle] = useState("");
@@ -50,6 +73,36 @@ export default function NewReportPage() {
     }
   }
 
+  if (!authorized) {
+    return (
+      <div className="mx-auto max-w-5xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-md rounded-2xl border border-black/40 bg-[#151a21]/95 p-6 text-white shadow-2xl shadow-black/40">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Login Required</h3>
+            </div>
+            <p className="mt-2 text-sm text-white/70">You must be logged in to submit a report.</p>
+            <div className="mt-4 flex justify-end gap-3">
+              <button
+                type="button"
+                className="rounded-lg border border-white/20 bg-[#0f131a]/70 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-white/30 hover:text-white"
+                onClick={() => router.push("/")}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-lg bg-[#f3a46b] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition hover:bg-[#ee9960]"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
