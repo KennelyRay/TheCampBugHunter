@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ButtonLink from "@/components/ButtonLink";
 import { BugRepository } from "@/lib/bugRepository";
 import type { Bug } from "@/types/bug";
 
@@ -42,6 +43,14 @@ export default async function BugPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      <div>
+        <ButtonLink href="/bugs" variant="secondary">
+          <span className="flex items-center gap-2">
+            <Image src="/window.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <span>Back</span>
+          </span>
+        </ButtonLink>
+      </div>
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
