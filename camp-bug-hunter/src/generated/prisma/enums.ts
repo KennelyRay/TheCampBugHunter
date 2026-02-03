@@ -22,7 +22,8 @@ export type Severity = (typeof Severity)[keyof typeof Severity]
 export const Status = {
   BUG: 'BUG',
   FIXED: 'FIXED',
-  NOT_A_BUG: 'NOT_A_BUG'
+  NOT_A_BUG: 'NOT_A_BUG',
+  ON_INVESTIGATION: 'ON_INVESTIGATION'
 } as const
 
 export type Status = (typeof Status)[keyof typeof Status]

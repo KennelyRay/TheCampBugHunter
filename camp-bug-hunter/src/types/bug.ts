@@ -1,5 +1,5 @@
 export type Severity = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-export type Status = "BUG" | "FIXED" | "NOT_A_BUG";
+export type Status = "BUG" | "FIXED" | "NOT_A_BUG" | "ON_INVESTIGATION";
 
 export interface Bug {
   id: string;

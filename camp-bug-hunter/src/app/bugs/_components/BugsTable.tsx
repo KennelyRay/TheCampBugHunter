@@ -9,6 +9,7 @@ function StatusBadge({ status }: { status: Bug["status"] }) {
     BUG: "bg-red-500/15 text-red-300 ring-red-500/30",
     FIXED: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
     NOT_A_BUG: "bg-amber-500/15 text-amber-300 ring-amber-500/30",
+    ON_INVESTIGATION: "bg-blue-500/15 text-blue-300 ring-blue-500/30",
   };
   return <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${map[status]}`}>{status.replaceAll("_"," ")}</span>;
 }

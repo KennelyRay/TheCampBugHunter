@@ -24,6 +24,7 @@ enum Status {
   BUG
   FIXED
   NOT_A_BUG
+  ON_INVESTIGATION
 }
 
 model Bug {

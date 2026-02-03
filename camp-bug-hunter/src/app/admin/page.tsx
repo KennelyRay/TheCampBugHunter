@@ -4,6 +4,19 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Bug, Severity, Status } from "@/types/bug";
 
+const statusFilterOptions: { value: Status; label: string }[] = [
+  { value: "BUG", label: "Bug" },
+  { value: "ON_INVESTIGATION", label: "On Investigation" },
+  { value: "FIXED", label: "Fixed" },
+  { value: "NOT_A_BUG", label: "Not a Bug" },
+];
+
+const statusUpdateOptions: { value: Status; label: string }[] = [
+  { value: "FIXED", label: "Bug Fixed" },
+  { value: "NOT_A_BUG", label: "Not a Bug" },
+  { value: "ON_INVESTIGATION", label: "On Investigation" },
+];
+
 export default function AdminPage() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,6 +24,7 @@ export default function AdminPage() {
   const [status, setStatus] = useState<Status | "">("");
   const [severity, setSeverity] = useState<Severity | "">("");
   const [discordId, setDiscordId] = useState<string>("");
+  const [statusOpenFor, setStatusOpenFor] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -90,9 +104,11 @@ export default function AdminPage() {
               onChange={(e) => setStatus(e.target.value as Status | "")}
             >
               <option value="">All</option>
-              <option value="BUG">Bug</option>
-              <option value="NOT_A_BUG">Not a Bug</option>
-              <option value="FIXED">Fixed</option>
+              {statusFilterOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -203,21 +219,10 @@ export default function AdminPage() {
                       </Link>
                       <button
                         className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                        onClick={() => updateStatus(b.id, "BUG")}
+                        onClick={() => setStatusOpenFor(b.id)}
+                        type="button"
                       >
-                        Mark Bug
-                      </button>
-                      <button
-                        className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                        onClick={() => updateStatus(b.id, "NOT_A_BUG")}
-                      >
-                        Not a Bug
-                      </button>
-                      <button
-                        className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                        onClick={() => updateStatus(b.id, "FIXED")}
-                      >
-                        Mark Fixed
+                        Mark Status
                       </button>
                       <button
                         className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
@@ -232,6 +237,38 @@ export default function AdminPage() {
                         Delete
                       </button>
                     </div>
+                    {statusOpenFor === b.id && (
+                      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+                        <div className="w-full max-w-sm rounded-2xl border border-black/40 bg-[#151a21]/95 p-5 text-white shadow-2xl shadow-black/60">
+                          <div className="text-sm font-semibold uppercase tracking-wide text-white/60">Mark Status</div>
+                          <div className="mt-3 space-y-2">
+                            {statusUpdateOptions.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                className="flex w-full items-center justify-between rounded-lg border border-black/40 bg-[#0f131a]/80 px-4 py-2 text-sm font-semibold text-white/80 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                                onClick={async () => {
+                                  await updateStatus(b.id, option.value);
+                                  setStatusOpenFor(null);
+                                }}
+                              >
+                                <span>{option.label}</span>
+                                {b.status === option.value && <span className="text-[10px] uppercase tracking-wide text-[#f3a46b]">Current</span>}
+                              </button>
+                            ))}
+                          </div>
+                          <div className="mt-4 flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                              onClick={() => setStatusOpenFor(null)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

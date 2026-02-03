@@ -17,6 +17,7 @@ export default function FilterBar() {
         >
           <option value="">All</option>
           <option value="BUG">Bug</option>
+          <option value="ON_INVESTIGATION">On Investigation</option>
           <option value="NOT_A_BUG">Not a Bug</option>
           <option value="FIXED">Fixed</option>
         </select>
