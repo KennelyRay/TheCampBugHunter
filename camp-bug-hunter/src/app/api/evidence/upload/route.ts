@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "fs/promises";
+import os from "os";
 import path from "path";
 import crypto from "crypto";
+
+export const runtime = "nodejs";
 
 type UploadedFile = {
   fileName: string;
@@ -16,7 +19,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No files uploaded" }, { status: 400 });
     }
 
-    const uploadRoot = path.join(process.cwd(), "public", "uploads", "evidence");
+    const uploadRoot = process.env.VERCEL
+      ? path.join(os.tmpdir(), "uploads", "evidence")
+      : path.join(process.cwd(), "public", "uploads", "evidence");
     await mkdir(uploadRoot, { recursive: true });
 
     const uploaded: UploadedFile[] = [];
