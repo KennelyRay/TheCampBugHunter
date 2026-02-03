@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import Image from "next/image";
+import BrandLink from "@/components/BrandLink";
 import NavBar from "@/components/NavBar";
 import PageTransition from "@/components/PageTransition";
 import "./globals.css";
@@ -35,10 +36,7 @@ export default function RootLayout({
         <div className="min-h-screen bg-[#12151b] text-foreground flex flex-col">
           <header className="sticky top-0 z-40 border-b border-black/40 bg-gradient-to-r from-[#12161d] via-[#171d25] to-[#12161d] shadow-lg shadow-black/30 backdrop-blur">
             <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-              <Link href="/" className="flex items-center gap-3">
-                <Image src="/Thecamplogo.png" alt="The Camp" width={160} height={36} className="h-7 w-auto object-contain sm:h-8" />
-                <span className="sr-only">The Camp Bug Hunter</span>
-              </Link>
+              <BrandLink />
               <NavBar />
             </div>
           </header>

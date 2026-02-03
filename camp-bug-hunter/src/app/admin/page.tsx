@@ -277,7 +277,24 @@ export default function AdminPage() {
                                     onClick={() => setStatusSelection(option.value)}
                                   >
                                     <span>{option.label}</span>
-                                    {isSelected && <span className="text-[10px] uppercase tracking-wide">Selected</span>}
+                                    {isSelected && (
+                                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#f3a46b]/20">
+                                        <svg
+                                          viewBox="0 0 20 20"
+                                          fill="none"
+                                          aria-hidden="true"
+                                          className="h-3.5 w-3.5 text-[#f3a46b]"
+                                        >
+                                          <path
+                                            d="M5 10.5l3.2 3.2L15 7.5"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                        </svg>
+                                      </span>
+                                    )}
                                   </button>
                                 );
                               })}

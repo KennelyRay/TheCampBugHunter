@@ -25,6 +25,7 @@ export default function BugsTable() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   async function load(query: string = "") {
     setLoading(true);
@@ -40,6 +41,31 @@ export default function BugsTable() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const readSession = () => {
+      if (typeof window === "undefined") return;
+      const raw = window.localStorage.getItem("campUser");
+      if (!raw) {
+        setIsAdmin(false);
+        return;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        setIsAdmin(Boolean(parsed?.isAdmin));
+      } catch {
+        setIsAdmin(false);
+      }
+    };
+    readSession();
+    const handler = () => readSession();
+    window.addEventListener("storage", handler);
+    window.addEventListener("camp-auth", handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+      window.removeEventListener("camp-auth", handler);
+    };
+  }, []);
 
   useEffect(() => {
     load();
@@ -70,7 +96,7 @@ export default function BugsTable() {
           {bugs.map((b) => (
             <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
-                <Link href={`/bugs/${b.id}`} className="font-semibold text-white hover:text-[#f3a46b]">
+                <Link href={`/bugs/${b.id}${isAdmin ? "?admin=1" : ""}`} className="font-semibold text-white hover:text-[#f3a46b]">
                   {b.title}
                 </Link>
               </td>

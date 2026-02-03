@@ -20,6 +20,7 @@ export default async function BugPage({
   const { id } = await params;
   const adminFlag = searchParams?.admin;
   const includeHiddenParam = searchParams?.includeHidden;
+  const backHref = adminFlag === "1" ? "/admin" : "/bugs";
   const includeHidden =
     adminFlag === "1" ||
     includeHiddenParam === "true" ||
@@ -44,9 +45,17 @@ export default async function BugPage({
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <ButtonLink href="/bugs" variant="secondary">
+        <ButtonLink href={backHref} variant="secondary">
           <span className="flex items-center gap-2">
-            <Image src="/window.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+              <path
+                d="M12.5 4.5L7.5 10l5 5.5"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <span>Back</span>
           </span>
         </ButtonLink>
