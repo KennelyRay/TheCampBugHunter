@@ -25,6 +25,9 @@ export default function AdminPage() {
   const [severity, setSeverity] = useState<Severity | "">("");
   const [discordId, setDiscordId] = useState<string>("");
   const [statusOpenFor, setStatusOpenFor] = useState<string | null>(null);
+  const [statusSelection, setStatusSelection] = useState<Status | null>(null);
+  const [statusPending, setStatusPending] = useState(false);
+  const [statusToast, setStatusToast] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -68,6 +71,7 @@ export default function AdminPage() {
     if (res.ok) {
       await load();
     }
+    return res.ok;
   }
 
   async function updateHidden(id: string, hidden: boolean) {
@@ -92,6 +96,11 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-6">
+      {statusToast && (
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200 shadow-lg shadow-black/20">
+          {statusToast}
+        </div>
+      )}
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
         <h2 className="text-2xl font-semibold text-white">Admin Dashboard</h2>
         <p className="mt-1 text-sm text-white/70">Review reports, filter quickly, and update statuses.</p>
@@ -219,7 +228,10 @@ export default function AdminPage() {
                       </Link>
                       <button
                         className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                        onClick={() => setStatusOpenFor(b.id)}
+                        onClick={() => {
+                          setStatusSelection(b.status);
+                          setStatusOpenFor(b.id);
+                        }}
                         type="button"
                       >
                         Mark Status
@@ -238,33 +250,73 @@ export default function AdminPage() {
                       </button>
                     </div>
                     {statusOpenFor === b.id && (
-                      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-                        <div className="w-full max-w-sm rounded-2xl border border-black/40 bg-[#151a21]/95 p-5 text-white shadow-2xl shadow-black/60">
-                          <div className="text-sm font-semibold uppercase tracking-wide text-white/60">Mark Status</div>
-                          <div className="mt-3 space-y-2">
-                            {statusUpdateOptions.map((option) => (
+                      <div className="fixed inset-0 z-50 overflow-y-auto">
+                        <div className="flex min-h-full items-end justify-center bg-black/60 px-4 py-6 sm:items-center">
+                          <div className="w-full max-w-md rounded-2xl border border-black/40 bg-[#151a21]/95 p-5 text-white shadow-2xl shadow-black/60 sm:p-6">
+                            <div className="flex flex-wrap items-start justify-between gap-3">
+                              <div>
+                                <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Mark Status</div>
+                                <div className="mt-1 text-sm text-white/70">Pick a status, then set it.</div>
+                              </div>
+                              <span className="rounded-full border border-white/10 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/60">
+                                Current: {b.status.replaceAll("_", " ")}
+                              </span>
+                            </div>
+                            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                              {statusUpdateOptions.map((option) => {
+                                const isSelected = statusSelection === option.value;
+                                return (
+                                  <button
+                                    key={option.value}
+                                    type="button"
+                                    className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-sm font-semibold transition-all duration-200 ease-out ${
+                                      isSelected
+                                        ? "border-[#f3a46b]/70 bg-[#f3a46b]/10 text-[#f3a46b] shadow-lg shadow-black/30"
+                                        : "border-black/40 bg-[#0f131a]/80 text-white/80 hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:text-white"
+                                    }`}
+                                    onClick={() => setStatusSelection(option.value)}
+                                  >
+                                    <span>{option.label}</span>
+                                    {isSelected && <span className="text-[10px] uppercase tracking-wide">Selected</span>}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                            <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                               <button
-                                key={option.value}
                                 type="button"
-                                className="flex w-full items-center justify-between rounded-lg border border-black/40 bg-[#0f131a]/80 px-4 py-2 text-sm font-semibold text-white/80 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                                onClick={async () => {
-                                  await updateStatus(b.id, option.value);
+                                className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                                onClick={() => {
                                   setStatusOpenFor(null);
+                                  setStatusSelection(null);
                                 }}
                               >
-                                <span>{option.label}</span>
-                                {b.status === option.value && <span className="text-[10px] uppercase tracking-wide text-[#f3a46b]">Current</span>}
+                                Cancel
                               </button>
-                            ))}
-                          </div>
-                          <div className="mt-4 flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
-                              onClick={() => setStatusOpenFor(null)}
-                            >
-                              Cancel
-                            </button>
+                              <button
+                                type="button"
+                                className={`rounded-lg px-5 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
+                                  statusSelection && !statusPending
+                                    ? "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+                                    : "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                                }`}
+                                disabled={!statusSelection || statusPending}
+                                onClick={async () => {
+                                  if (!statusSelection) return;
+                                  setStatusPending(true);
+                                  const ok = await updateStatus(b.id, statusSelection);
+                                  setStatusPending(false);
+                                  if (ok) {
+                                    setStatusOpenFor(null);
+                                    setStatusSelection(null);
+                                    setStatusToast("Successfully set status");
+                                    window.setTimeout(() => setStatusToast(null), 2500);
+                                  }
+                                }}
+                              >
+                                {statusPending ? "Setting..." : "Set"}
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
