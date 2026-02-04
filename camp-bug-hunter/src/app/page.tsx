@@ -50,13 +50,17 @@ export default async function Home() {
           </div>
           {recentBugs.length === 0 ? (
             <ul className="mt-4 space-y-3">
-              {[1, 2, 3, 4, 5].map((index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <li key={`recent-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-xs font-semibold text-white/60">
-                      {index}
-                    </span>
-                    <div className="text-sm text-white/50">Placeholder</div>
+                    <Image
+                      src="https://minotar.net/helm/Steve/32"
+                      alt="Steve skin"
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full border border-black/40 bg-[#0f131a]"
+                    />
+                    <div className="text-sm text-white/50">Bugs</div>
                   </div>
                   <div className="text-xs text-white/30">--</div>
                 </li>
@@ -84,13 +88,17 @@ export default async function Home() {
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Confirmed Reporters</div>
           {topReporters.length === 0 ? (
             <ul className="mt-4 space-y-3">
-              {[1, 2, 3, 4, 5].map((index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <li key={`reporter-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-xs font-semibold text-white/60">
-                      {index}
-                    </span>
-                    <div className="text-sm text-white/50">Placeholder</div>
+                    <Image
+                      src="https://minotar.net/helm/Steve/32"
+                      alt="Steve skin"
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full border border-black/40 bg-[#0f131a]"
+                    />
+                    <div className="text-sm text-white/50">Hunter</div>
                   </div>
                   <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/40">
                     --
