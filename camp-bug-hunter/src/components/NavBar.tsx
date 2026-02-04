@@ -156,6 +156,22 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="p-2">
+                <Link
+                  href="/dashboard"
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-[#141922] hover:text-white"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                    <path
+                      d="M3.5 10.5h5v6h-5v-6ZM11.5 3.5h5v13h-5v-13ZM3.5 3.5h5v5h-5v-5Z"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Dashboard
+                </Link>
                 <button
                   type="button"
                   className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-[#141922] hover:text-white"

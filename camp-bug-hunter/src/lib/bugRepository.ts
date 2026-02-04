@@ -5,6 +5,7 @@ export interface BugFilters {
   status?: Status;
   severity?: Severity;
   discordId?: string;
+  minecraftIgn?: string;
   includeHidden?: boolean;
 }
 
@@ -15,6 +16,7 @@ export class BugRepository {
         status: filters.status,
         severity: filters.severity,
         discordId: filters.discordId,
+        minecraftIgn: filters.minecraftIgn,
         hidden: filters.includeHidden ? undefined : false,
       };
       const bugs = await prisma.bug.findMany({
@@ -60,11 +62,26 @@ export class BugRepository {
     return bug as unknown as Bug;
   }
 
-  async update(id: string, data: { status?: Status; hidden?: boolean }): Promise<Bug | null> {
+  async update(
+    id: string,
+    data: Partial<Pick<Bug, "title" | "description" | "reproductionSteps" | "evidenceLinks" | "severity">> & {
+      status?: Status;
+      hidden?: boolean;
+    }
+  ): Promise<Bug | null> {
     try {
+      const updateData: Partial<Bug> = {};
+      if (data.status) updateData.status = data.status;
+      if (typeof data.hidden === "boolean") updateData.hidden = data.hidden;
+      if (data.title) updateData.title = data.title;
+      if (data.description) updateData.description = data.description;
+      if (data.reproductionSteps) updateData.reproductionSteps = data.reproductionSteps;
+      if (data.severity) updateData.severity = data.severity;
+      if (Array.isArray(data.evidenceLinks)) updateData.evidenceLinks = data.evidenceLinks;
+      if (Object.keys(updateData).length === 0) return null;
       const bug = await prisma.bug.update({
         where: { id },
-        data,
+        data: updateData,
       });
       return bug as unknown as Bug;
     } catch {

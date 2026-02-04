@@ -9,12 +9,14 @@ export async function GET(request: Request) {
   const status = searchParams.get("status") as Status | null;
   const severity = searchParams.get("severity") as Severity | null;
   const discordId = searchParams.get("discordId");
+  const minecraftIgn = searchParams.get("minecraftIgn");
   const includeHidden = searchParams.get("includeHidden") === "true";
 
   const bugs = await repo.list({
     status: status ?? undefined,
     severity: severity ?? undefined,
     discordId: discordId ?? undefined,
+    minecraftIgn: minecraftIgn ?? undefined,
     includeHidden,
   });
   return NextResponse.json(bugs);

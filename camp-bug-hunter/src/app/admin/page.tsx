@@ -63,7 +63,7 @@ export default function AdminPage() {
   }, [bugs]);
 
   async function updateStatus(id: string, s: Status) {
-    const res = await fetch(`/api/bugs/${id}`, {
+    const res = await fetch(`/api/bugs/${id}?admin=1`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: s }),
@@ -75,7 +75,7 @@ export default function AdminPage() {
   }
 
   async function updateHidden(id: string, hidden: boolean) {
-    const res = await fetch(`/api/bugs/${id}`, {
+    const res = await fetch(`/api/bugs/${id}?admin=1`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hidden }),
@@ -88,7 +88,7 @@ export default function AdminPage() {
   async function deleteBug(id: string) {
     const confirmed = window.confirm("Delete this bug permanently?");
     if (!confirmed) return;
-    const res = await fetch(`/api/bugs/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/bugs/${id}?admin=1`, { method: "DELETE" });
     if (res.ok) {
       await load();
     }
