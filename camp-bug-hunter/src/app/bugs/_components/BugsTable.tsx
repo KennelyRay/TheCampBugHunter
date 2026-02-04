@@ -96,9 +96,13 @@ export default function BugsTable() {
           {bugs.map((b) => (
             <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
-                <Link href={`/bugs/${b.id}${isAdmin ? "?admin=1" : ""}`} className="font-semibold text-white hover:text-[#f3a46b]">
-                  {b.title}
-                </Link>
+                {isAdmin ? (
+                  <Link href={`/bugs/${b.id}?admin=1`} className="font-semibold text-white hover:text-[#f3a46b]">
+                    {b.title}
+                  </Link>
+                ) : (
+                  <span className="font-semibold text-white">{b.title}</span>
+                )}
               </td>
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
                 <div className="flex items-center gap-2">

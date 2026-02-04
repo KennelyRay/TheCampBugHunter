@@ -68,6 +68,7 @@ public final class BugHunterPlugin extends JavaPlugin {
 
       if (response.statusCode() != 201) {
         String detail = "";
+        String rawBody = response.body();
         try {
           JsonObject errorBody = gson.fromJson(response.body(), JsonObject.class);
           if (errorBody != null && errorBody.has("error")) {
@@ -79,10 +80,15 @@ public final class BugHunterPlugin extends JavaPlugin {
         String message = "Registration service returned " + response.statusCode();
         if (!detail.isBlank()) {
           message += ": " + detail;
+        } else if (rawBody != null && !rawBody.isBlank()) {
+          message += ": " + rawBody;
         }
         sendMessage(player, ChatColor.RED + message);
+        getLogger().warning(message);
         if (response.statusCode() == 401) {
-          sendMessage(player, ChatColor.RED + "Check the plugin token configuration.");
+          String hint = "Check the plugin token configuration.";
+          sendMessage(player, ChatColor.RED + hint);
+          getLogger().warning(hint);
         }
         return;
       }

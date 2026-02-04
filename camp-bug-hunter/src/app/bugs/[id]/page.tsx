@@ -20,9 +20,10 @@ export default async function BugPage({
   const { id } = await params;
   const adminFlag = searchParams?.admin;
   const includeHiddenParam = searchParams?.includeHidden;
-  const backHref = adminFlag === "1" ? "/admin" : "/bugs";
+  const isAdmin = adminFlag === "1";
+  const backHref = isAdmin ? "/admin" : "/bugs";
   const includeHidden =
-    adminFlag === "1" ||
+    isAdmin ||
     includeHiddenParam === "true" ||
     (Array.isArray(includeHiddenParam) && includeHiddenParam.includes("true"));
   const bug = await getBug(id, includeHidden);
@@ -31,6 +32,41 @@ export default async function BugPage({
       <div className="mx-auto max-w-3xl rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
         <h2 className="text-xl font-semibold text-white">Bug Not Found</h2>
         <p className="mt-2 text-sm text-white/70">The bug might not exist or the database is not configured.</p>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="mx-auto max-w-3xl space-y-6">
+        <div>
+          <ButtonLink href={backHref} variant="secondary">
+            <span className="flex items-center gap-2">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                <path
+                  d="M12.5 4.5L7.5 10l5 5.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Back</span>
+            </span>
+          </ButtonLink>
+        </div>
+        <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Bug report</div>
+          <h2 className="mt-2 text-2xl font-semibold text-white">{bug.title}</h2>
+          <div className="mt-4 rounded-xl border border-white/10 bg-[#0f131a]/70 px-4 py-3 text-xs text-white/70">
+            <div className="text-[10px] font-semibold uppercase tracking-wide text-white/40">Reporter</div>
+            <div className="mt-2">Discord ID: {bug.discordId}</div>
+            <div>Minecraft IGN: {bug.minecraftIgn}</div>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm font-semibold text-amber-200 shadow-lg shadow-black/20">
+          Bug details are restricted to admins to prevent abuse.
+        </div>
       </div>
     );
   }

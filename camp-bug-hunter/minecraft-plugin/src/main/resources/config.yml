@@ -1,2 +1,2 @@
-apiUrl: "https://your-site.com/api/auth/minecraft/register-code"
-pluginToken: ""
+apiUrl: "https://the-camp-bug-hunter.vercel.app/api/auth/minecraft/register-code"
+pluginToken: "supersecret123"

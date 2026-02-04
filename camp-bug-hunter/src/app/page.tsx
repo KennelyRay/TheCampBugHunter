@@ -9,9 +9,8 @@ export default async function Home() {
   const repo = new BugRepository();
   const bugs = await repo.list();
   const recentBugs = bugs.slice(0, 5);
-  const confirmed = bugs.filter((bug) => bug.status === "BUG" || bug.status === "FIXED");
   const reporterMap = new Map<string, { discordId: string; minecraftIgn: string; count: number }>();
-  for (const bug of confirmed) {
+  for (const bug of bugs) {
     const current = reporterMap.get(bug.discordId);
     if (current) {
       reporterMap.set(bug.discordId, { ...current, count: current.count + 1 });
@@ -55,9 +54,7 @@ export default async function Home() {
               {recentBugs.map((bug) => (
                 <li key={bug.id} className="flex items-start justify-between gap-3 rounded-xl border border-black/30 bg-[#141922] px-4 py-3">
                   <div>
-                    <Link href={`/bugs/${bug.id}`} className="text-sm font-semibold text-white hover:text-[#f3a46b]">
-                      {bug.title}
-                    </Link>
+                    <span className="text-sm font-semibold text-white">{bug.title}</span>
                     <div className="mt-1 text-xs text-white/60">
                       {bug.discordId} · {bug.severity}
                     </div>
@@ -69,7 +66,7 @@ export default async function Home() {
           )}
         </div>
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Confirmed Reporters</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Reporters</div>
           {topReporters.length === 0 ? (
             <p className="mt-4 text-sm text-white/60">No confirmed reports yet.</p>
           ) : (
