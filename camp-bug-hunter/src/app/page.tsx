@@ -49,7 +49,19 @@ export default async function Home() {
             <Link href="/bugs" className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">View all</Link>
           </div>
           {recentBugs.length === 0 ? (
-            <p className="mt-4 text-sm text-white/60">No reports yet.</p>
+            <ul className="mt-4 space-y-3">
+              {[1, 2, 3, 4, 5].map((index) => (
+                <li key={`recent-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-xs font-semibold text-white/60">
+                      {index}
+                    </span>
+                    <div className="text-sm text-white/50">Placeholder</div>
+                  </div>
+                  <div className="text-xs text-white/30">--</div>
+                </li>
+              ))}
+            </ul>
           ) : (
             <ul className="mt-4 space-y-3">
               {recentBugs.map((bug) => (
@@ -71,7 +83,21 @@ export default async function Home() {
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Confirmed Reporters</div>
           {topReporters.length === 0 ? (
-            <p className="mt-4 text-sm text-white/60">No confirmed reports yet.</p>
+            <ul className="mt-4 space-y-3">
+              {[1, 2, 3, 4, 5].map((index) => (
+                <li key={`reporter-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-xs font-semibold text-white/60">
+                      {index}
+                    </span>
+                    <div className="text-sm text-white/50">Placeholder</div>
+                  </div>
+                  <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/40">
+                    --
+                  </div>
+                </li>
+              ))}
+            </ul>
           ) : (
             <ul className="mt-4 space-y-3">
               {topReporters.map((reporter) => (
