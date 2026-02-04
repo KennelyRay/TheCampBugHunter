@@ -53,14 +53,11 @@ export default async function Home() {
               {Array.from({ length: 5 }).map((_, index) => (
                 <li key={`recent-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <Image
-                      src="https://minotar.net/helm/Steve/32"
-                      alt="Steve skin"
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 rounded-full border border-black/40 bg-[#0f131a]"
-                    />
-                    <div className="text-sm text-white/50">Bugs</div>
+                    <div className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-[10px] font-semibold text-white/60">
+                      --
+                      <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#1a1f26] text-[10px] font-semibold text-[#f3a46b]">!</span>
+                    </div>
+                    <div className="text-sm text-white/50">No bugs found</div>
                   </div>
                   <div className="text-xs text-white/30">--</div>
                 </li>
@@ -91,13 +88,9 @@ export default async function Home() {
               {Array.from({ length: 5 }).map((_, index) => (
                 <li key={`reporter-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <Image
-                      src="https://minotar.net/helm/Steve/32"
-                      alt="Steve skin"
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 rounded-full border border-black/40 bg-[#0f131a]"
-                    />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-[10px] font-semibold text-white/60">
+                      --
+                    </div>
                     <div className="text-sm text-white/50">Hunter</div>
                   </div>
                   <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/40">
