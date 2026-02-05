@@ -38,6 +38,7 @@ export default function NewReportPage() {
   const [severity, setSeverity] = useState<Severity>("LOW");
   const [evidenceLinks, setEvidenceLinks] = useState<string[]>([""]);
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const severityOptions: { value: Severity; label: string; description: string; icon: string }[] = [
     { value: "LOW", label: "Low", description: "Minor issue, cosmetic, or typo.", icon: "/Low.svg" },
@@ -66,7 +67,14 @@ export default function NewReportPage() {
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
-      router.push("/report/success");
+      const bug = await res.json().catch(() => null);
+      if (bug && typeof window !== "undefined") {
+        window.localStorage.setItem("campLastReport", JSON.stringify(bug));
+      }
+      setShowSuccess(true);
+      window.setTimeout(() => {
+        router.push("/report/success");
+      }, 1200);
     } catch {
       setError("Submission failed. Ensure database is configured.");
     } finally {
@@ -106,6 +114,20 @@ export default function NewReportPage() {
   }
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f131a]/90 backdrop-blur transition-opacity duration-500">
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-[#141922]/80 px-8 py-6 text-white shadow-2xl shadow-black/50">
+            <div className="relative flex items-center justify-center">
+              <span className="absolute h-12 w-12 rounded-full bg-[#f3a46b]/20 blur-xl"></span>
+              <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#f3a46b]/30 border-t-[#f3a46b]"></span>
+            </div>
+            <div className="text-center">
+              <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Success</div>
+              <div className="mt-2 text-xs text-white/70">Finalizing your summary</div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
