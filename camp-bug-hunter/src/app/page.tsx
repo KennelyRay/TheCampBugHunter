@@ -43,7 +43,7 @@ export default async function Home() {
               The Camp Bug Hunter
             </h1>
             <p className="mt-4 max-w-2xl text-base text-white/80">
-              Modern bug reporting for the server crew, with real-time visibility, clean triage, and rewards for confirmed fixes.
+              Built for bug reporting only, with clean tracking, organized triage, and reward points for confirmed fixes.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={viewBugsHref} variant="primary">View Bugs</ButtonLink>
@@ -52,22 +52,23 @@ export default async function Home() {
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
-              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Total reports</div>
-              <div className="mt-2 text-3xl font-semibold">{bugs.length}</div>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
-              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Open</div>
-              <div className="mt-2 text-3xl font-semibold">{openCount}</div>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
-              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Fixed</div>
-              <div className="mt-2 text-3xl font-semibold">{fixedCount}</div>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
-              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Top hunters</div>
-              <div className="mt-2 text-3xl font-semibold">{topReporters.length}</div>
-            </div>
+            {[
+              { label: "Total reports", value: bugs.length },
+              { label: "Open", value: openCount },
+              { label: "Fixed", value: fixedCount },
+              { label: "Top hunters", value: topReporters.length },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-4 text-white shadow-lg shadow-black/40"
+              >
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+                <div className="relative">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">{stat.label}</div>
+                  <div className="mt-3 text-3xl font-semibold">{stat.value}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -77,16 +78,22 @@ export default async function Home() {
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Why report here</div>
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
-              <div className="text-sm font-semibold text-white">Fast triage</div>
-              <div className="mt-2 text-sm text-white/65">Keep every report visible and move quickly through status updates.</div>
+              <div className="text-sm font-semibold text-white">Focused on Bugs</div>
+              <div className="mt-2 text-sm text-white/65">
+                Unlike the Discord ticket system for all questions, this site focuses solely on bug reports.
+              </div>
             </div>
             <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
-              <div className="text-sm font-semibold text-white">Clear ownership</div>
-              <div className="mt-2 text-sm text-white/65">Track who submitted each issue and follow progress with ease.</div>
+              <div className="text-sm font-semibold text-white">Organized</div>
+              <div className="mt-2 text-sm text-white/65">
+                Every bug stays tracked so it never gets lost or overshadowed by other reports.
+              </div>
             </div>
             <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
-              <div className="text-sm font-semibold text-white">Rewarded fixes</div>
-              <div className="mt-2 text-sm text-white/65">Earn reward coins when your reports are confirmed and fixed.</div>
+              <div className="text-sm font-semibold text-white">Earn Rewards</div>
+              <div className="mt-2 text-sm text-white/65">
+                For every fixed bug you reported, earn 1 reward point to exchange for in-game rewards.
+              </div>
             </div>
           </div>
         </div>
@@ -98,9 +105,6 @@ export default async function Home() {
               <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Bug Rewards</div>
               <div className="mt-2 text-2xl font-semibold">Earn reward coins</div>
               <div className="mt-2 text-sm text-white/70">Fixes earn coins. Redeem them for in-game rewards.</div>
-            </div>
-            <div>
-              <ButtonLink href="/rewards" variant="primary">View Rewards</ButtonLink>
             </div>
           </div>
         </div>
