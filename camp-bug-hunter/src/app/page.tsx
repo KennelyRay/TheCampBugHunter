@@ -26,44 +26,88 @@ export default async function Home() {
   const topReporters = Array.from(reporterMap.values())
     .sort((a, b) => b.count - a.count || a.discordId.localeCompare(b.discordId))
     .slice(0, 5);
+  const fixedCount = bugs.filter((bug) => bug.status === "FIXED").length;
+  const openCount = bugs.filter((bug) => bug.status !== "FIXED" && bug.status !== "NOT_A_BUG").length;
 
   return (
-    <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-black/40 bg-[#151a21]/90 shadow-2xl shadow-black/40">
-        <Image src="/LandingPage.png" alt="The Camp world" fill className="object-cover object-center opacity-80" priority />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-        <div className="relative z-10 p-8 sm:p-12">
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
-            The Camp bug bounty
-          </span>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">The Camp Bug Hunter</h1>
-          <p className="mt-3 max-w-2xl text-base text-white/80">
-            Report issues fast, track progress, and keep the server experience polished.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={viewBugsHref} variant="primary">View Bugs</ButtonLink>
-            <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
+    <div className="space-y-12">
+      <section className="relative overflow-hidden rounded-[32px] border border-black/40 bg-[#12161d]/95 shadow-2xl shadow-black/50">
+        <Image src="/LandingPage.png" alt="The Camp world" fill className="object-cover object-center opacity-70" priority />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-transparent"></div>
+        <div className="relative z-10 grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div>
+            <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">
+              The Camp bug bounty
+            </span>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              The Camp Bug Hunter
+            </h1>
+            <p className="mt-4 max-w-2xl text-base text-white/80">
+              Modern bug reporting for the server crew, with real-time visibility, clean triage, and rewards for confirmed fixes.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href={viewBugsHref} variant="primary">View Bugs</ButtonLink>
+              <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
+              <ButtonLink href="/rewards" variant="secondary">View Rewards</ButtonLink>
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Total reports</div>
+              <div className="mt-2 text-3xl font-semibold">{bugs.length}</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Open</div>
+              <div className="mt-2 text-3xl font-semibold">{openCount}</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Fixed</div>
+              <div className="mt-2 text-3xl font-semibold">{fixedCount}</div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-white shadow-lg shadow-black/40">
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Top hunters</div>
+              <div className="mt-2 text-3xl font-semibold">{topReporters.length}</div>
+            </div>
           </div>
         </div>
       </section>
-      <section className="relative overflow-hidden rounded-3xl border border-black/40 bg-[#151a21]/90 shadow-2xl shadow-black/40">
-        <Image src="/rewardsbanner.png" alt="Bug rewards" fill className="object-cover object-center opacity-80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-        <div className="relative z-10 p-8 sm:p-12">
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
-            Earn reward coins
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Bug Rewards</h2>
-          <p className="mt-3 max-w-2xl text-base text-white/80">
-            Fixes earn coins. Redeem them for in-game rewards.
-          </p>
-          <div className="mt-6">
-            <ButtonLink href="/rewards" variant="primary">View Rewards</ButtonLink>
+
+      <section className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl border border-black/30 bg-[#151a21]/95 p-6 text-white shadow-lg shadow-black/30 lg:col-span-2">
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Why report here</div>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
+              <div className="text-sm font-semibold text-white">Fast triage</div>
+              <div className="mt-2 text-sm text-white/65">Keep every report visible and move quickly through status updates.</div>
+            </div>
+            <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
+              <div className="text-sm font-semibold text-white">Clear ownership</div>
+              <div className="mt-2 text-sm text-white/65">Track who submitted each issue and follow progress with ease.</div>
+            </div>
+            <div className="rounded-2xl border border-black/30 bg-[#121821] p-4">
+              <div className="text-sm font-semibold text-white">Rewarded fixes</div>
+              <div className="mt-2 text-sm text-white/65">Earn reward coins when your reports are confirmed and fixed.</div>
+            </div>
+          </div>
+        </div>
+        <div className="relative overflow-hidden rounded-2xl border border-black/40 bg-[#151a21]/90 shadow-lg shadow-black/30">
+          <Image src="/rewardsbanner.png" alt="Bug rewards" fill className="object-cover object-center opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/40 to-transparent"></div>
+          <div className="relative z-10 flex h-full flex-col justify-between gap-6 p-6 text-white">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Bug Rewards</div>
+              <div className="mt-2 text-2xl font-semibold">Earn reward coins</div>
+              <div className="mt-2 text-sm text-white/70">Fixes earn coins. Redeem them for in-game rewards.</div>
+            </div>
+            <div>
+              <ButtonLink href="/rewards" variant="primary">View Rewards</ButtonLink>
+            </div>
           </div>
         </div>
       </section>
-      <section className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
+
+      <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-6 text-white shadow-lg shadow-black/20">
           <div className="flex items-center justify-between">
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Recent Bugs</div>
             <Link href={viewBugsHref} className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">
@@ -71,13 +115,12 @@ export default async function Home() {
             </Link>
           </div>
           {recentBugs.length === 0 ? (
-            <ul className="mt-4 space-y-3">
-              {Array.from({ length: 5 }).map((_, index) => (
+            <ul className="mt-5 space-y-3">
+              {Array.from({ length: 4 }).map((_, index) => (
                 <li key={`recent-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-[10px] font-semibold text-white/60">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-[10px] font-semibold text-white/60">
                       --
-                      <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#1a1f26] text-[10px] font-semibold text-[#f3a46b]">!</span>
                     </div>
                     <div className="text-sm text-white/50">No bugs found</div>
                   </div>
@@ -86,7 +129,7 @@ export default async function Home() {
               ))}
             </ul>
           ) : (
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               {recentBugs.map((bug) => (
                 <li key={bug.id} className="flex items-start justify-between gap-3 rounded-xl border border-black/30 bg-[#141922] px-4 py-3">
                   <div>
@@ -101,11 +144,11 @@ export default async function Home() {
             </ul>
           )}
         </div>
-        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
+        <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-6 text-white shadow-lg shadow-black/20">
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Top Reporters</div>
           {topReporters.length === 0 ? (
-            <ul className="mt-4 space-y-3">
-              {Array.from({ length: 5 }).map((_, index) => (
+            <ul className="mt-5 space-y-3">
+              {Array.from({ length: 4 }).map((_, index) => (
                 <li key={`reporter-placeholder-${index}`} className="flex items-center justify-between rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3">
                   <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a] text-[10px] font-semibold text-white/60">
@@ -120,7 +163,7 @@ export default async function Home() {
               ))}
             </ul>
           ) : (
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               {topReporters.map((reporter) => (
                 <li key={reporter.discordId} className="flex items-center justify-between rounded-xl border border-black/30 bg-[#141922] px-4 py-3">
                   <div className="flex items-center gap-3">
@@ -143,6 +186,21 @@ export default async function Home() {
               ))}
             </ul>
           )}
+        </div>
+      </section>
+      <section className="rounded-3xl border border-black/40 bg-[#151a21]/90 p-8 text-white shadow-lg shadow-black/30 sm:p-10">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Ready to report?</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">Keep the server polished together</h2>
+            <p className="mt-2 max-w-2xl text-sm text-white/70">
+              Submit issues with steps and evidence, then track progress from triage to fix.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <ButtonLink href="/report" variant="primary">Report a Bug</ButtonLink>
+            <ButtonLink href={viewBugsHref} variant="secondary">Browse Reports</ButtonLink>
+          </div>
         </div>
       </section>
     </div>
