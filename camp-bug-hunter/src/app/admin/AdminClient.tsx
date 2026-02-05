@@ -111,17 +111,9 @@ export default function AdminClient() {
         </div>
       )}
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold text-white">Admin Dashboard</h2>
-            <p className="mt-1 text-sm text-white/70">Review reports, filter quickly, and update statuses.</p>
-          </div>
-          <Link
-            href="/admin/bugs"
-            className="rounded-full border border-[#f3a46b]/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:text-[#f3a46b]"
-          >
-            View Bugs
-          </Link>
+        <div>
+          <h2 className="text-2xl font-semibold text-white">Admin Dashboard</h2>
+          <p className="mt-1 text-sm text-white/70">Review reports, filter quickly, and update statuses.</p>
         </div>
         <div className="mt-4 flex flex-wrap items-end gap-3">
           <div>

@@ -39,12 +39,9 @@ export default async function AdminBugPage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <ButtonLink href="/admin/bugs" variant="secondary">
-          Back to Admin Bugs
-        </ButtonLink>
+      <div>
         <ButtonLink href="/admin" variant="secondary">
-          Dashboard
+          Back to Dashboard
         </ButtonLink>
       </div>
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
