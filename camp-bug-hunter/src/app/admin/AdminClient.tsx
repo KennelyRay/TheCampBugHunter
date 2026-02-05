@@ -210,11 +210,23 @@ export default function AdminClient() {
               </tr>
             </thead>
             <tbody>
-              {bugs.map((b) => (
-                <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
-                  <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
-                    {b.minecraftIgn} • {b.discordId}
-                  </td>
+              {bugs.map((b) => {
+                const skinName = b.minecraftIgn?.trim() ? b.minecraftIgn : "Steve";
+                const avatarUrl = `https://minotar.net/helm/${encodeURIComponent(skinName)}/32.png`;
+                return (
+                  <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
+                    <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={avatarUrl}
+                          alt={`${skinName} skin`}
+                          width={28}
+                          height={28}
+                          className="h-7 w-7 rounded-md border border-white/10 bg-[#0f131a]/80"
+                        />
+                        <span>{b.minecraftIgn} • {b.discordId}</span>
+                      </div>
+                    </td>
                   <td className="border-b border-black/30 px-4 py-3 text-sm text-white/70">
                     <div className="flex flex-wrap items-center gap-2">
                       <span>{b.title}</span>
@@ -351,7 +363,8 @@ export default function AdminClient() {
                     )}
                   </td>
                 </tr>
-              ))}
+                );
+              })}
               {bugs.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-4 py-6 text-center text-sm text-white/60">
