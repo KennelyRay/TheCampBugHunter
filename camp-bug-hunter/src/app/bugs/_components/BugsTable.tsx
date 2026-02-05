@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Bug } from "@/types/bug";
 
 function StatusBadge({ status }: { status: Bug["status"] }) {
@@ -21,16 +21,24 @@ const severityMeta: Record<Bug["severity"], { label: string; icon: string }> = {
   URGENT: { label: "Urgent", icon: "/Urgent.svg" },
 };
 
-export default function BugsTable() {
+type BugsTableProps = {
+  includeHidden?: boolean;
+  forceAdminLinks?: boolean;
+};
+
+export default function BugsTable({ includeHidden = false, forceAdminLinks }: BugsTableProps) {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  async function load(query: string = "") {
+  const load = useCallback(async (query: string = "") => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/bugs${query ? `?${query}` : ""}`);
+      const params = new URLSearchParams(query);
+      if (includeHidden) params.set("includeHidden", "true");
+      const queryString = params.toString();
+      const res = await fetch(`/api/bugs${queryString ? `?${queryString}` : ""}`);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setBugs(data);
@@ -40,7 +48,7 @@ export default function BugsTable() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [includeHidden]);
 
   useEffect(() => {
     const readSession = () => {
@@ -75,7 +83,7 @@ export default function BugsTable() {
     };
     window.addEventListener("bugs:filters", handler as EventListener);
     return () => window.removeEventListener("bugs:filters", handler as EventListener);
-  }, []);
+  }, [load]);
 
   if (loading) return <p className="text-sm text-white/70">Loading...</p>;
   if (error) return <p className="text-sm text-rose-400">{error}</p>;
@@ -96,8 +104,8 @@ export default function BugsTable() {
           {bugs.map((b) => (
             <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
-                {isAdmin ? (
-                  <Link href={`/bugs/${b.id}?admin=1`} className="font-semibold text-white hover:text-[#f3a46b]">
+                {forceAdminLinks || isAdmin ? (
+                  <Link href={`/bugs/${b.id}`} className="font-semibold text-white hover:text-[#f3a46b]">
                     {b.title}
                   </Link>
                 ) : (
