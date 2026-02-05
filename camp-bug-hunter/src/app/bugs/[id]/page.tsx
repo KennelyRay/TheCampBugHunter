@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
 import ButtonLink from "@/components/ButtonLink";
 import { BugRepository } from "@/lib/bugRepository";
+import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
 import type { Bug } from "@/types/bug";
 
 export const dynamic = "force-dynamic";
@@ -20,12 +22,16 @@ export default async function BugPage({
   const { id } = await params;
   const adminFlag = searchParams?.admin;
   const includeHiddenParam = searchParams?.includeHidden;
-  const isAdmin = adminFlag === "1";
+  const cookieStore = await cookies();
+  const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
+  const canSeeHidden = Boolean(adminSession);
+  const isAdmin = adminFlag === "1" && canSeeHidden;
   const backHref = isAdmin ? "/admin" : "/bugs";
   const includeHidden =
-    isAdmin ||
-    includeHiddenParam === "true" ||
-    (Array.isArray(includeHiddenParam) && includeHiddenParam.includes("true"));
+    canSeeHidden &&
+    (isAdmin ||
+      includeHiddenParam === "true" ||
+      (Array.isArray(includeHiddenParam) && includeHiddenParam.includes("true")));
   const bug = await getBug(id, includeHidden);
   if (!bug) {
     return (

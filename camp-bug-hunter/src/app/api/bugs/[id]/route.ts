@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { BugRepository } from "@/lib/bugRepository";
+import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
 import type { Bug, Status } from "@/types/bug";
 
 const repo = new BugRepository();
@@ -8,7 +10,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const { searchParams } = new URL(request.url);
   const includeHidden = searchParams.get("includeHidden") === "true";
-  const bug = await repo.get(id, { includeHidden });
+  const cookieStore = await cookies();
+  const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
+  if (includeHidden && !adminSession) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  const bug = await repo.get(id, { includeHidden: includeHidden && Boolean(adminSession) });
   if (!bug) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(bug);
 }
@@ -16,8 +23,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const isAdmin = searchParams.get("admin") === "1";
+    const cookieStore = await cookies();
+    const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));
     const body = await request.json();
     const status = isAdmin ? (body.status as Status | undefined) : undefined;
     const hidden = isAdmin && typeof body.hidden === "boolean" ? body.hidden : undefined;
@@ -62,7 +69,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   try {
     const { id } = await params;
     const { searchParams } = new URL(request.url);
-    const isAdmin = searchParams.get("admin") === "1";
+    const cookieStore = await cookies();
+    const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));
     if (!isAdmin) {
       const minecraftIgn = searchParams.get("minecraftIgn");
       if (!minecraftIgn) return NextResponse.json({ error: "Missing owner" }, { status: 400 });

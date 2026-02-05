@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { BugRepository } from "@/lib/bugRepository";
+import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
 import type { Severity, Status } from "@/types/bug";
 
 const repo = new BugRepository();
@@ -11,13 +13,18 @@ export async function GET(request: Request) {
   const discordId = searchParams.get("discordId");
   const minecraftIgn = searchParams.get("minecraftIgn");
   const includeHidden = searchParams.get("includeHidden") === "true";
+  const cookieStore = await cookies();
+  const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
+  if (includeHidden && !adminSession) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const bugs = await repo.list({
     status: status ?? undefined,
     severity: severity ?? undefined,
     discordId: discordId ?? undefined,
     minecraftIgn: minecraftIgn ?? undefined,
-    includeHidden,
+    includeHidden: includeHidden && Boolean(adminSession),
   });
   return NextResponse.json(bugs);
 }
