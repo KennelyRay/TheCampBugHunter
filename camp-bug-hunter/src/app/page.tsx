@@ -48,7 +48,6 @@ export default async function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={viewBugsHref} variant="primary">View Bugs</ButtonLink>
               <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
-              <ButtonLink href="/rewards" variant="secondary">View Rewards</ButtonLink>
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -105,6 +104,9 @@ export default async function Home() {
               <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Bug Rewards</div>
               <div className="mt-2 text-2xl font-semibold">Earn reward coins</div>
               <div className="mt-2 text-sm text-white/70">Fixes earn coins. Redeem them for in-game rewards.</div>
+            </div>
+            <div>
+              <ButtonLink href="/rewards" variant="primary">View Rewards</ButtonLink>
             </div>
           </div>
         </div>

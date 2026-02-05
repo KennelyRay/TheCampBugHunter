@@ -13,15 +13,23 @@ export async function POST(request: Request) {
     const body = await request.json();
     const minecraftUsername = typeof body.minecraftUsername === "string" ? body.minecraftUsername.trim() : "";
     const amount = Number(body.amount);
-    if (!minecraftUsername || !Number.isFinite(amount) || amount <= 0) {
+    if (!minecraftUsername || !Number.isFinite(amount) || amount === 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
-    const user = await prisma.user.update({
+    const current = await prisma.user.findUnique({
       where: { minecraftUsername },
-      data: { rewardBalance: { increment: amount } },
       select: { rewardBalance: true },
     });
-    return NextResponse.json({ balance: user.rewardBalance });
+    if (!current) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    const nextBalance = Math.max(0, current.rewardBalance + amount);
+    const updated = await prisma.user.update({
+      where: { minecraftUsername },
+      data: { rewardBalance: nextBalance },
+      select: { rewardBalance: true },
+    });
+    return NextResponse.json({ balance: updated.rewardBalance });
   } catch {
     return NextResponse.json({ error: "Failed to update balance" }, { status: 500 });
   }
