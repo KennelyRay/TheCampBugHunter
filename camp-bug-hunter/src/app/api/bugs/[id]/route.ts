@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { BugRepository } from "@/lib/bugRepository";
 import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
+import { prisma } from "@/lib/prisma";
 import type { Bug, Status } from "@/types/bug";
 
 const repo = new BugRepository();
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
   const { searchParams } = new URL(request.url);
   const includeHidden = searchParams.get("includeHidden") === "true";
   const cookieStore = await cookies();
@@ -20,9 +21,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   return NextResponse.json(bug);
 }
 
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const cookieStore = await cookies();
     const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));
     const body = await request.json();
@@ -49,6 +50,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (!status && hidden === undefined && !title && !description && !reproductionSteps && !evidenceLinks && !severity) {
       return NextResponse.json({ error: "Missing update fields" }, { status: 400 });
     }
+    const existing = isAdmin && status ? await repo.get(id, { includeHidden: true }) : null;
     const updated = await repo.update(id, {
       status,
       hidden,
@@ -59,15 +61,30 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       severity: severity || undefined,
     });
     if (!updated) return NextResponse.json({ error: "Update failed" }, { status: 500 });
+    if (
+      status === "FIXED" &&
+      existing &&
+      existing.status !== "FIXED" &&
+      existing.status !== "NOT_A_BUG"
+    ) {
+      try {
+        await prisma.user.update({
+          where: { minecraftUsername: existing.minecraftIgn },
+          data: { rewardBalance: { increment: 1 } },
+        });
+      } catch {
+        return NextResponse.json(updated);
+      }
+    }
     return NextResponse.json(updated);
   } catch {
     return NextResponse.json({ error: "Update error" }, { status: 500 });
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const { searchParams } = new URL(request.url);
     const cookieStore = await cookies();
     const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));

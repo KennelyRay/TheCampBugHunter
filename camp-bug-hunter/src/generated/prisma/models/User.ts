@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  rewardBalance: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  rewardBalance: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +41,7 @@ export type UserMinAggregateOutputType = {
   minecraftUsername: string | null
   passwordHash: string | null
   isAdmin: boolean | null
+  rewardBalance: number | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -40,6 +51,7 @@ export type UserMaxAggregateOutputType = {
   minecraftUsername: string | null
   passwordHash: string | null
   isAdmin: boolean | null
+  rewardBalance: number | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -49,9 +61,18 @@ export type UserCountAggregateOutputType = {
   minecraftUsername: number
   passwordHash: number
   isAdmin: number
+  rewardBalance: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  rewardBalance?: true
+}
+
+export type UserSumAggregateInputType = {
+  rewardBalance?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -60,6 +81,7 @@ export type UserMinAggregateInputType = {
   minecraftUsername?: true
   passwordHash?: true
   isAdmin?: true
+  rewardBalance?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -69,6 +91,7 @@ export type UserMaxAggregateInputType = {
   minecraftUsername?: true
   passwordHash?: true
   isAdmin?: true
+  rewardBalance?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -78,6 +101,7 @@ export type UserCountAggregateInputType = {
   minecraftUsername?: true
   passwordHash?: true
   isAdmin?: true
+  rewardBalance?: true
   _all?: true
 }
 
@@ -119,6 +143,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -149,6 +185,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -160,7 +198,10 @@ export type UserGroupByOutputType = {
   minecraftUsername: string
   passwordHash: string
   isAdmin: boolean
+  rewardBalance: number
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -190,6 +231,7 @@ export type UserWhereInput = {
   minecraftUsername?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
+  rewardBalance?: Prisma.IntFilter<"User"> | number
 }
 
 export type UserOrderByWithRelationInput = {
@@ -199,6 +241,7 @@ export type UserOrderByWithRelationInput = {
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
+  rewardBalance?: Prisma.SortOrder
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +254,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
+  rewardBalance?: Prisma.IntFilter<"User"> | number
 }, "id" | "email" | "minecraftUsername">
 
 export type UserOrderByWithAggregationInput = {
@@ -220,9 +264,12 @@ export type UserOrderByWithAggregationInput = {
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
+  rewardBalance?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -235,6 +282,7 @@ export type UserScalarWhereWithAggregatesInput = {
   minecraftUsername?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  rewardBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
 }
 
 export type UserCreateInput = {
@@ -244,6 +292,7 @@ export type UserCreateInput = {
   minecraftUsername: string
   passwordHash: string
   isAdmin?: boolean
+  rewardBalance?: number
 }
 
 export type UserUncheckedCreateInput = {
@@ -253,6 +302,7 @@ export type UserUncheckedCreateInput = {
   minecraftUsername: string
   passwordHash: string
   isAdmin?: boolean
+  rewardBalance?: number
 }
 
 export type UserUpdateInput = {
@@ -262,6 +312,7 @@ export type UserUpdateInput = {
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserUncheckedUpdateInput = {
@@ -271,6 +322,7 @@ export type UserUncheckedUpdateInput = {
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserCreateManyInput = {
@@ -280,6 +332,7 @@ export type UserCreateManyInput = {
   minecraftUsername: string
   passwordHash: string
   isAdmin?: boolean
+  rewardBalance?: number
 }
 
 export type UserUpdateManyMutationInput = {
@@ -289,6 +342,7 @@ export type UserUpdateManyMutationInput = {
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -298,6 +352,7 @@ export type UserUncheckedUpdateManyInput = {
   minecraftUsername?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rewardBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -307,6 +362,11 @@ export type UserCountOrderByAggregateInput = {
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
+  rewardBalance?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  rewardBalance?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -316,6 +376,7 @@ export type UserMaxOrderByAggregateInput = {
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
+  rewardBalance?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -325,6 +386,19 @@ export type UserMinOrderByAggregateInput = {
   minecraftUsername?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
+  rewardBalance?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  rewardBalance?: Prisma.SortOrder
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 
@@ -336,6 +410,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   minecraftUsername?: boolean
   passwordHash?: boolean
   isAdmin?: boolean
+  rewardBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -345,6 +420,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   minecraftUsername?: boolean
   passwordHash?: boolean
   isAdmin?: boolean
+  rewardBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -354,6 +430,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   minecraftUsername?: boolean
   passwordHash?: boolean
   isAdmin?: boolean
+  rewardBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -363,9 +440,10 @@ export type UserSelectScalar = {
   minecraftUsername?: boolean
   passwordHash?: boolean
   isAdmin?: boolean
+  rewardBalance?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "minecraftUsername" | "passwordHash" | "isAdmin", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "minecraftUsername" | "passwordHash" | "isAdmin" | "rewardBalance", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -377,6 +455,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     minecraftUsername: string
     passwordHash: string
     isAdmin: boolean
+    rewardBalance: number
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -806,6 +885,7 @@ export interface UserFieldRefs {
   readonly minecraftUsername: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
+  readonly rewardBalance: Prisma.FieldRef<"User", 'Int'>
 }
     
 

@@ -46,6 +46,22 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      <section className="relative overflow-hidden rounded-3xl border border-black/40 bg-[#151a21]/90 shadow-2xl shadow-black/40">
+        <Image src="/rewardsbanner.png" alt="Bug rewards" fill className="object-cover object-center opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
+        <div className="relative z-10 p-8 sm:p-12">
+          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
+            Earn reward coins
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Bug Rewards</h2>
+          <p className="mt-3 max-w-2xl text-base text-white/80">
+            Fixes earn coins. Redeem them for in-game rewards.
+          </p>
+          <div className="mt-6">
+            <ButtonLink href="/rewards" variant="primary">View Rewards</ButtonLink>
+          </div>
+        </div>
+      </section>
       <section className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
           <div className="flex items-center justify-between">

@@ -31,6 +31,16 @@ export default function AdminClient() {
   const [statusToast, setStatusToast] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Bug | null>(null);
   const [deletePending, setDeletePending] = useState(false);
+  const [rewardName, setRewardName] = useState("");
+  const [rewardCost, setRewardCost] = useState("");
+  const [rewardDescription, setRewardDescription] = useState("");
+  const [rewardIconUrl, setRewardIconUrl] = useState("");
+  const [rewardPending, setRewardPending] = useState(false);
+  const [rewardMessage, setRewardMessage] = useState<string | null>(null);
+  const [coinUsername, setCoinUsername] = useState("");
+  const [coinAmount, setCoinAmount] = useState("");
+  const [coinPending, setCoinPending] = useState(false);
+  const [coinMessage, setCoinMessage] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -103,11 +113,75 @@ export default function AdminClient() {
     setDeleteTarget(null);
   }
 
+  async function createReward() {
+    if (rewardPending) return;
+    const cost = Number(rewardCost);
+    if (!rewardName.trim() || !rewardDescription.trim() || !rewardIconUrl.trim() || !Number.isFinite(cost) || cost <= 0) {
+      setRewardMessage("Enter a name, description, icon, and positive cost.");
+      return;
+    }
+    setRewardPending(true);
+    setRewardMessage(null);
+    const res = await fetch("/api/rewards", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: rewardName.trim(),
+        description: rewardDescription.trim(),
+        iconUrl: rewardIconUrl.trim(),
+        cost,
+      }),
+    });
+    if (res.ok) {
+      setRewardName("");
+      setRewardDescription("");
+      setRewardIconUrl("");
+      setRewardCost("");
+      setRewardMessage("Reward created.");
+    } else {
+      setRewardMessage("Failed to create reward.");
+    }
+    setRewardPending(false);
+  }
+
+  async function addCoins() {
+    if (coinPending) return;
+    const amount = Number(coinAmount);
+    if (!coinUsername.trim() || !Number.isFinite(amount) || amount <= 0) {
+      setCoinMessage("Enter a username and positive amount.");
+      return;
+    }
+    setCoinPending(true);
+    setCoinMessage(null);
+    const res = await fetch("/api/rewards/wallet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ minecraftUsername: coinUsername.trim(), amount }),
+    });
+    if (res.ok) {
+      setCoinAmount("");
+      setCoinMessage("Coins added.");
+    } else {
+      setCoinMessage("Failed to add coins.");
+    }
+    setCoinPending(false);
+  }
+
   return (
     <div className="space-y-6">
       {statusToast && (
         <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200 shadow-lg shadow-black/20">
           {statusToast}
+        </div>
+      )}
+      {rewardMessage && (
+        <div className="rounded-2xl border border-sky-400/30 bg-sky-400/10 px-4 py-3 text-sm font-semibold text-sky-100 shadow-lg shadow-black/20">
+          {rewardMessage}
+        </div>
+      )}
+      {coinMessage && (
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm font-semibold text-amber-100 shadow-lg shadow-black/20">
+          {coinMessage}
         </div>
       )}
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">
@@ -193,6 +267,93 @@ export default function AdminClient() {
             <span>Low</span>
           </div>
           <div className="mt-2 text-2xl font-semibold">{counts.low}</div>
+        </div>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+          <div className="text-sm font-semibold text-white">Reward Adder</div>
+          <div className="mt-3 grid gap-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Name</label>
+              <input
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                value={rewardName}
+                onChange={(e) => setRewardName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  value={rewardCost}
+                  onChange={(e) => setRewardCost(e.target.value)}
+                  inputMode="numeric"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  value={rewardIconUrl}
+                  onChange={(e) => setRewardIconUrl(e.target.value)}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Description</label>
+              <textarea
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                rows={3}
+                value={rewardDescription}
+                onChange={(e) => setRewardDescription(e.target.value)}
+              />
+            </div>
+            <button
+              className={`w-fit rounded-lg px-4 py-2 text-sm font-semibold shadow-lg transition-all duration-200 ease-out ${
+                rewardPending
+                  ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                  : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+              }`}
+              onClick={createReward}
+              disabled={rewardPending}
+            >
+              {rewardPending ? "Creating..." : "Create Reward"}
+            </button>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+          <div className="text-sm font-semibold text-white">Coin Adder</div>
+          <div className="mt-3 grid gap-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Minecraft Username</label>
+              <input
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                value={coinUsername}
+                onChange={(e) => setCoinUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Coin Amount</label>
+              <input
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                value={coinAmount}
+                onChange={(e) => setCoinAmount(e.target.value)}
+                inputMode="numeric"
+              />
+            </div>
+            <button
+              className={`w-fit rounded-lg px-4 py-2 text-sm font-semibold shadow-lg transition-all duration-200 ease-out ${
+                coinPending
+                  ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                  : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+              }`}
+              onClick={addCoins}
+              disabled={coinPending}
+            >
+              {coinPending ? "Adding..." : "Add Coins"}
+            </button>
+          </div>
         </div>
       </div>
       <div className="overflow-hidden rounded-2xl border border-black/40 bg-[#151a21]/90 shadow-lg shadow-black/30">

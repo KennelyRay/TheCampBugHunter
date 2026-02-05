@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Bug: 'Bug',
   User: 'User',
+  Reward: 'Reward',
   RegistrationCode: 'RegistrationCode'
 } as const
 
@@ -95,10 +96,24 @@ export const UserScalarFieldEnum = {
   email: 'email',
   minecraftUsername: 'minecraftUsername',
   passwordHash: 'passwordHash',
-  isAdmin: 'isAdmin'
+  isAdmin: 'isAdmin',
+  rewardBalance: 'rewardBalance'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RewardScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  name: 'name',
+  cost: 'cost',
+  description: 'description',
+  iconUrl: 'iconUrl',
+  active: 'active'
+} as const
+
+export type RewardScalarFieldEnum = (typeof RewardScalarFieldEnum)[keyof typeof RewardScalarFieldEnum]
 
 
 export const RegistrationCodeScalarFieldEnum = {

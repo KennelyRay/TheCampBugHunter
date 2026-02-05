@@ -28,6 +28,11 @@ export type Bug = Prisma.BugModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model Reward
+ * 
+ */
+export type Reward = Prisma.RewardModel
+/**
  * Model RegistrationCode
  * 
  */
