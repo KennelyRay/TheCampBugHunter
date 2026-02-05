@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ButtonLink from "@/components/ButtonLink";
 
 export default function ReportSuccessPage() {
@@ -61,13 +60,8 @@ export default function ReportSuccessPage() {
             </div>
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/report/new"
-              className="inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#f3a46b]/60 text-[#f3a46b] hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:shadow-[#f3a46b]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            >
-              Submit another
-            </Link>
-            <ButtonLink href="/bugs" variant="secondary">View Bugs</ButtonLink>
+            <ButtonLink href="/report/new" variant="secondary">Submit another</ButtonLink>
+            <ButtonLink href="/dashboard" variant="secondary">Dashboard</ButtonLink>
             <ButtonLink href="/" variant="primary">Back to Home</ButtonLink>
           </div>
         </div>
@@ -77,13 +71,13 @@ export default function ReportSuccessPage() {
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               <li>Keep your reproduction steps short and numbered.</li>
               <li>Attach screenshots or short clips for faster triage.</li>
-              <li>Check the bugs page for status updates.</li>
+              <li>Check your dashboard for status updates.</li>
             </ul>
           </div>
           <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Need to edit?</div>
             <p className="mt-2 text-sm text-white/70">
-              Submit a new report with the corrected details and mention this submission in the description.
+              Head to your dashboard to review your own reports and edit the one you submitted.
             </p>
           </div>
         </div>

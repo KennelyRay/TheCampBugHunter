@@ -34,7 +34,7 @@ export default function NewReportPage() {
   const [minecraftIgn, setMinecraftIgn] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [repro, setRepro] = useState("");
+  const [reproSteps, setReproSteps] = useState<string[]>([""]);
   const [severity, setSeverity] = useState<Severity>("LOW");
   const [evidenceLinks, setEvidenceLinks] = useState<string[]>([""]);
   const [submitting, setSubmitting] = useState(false);
@@ -51,6 +51,7 @@ export default function NewReportPage() {
     setError(null);
     try {
       const cleanedLinks = evidenceLinks.map((link) => link.trim()).filter(Boolean);
+      const cleanedSteps = reproSteps.map((step) => step.trim()).filter(Boolean);
       const res = await fetch("/api/bugs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,7 +60,7 @@ export default function NewReportPage() {
           minecraftIgn,
           title,
           description,
-          reproductionSteps: repro,
+          reproductionSteps: cleanedSteps.map((step, index) => `${index + 1}. ${step}`).join("\n"),
           severity,
           evidenceLinks: cleanedLinks,
         }),
@@ -191,15 +192,54 @@ export default function NewReportPage() {
             <div>
               <div className="text-base font-semibold text-white">Reproduction steps</div>
               <div className="mt-1 text-xs text-white/50">List steps in order so we can replay it.</div>
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-white/80">Bug Reproduction Steps</label>
-                <textarea
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
-                  rows={5}
-                  placeholder="1. Go to the mob farm\n2. Stack a Zombie to x100\n3. Drop a shulker box..."
-                  value={repro}
-                  onChange={(e) => setRepro(e.target.value)}
-                />
+              <div className="mt-4 rounded-xl border border-black/40 bg-[#121722]/80 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-semibold text-white">Bug Reproduction Steps</div>
+                  <button
+                    type="button"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    onClick={() => setReproSteps((prev) => [...prev, ""])}
+                    aria-label="Add reproduction step"
+                  >
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                      <path
+                        d="M10 4v12M4 10h12"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="mt-3 grid gap-3">
+                  {reproSteps.map((step, index) => (
+                    <div key={`repro-step-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a]/80 text-xs font-semibold text-white/60">
+                        {index + 1}
+                      </div>
+                      <input
+                        className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                        placeholder={`Step ${index + 1}`}
+                        value={step}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setReproSteps((prev) => prev.map((item, i) => (i === index ? value : item)));
+                        }}
+                      />
+                      <div className="flex items-center gap-2">
+                        {reproSteps.length > 1 && (
+                          <button
+                            type="button"
+                            className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-3 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                            onClick={() => setReproSteps((prev) => prev.filter((_, i) => i !== index))}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div>

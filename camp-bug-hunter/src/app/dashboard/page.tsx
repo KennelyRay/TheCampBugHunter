@@ -25,9 +25,9 @@ export default function DashboardPage() {
   const [activeBug, setActiveBug] = useState<Bug | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [reproductionSteps, setReproductionSteps] = useState("");
+  const [reproductionSteps, setReproductionSteps] = useState<string[]>([""]);
   const [severity, setSeverity] = useState<Severity>("LOW");
-  const [evidenceLinks, setEvidenceLinks] = useState("");
+  const [evidenceLinks, setEvidenceLinks] = useState<string[]>([""]);
 
   useEffect(() => {
     const readSession = () => {
@@ -94,31 +94,33 @@ export default function DashboardPage() {
   }, [bugs]);
 
   function startEdit(bug: Bug) {
+    const parsedSteps = bug.reproductionSteps
+      .split("\n")
+      .map((step) => step.replace(/^\s*\d+\.\s*/, "").trim())
+      .filter((step) => step.length > 0);
     setActiveBug(bug);
     setTitle(bug.title);
     setDescription(bug.description);
-    setReproductionSteps(bug.reproductionSteps);
+    setReproductionSteps(parsedSteps.length ? parsedSteps : [""]);
     setSeverity(bug.severity);
-    setEvidenceLinks(bug.evidenceLinks.join("\n"));
+    setEvidenceLinks(bug.evidenceLinks.length ? bug.evidenceLinks : [""]);
   }
 
   function resetEdit() {
     setActiveBug(null);
     setTitle("");
     setDescription("");
-    setReproductionSteps("");
+    setReproductionSteps([""]);
     setSeverity("LOW");
-    setEvidenceLinks("");
+    setEvidenceLinks([""]);
   }
 
   async function saveEdit() {
     if (!user?.minecraftUsername || !activeBug) return;
     setLoading(true);
     setError(null);
-    const links = evidenceLinks
-      .split(/\n|,/)
-      .map((link) => link.trim())
-      .filter((link) => link.length > 0);
+    const links = evidenceLinks.map((link) => link.trim()).filter((link) => link.length > 0);
+    const cleanedSteps = reproductionSteps.map((step) => step.trim()).filter((step) => step.length > 0);
     try {
       const res = await fetch(`/api/bugs/${activeBug.id}`, {
         method: "PATCH",
@@ -127,7 +129,7 @@ export default function DashboardPage() {
           minecraftIgn: user.minecraftUsername,
           title,
           description,
-          reproductionSteps,
+          reproductionSteps: cleanedSteps.map((step, index) => `${index + 1}. ${step}`).join("\n"),
           severity,
           evidenceLinks: links,
         }),
@@ -313,23 +315,106 @@ export default function DashboardPage() {
               </div>
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reproduction Steps</label>
-                <textarea
-                  value={reproductionSteps}
-                  onChange={(event) => setReproductionSteps(event.target.value)}
-                  rows={4}
-                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                />
+                <div className="mt-2 rounded-xl border border-black/40 bg-[#121722]/80 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-semibold text-white">Steps</div>
+                    <button
+                      type="button"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      onClick={() => setReproductionSteps((prev) => [...prev, ""])}
+                      aria-label="Add reproduction step"
+                    >
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                        <path
+                          d="M10 4v12M4 10h12"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="mt-3 grid gap-3">
+                    {reproductionSteps.map((step, index) => (
+                      <div key={`repro-step-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0f131a]/80 text-xs font-semibold text-white/60">
+                          {index + 1}
+                        </div>
+                        <input
+                          value={step}
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            setReproductionSteps((prev) => prev.map((item, i) => (i === index ? value : item)));
+                          }}
+                          placeholder={`Step ${index + 1}`}
+                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                        />
+                        <div className="flex items-center gap-2">
+                          {reproductionSteps.length > 1 && (
+                            <button
+                              type="button"
+                              className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-3 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                              onClick={() => setReproductionSteps((prev) => prev.filter((_, i) => i !== index))}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">
                   Evidence Links
                 </label>
-                <textarea
-                  value={evidenceLinks}
-                  onChange={(event) => setEvidenceLinks(event.target.value)}
-                  rows={3}
-                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                />
+                <div className="mt-2 rounded-xl border border-black/40 bg-[#121722]/80 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-semibold text-white">Links</div>
+                    <button
+                      type="button"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
+                      aria-label="Add evidence link"
+                    >
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                        <path
+                          d="M10 4v12M4 10h12"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="mt-3 grid gap-3">
+                    {evidenceLinks.map((link, index) => (
+                      <div key={`evidence-link-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <input
+                          value={link}
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            setEvidenceLinks((prev) => prev.map((item, i) => (i === index ? value : item)));
+                          }}
+                          placeholder="https://"
+                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                        />
+                        <div className="flex items-center gap-2">
+                          {evidenceLinks.length > 1 && (
+                            <button
+                              type="button"
+                              className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-3 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                              onClick={() => setEvidenceLinks((prev) => prev.filter((_, i) => i !== index))}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div className="flex flex-wrap gap-3">
                 <button
