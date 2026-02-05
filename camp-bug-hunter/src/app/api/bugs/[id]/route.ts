@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { BugRepository } from "@/lib/bugRepository";
 import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
@@ -7,8 +8,8 @@ import type { Bug, Status } from "@/types/bug";
 
 const repo = new BugRepository();
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const { searchParams } = new URL(request.url);
   const includeHidden = searchParams.get("includeHidden") === "true";
   const cookieStore = await cookies();
@@ -21,9 +22,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
   return NextResponse.json(bug);
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const cookieStore = await cookies();
     const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));
     const body = await request.json();
@@ -82,9 +83,9 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { searchParams } = new URL(request.url);
     const cookieStore = await cookies();
     const isAdmin = Boolean(getAdminSession(cookieStore.get(adminSessionCookieName)?.value));
