@@ -1,9 +1,17 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import FilterBar from "./_components/FilterBar";
 import BugsTable from "./_components/BugsTable";
+import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
 
 export const dynamic = "force-dynamic";
 
-export default function BugsPage() {
+export default async function BugsPage() {
+  const cookieStore = await cookies();
+  const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
+  if (adminSession) {
+    redirect("/admin");
+  }
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 shadow-lg shadow-black/30">

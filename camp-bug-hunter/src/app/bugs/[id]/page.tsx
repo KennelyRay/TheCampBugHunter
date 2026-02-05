@@ -14,24 +14,15 @@ async function getBug(id: string, includeHidden: boolean): Promise<Bug | null> {
 
 export default async function BugPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { id } = await params;
-  const adminFlag = searchParams?.admin;
-  const includeHiddenParam = searchParams?.includeHidden;
   const cookieStore = await cookies();
   const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
-  const canSeeHidden = Boolean(adminSession);
-  const isAdmin = adminFlag === "1" && canSeeHidden;
+  const isAdmin = Boolean(adminSession);
   const backHref = isAdmin ? "/admin" : "/bugs";
-  const includeHidden =
-    canSeeHidden &&
-    (isAdmin ||
-      includeHiddenParam === "true" ||
-      (Array.isArray(includeHiddenParam) && includeHiddenParam.includes("true")));
+  const includeHidden = isAdmin;
   const bug = await getBug(id, includeHidden);
   if (!bug) {
     return (

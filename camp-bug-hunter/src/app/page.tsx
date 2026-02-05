@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import ButtonLink from "@/components/ButtonLink";
 import { BugRepository } from "@/lib/bugRepository";
+import { adminSessionCookieName, getAdminSession } from "@/lib/adminSession";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  const cookieStore = await cookies();
+  const adminSession = getAdminSession(cookieStore.get(adminSessionCookieName)?.value);
+  const viewBugsHref = adminSession ? "/admin" : "/bugs";
   const repo = new BugRepository();
   const bugs = await repo.list();
   const recentBugs = bugs.slice(0, 5);
@@ -36,7 +41,7 @@ export default async function Home() {
             Report issues fast, track progress, and keep the server experience polished.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/bugs" variant="primary">View Bugs</ButtonLink>
+            <ButtonLink href={viewBugsHref} variant="primary">View Bugs</ButtonLink>
             <ButtonLink href="/report" variant="secondary">Report a Bug</ButtonLink>
           </div>
         </div>
@@ -45,7 +50,9 @@ export default async function Home() {
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-5 text-white shadow-lg shadow-black/20">
           <div className="flex items-center justify-between">
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Recent Bugs</div>
-            <Link href="/bugs" className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">View all</Link>
+            <Link href={viewBugsHref} className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">
+              View all
+            </Link>
           </div>
           {recentBugs.length === 0 ? (
             <ul className="mt-4 space-y-3">
