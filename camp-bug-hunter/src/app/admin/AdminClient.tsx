@@ -240,7 +240,7 @@ export default function AdminClient() {
                   <td className="border-b border-black/30 px-4 py-3">
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                       <Link
-                        href={`/bugs/${b.id}?admin=1`}
+                        href={`/admin/bugs/${b.id}`}
                         className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
                       >
                         View

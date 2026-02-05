@@ -105,7 +105,7 @@ export default function BugsTable({ includeHidden = false, forceAdminLinks }: Bu
             <tr key={b.id} className="odd:bg-[#131821] hover:bg-[#1a202a]">
               <td className="border-b border-black/30 px-4 py-3 text-sm text-white/90">
                 {forceAdminLinks || isAdmin ? (
-                  <Link href={`/bugs/${b.id}`} className="font-semibold text-white hover:text-[#f3a46b]">
+                  <Link href={`/admin/bugs/${b.id}`} className="font-semibold text-white hover:text-[#f3a46b]">
                     {b.title}
                   </Link>
                 ) : (
