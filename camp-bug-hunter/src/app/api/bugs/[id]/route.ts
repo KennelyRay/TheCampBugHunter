@@ -38,12 +38,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       ? body.evidenceLinks.filter((link: unknown) => typeof link === "string" && link.trim().length > 0)
       : undefined;
     const minecraftIgn = typeof body.minecraftIgn === "string" ? body.minecraftIgn.trim() : "";
+    const existing = await repo.get(id, { includeHidden: true });
+    if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
     if (!isAdmin) {
       if (!minecraftIgn) {
         return NextResponse.json({ error: "Missing owner" }, { status: 400 });
       }
-      const existing = await repo.get(id, { includeHidden: true });
-      if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
       if (existing.minecraftIgn !== minecraftIgn) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
@@ -51,7 +51,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!status && hidden === undefined && !title && !description && !reproductionSteps && !evidenceLinks && !severity) {
       return NextResponse.json({ error: "Missing update fields" }, { status: 400 });
     }
-    const existing = isAdmin && status ? await repo.get(id, { includeHidden: true }) : null;
     const updated = await repo.update(id, {
       status,
       hidden,
@@ -62,14 +61,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       severity: severity || undefined,
     });
     if (!updated) return NextResponse.json({ error: "Update failed" }, { status: 500 });
-    if (
-      status === "FIXED" &&
-      existing &&
-      existing.status !== "FIXED" &&
-      existing.status !== "NOT_A_BUG"
-    ) {
+    if (isAdmin && status === "FIXED" && existing.status !== "FIXED") {
       try {
-        await prisma.user.update({
+        await prisma.user.updateMany({
           where: { minecraftUsername: existing.minecraftIgn },
           data: { rewardBalance: { increment: 1 } },
         });
