@@ -86,6 +86,11 @@ export default function AdminClient() {
   const [rewardLogs, setRewardLogs] = useState<RewardLog[]>([]);
   const [rewardLogsLoading, setRewardLogsLoading] = useState(false);
   const [rewardLogsError, setRewardLogsError] = useState<string | null>(null);
+  const [rewardLogsPage, setRewardLogsPage] = useState(1);
+  const [rewardLogsPageCount, setRewardLogsPageCount] = useState(1);
+  const [rewardLogsTotal, setRewardLogsTotal] = useState(0);
+  const [rewardLogsRange, setRewardLogsRange] = useState<"day" | "week" | "month" | "year" | "all">("all");
+  const [rewardLogsActionPending, setRewardLogsActionPending] = useState(false);
   const [userPage, setUserPage] = useState(1);
 
   const load = useCallback(async () => {
@@ -129,17 +134,67 @@ export default function AdminClient() {
   const loadRewardLogs = useCallback(async () => {
     setRewardLogsLoading(true);
     try {
-      const res = await fetch("/api/admin/rewards/logs");
+      const params = new URLSearchParams();
+      params.set("page", String(rewardLogsPage));
+      params.set("limit", "20");
+      params.set("range", rewardLogsRange);
+      const res = await fetch(`/api/admin/rewards/logs?${params.toString()}`);
       if (!res.ok) throw new Error("Failed");
-      const data = (await res.json()) as { logs: RewardLog[] };
+      const data = (await res.json()) as { logs: RewardLog[]; pageCount: number; total: number };
       setRewardLogs(data.logs);
+      setRewardLogsPageCount(data.pageCount);
+      setRewardLogsTotal(data.total);
       setRewardLogsError(null);
     } catch {
       setRewardLogsError("Unable to load reward logs.");
     } finally {
       setRewardLogsLoading(false);
     }
-  }, []);
+  }, [rewardLogsPage, rewardLogsRange]);
+
+  const deleteRewardLog = useCallback(
+    async (id: string) => {
+      if (rewardLogsActionPending) return;
+      setRewardLogsActionPending(true);
+      try {
+        const res = await fetch("/api/admin/rewards/logs", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+        if (res.ok) {
+          await loadRewardLogs();
+        } else {
+          setRewardLogsError("Failed to delete log.");
+        }
+      } finally {
+        setRewardLogsActionPending(false);
+      }
+    },
+    [loadRewardLogs, rewardLogsActionPending]
+  );
+
+  const clearRewardLogs = useCallback(async () => {
+    if (rewardLogsActionPending) return;
+    const confirmed = window.confirm("Clear all reward logs? This cannot be undone.");
+    if (!confirmed) return;
+    setRewardLogsActionPending(true);
+    try {
+      const res = await fetch("/api/admin/rewards/logs", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clear: true }),
+      });
+      if (res.ok) {
+        setRewardLogsPage(1);
+        await loadRewardLogs();
+      } else {
+        setRewardLogsError("Failed to clear logs.");
+      }
+    } finally {
+      setRewardLogsActionPending(false);
+    }
+  }, [loadRewardLogs, rewardLogsActionPending]);
 
   useEffect(() => {
     if (activeTab !== "rewards") return;
@@ -178,7 +233,11 @@ export default function AdminClient() {
   useEffect(() => {
     if (activeTab !== "logs") return;
     void loadRewardLogs();
-  }, [activeTab, loadRewardLogs]);
+  }, [activeTab, loadRewardLogs, rewardLogsPage, rewardLogsRange]);
+
+  useEffect(() => {
+    setRewardLogsPage(1);
+  }, [rewardLogsRange]);
 
   useEffect(() => {
     setUserPage(1);
@@ -1033,15 +1092,38 @@ export default function AdminClient() {
       {activeTab === "logs" && (
         <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="text-sm font-semibold text-white">Reward Logs</div>
-            <button
-              type="button"
-              className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
-              onClick={loadRewardLogs}
-              disabled={rewardLogsLoading}
-            >
-              {rewardLogsLoading ? "Refreshing..." : "Refresh"}
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="text-sm font-semibold text-white">Reward Logs</div>
+              <select
+                className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                value={rewardLogsRange}
+                onChange={(e) => setRewardLogsRange(e.target.value as "day" | "week" | "month" | "year" | "all")}
+              >
+                <option value="all">All time</option>
+                <option value="day">Last day</option>
+                <option value="week">Last week</option>
+                <option value="month">Last month</option>
+                <option value="year">Last year</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                onClick={loadRewardLogs}
+                disabled={rewardLogsLoading}
+              >
+                {rewardLogsLoading ? "Refreshing..." : "Refresh"}
+              </button>
+              <button
+                type="button"
+                className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-200 transition hover:border-red-400/70 hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={clearRewardLogs}
+                disabled={rewardLogsLoading || rewardLogsActionPending || rewardLogsTotal === 0}
+              >
+                Clear All
+              </button>
+            </div>
           </div>
           <div className="mt-4 space-y-2">
             {rewardLogsLoading && <div className="text-xs text-white/50">Loading logs...</div>}
@@ -1065,14 +1147,49 @@ export default function AdminClient() {
                     <div className="text-xs text-white/60">{rewardLabel}</div>
                     <div className="text-xs text-white/50">{entry.command}</div>
                   </div>
-                  <div className="flex flex-col items-end gap-1 text-xs text-white/60">
-                    <span>Redeemed: {createdAt}</span>
-                    <span>Delivered: {deliveredAt}</span>
+                  <div className="flex flex-col items-end gap-2 text-xs text-white/60">
+                    <div className="flex flex-col items-end gap-1">
+                      <span>Redeemed: {createdAt}</span>
+                      <span>Delivered: {deliveredAt}</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-[11px] font-semibold text-red-200 transition hover:border-red-400/70 hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      onClick={() => deleteRewardLog(entry.id)}
+                      disabled={rewardLogsActionPending}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               );
             })}
           </div>
+          {!rewardLogsLoading && !rewardLogsError && rewardLogsTotal > 0 && (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-white/60">
+              <span>
+                Page {rewardLogsPage} of {rewardLogsPageCount} • {rewardLogsTotal} total
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={() => setRewardLogsPage((prev) => Math.max(1, prev - 1))}
+                  disabled={rewardLogsPage === 1}
+                >
+                  Prev
+                </button>
+                <button
+                  type="button"
+                  className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={() => setRewardLogsPage((prev) => Math.min(rewardLogsPageCount, prev + 1))}
+                  disabled={rewardLogsPage >= rewardLogsPageCount}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {editReward && (
