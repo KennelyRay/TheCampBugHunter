@@ -17,6 +17,7 @@ export async function GET(request: Request) {
     const pageParam = Number(searchParams.get("page") ?? "1");
     const page = Number.isFinite(pageParam) ? Math.max(1, pageParam) : 1;
     const range = searchParams.get("range") ?? "all";
+    const usernameSearch = searchParams.get("username")?.trim() ?? "";
     const now = new Date();
     let rangeStart: Date | null = null;
     if (range === "day") {
@@ -32,11 +33,18 @@ export async function GET(request: Request) {
       start.setFullYear(start.getFullYear() - 1);
       rangeStart = start;
     }
-    const where = rangeStart ? { createdAt: { gte: rangeStart } } : undefined;
-    const total = await prisma.rewardRedemption.count({ where });
+    const where: { createdAt?: { gte: Date }; minecraftUsername?: { contains: string; mode: "insensitive" } } = {};
+    if (rangeStart) {
+      where.createdAt = { gte: rangeStart };
+    }
+    if (usernameSearch) {
+      where.minecraftUsername = { contains: usernameSearch, mode: "insensitive" };
+    }
+    const resolvedWhere = Object.keys(where).length > 0 ? where : undefined;
+    const total = await prisma.rewardRedemption.count({ where: resolvedWhere });
 
     const redemptions = await prisma.rewardRedemption.findMany({
-      where,
+      where: resolvedWhere,
       orderBy: { createdAt: "desc" },
       take: limit,
       skip: (page - 1) * limit,

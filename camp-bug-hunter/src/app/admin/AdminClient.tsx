@@ -90,6 +90,7 @@ export default function AdminClient() {
   const [rewardLogsPageCount, setRewardLogsPageCount] = useState(1);
   const [rewardLogsTotal, setRewardLogsTotal] = useState(0);
   const [rewardLogsRange, setRewardLogsRange] = useState<"day" | "week" | "month" | "year" | "all">("all");
+  const [rewardLogsUsername, setRewardLogsUsername] = useState("");
   const [rewardLogsActionPending, setRewardLogsActionPending] = useState(false);
   const [userPage, setUserPage] = useState(1);
 
@@ -138,6 +139,9 @@ export default function AdminClient() {
       params.set("page", String(rewardLogsPage));
       params.set("limit", "20");
       params.set("range", rewardLogsRange);
+      if (rewardLogsUsername.trim()) {
+        params.set("username", rewardLogsUsername.trim());
+      }
       const res = await fetch(`/api/admin/rewards/logs?${params.toString()}`);
       if (!res.ok) throw new Error("Failed");
       const data = (await res.json()) as { logs: RewardLog[]; pageCount: number; total: number };
@@ -150,7 +154,7 @@ export default function AdminClient() {
     } finally {
       setRewardLogsLoading(false);
     }
-  }, [rewardLogsPage, rewardLogsRange]);
+  }, [rewardLogsPage, rewardLogsRange, rewardLogsUsername]);
 
   const deleteRewardLog = useCallback(
     async (id: string) => {
@@ -233,11 +237,11 @@ export default function AdminClient() {
   useEffect(() => {
     if (activeTab !== "logs") return;
     void loadRewardLogs();
-  }, [activeTab, loadRewardLogs, rewardLogsPage, rewardLogsRange]);
+  }, [activeTab, loadRewardLogs, rewardLogsPage, rewardLogsRange, rewardLogsUsername]);
 
   useEffect(() => {
     setRewardLogsPage(1);
-  }, [rewardLogsRange]);
+  }, [rewardLogsRange, rewardLogsUsername]);
 
   useEffect(() => {
     setUserPage(1);
@@ -1105,6 +1109,12 @@ export default function AdminClient() {
                 <option value="month">Last month</option>
                 <option value="year">Last year</option>
               </select>
+              <input
+                className="w-56 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                placeholder="Search username"
+                value={rewardLogsUsername}
+                onChange={(e) => setRewardLogsUsername(e.target.value)}
+              />
             </div>
             <div className="flex items-center gap-2">
               <button

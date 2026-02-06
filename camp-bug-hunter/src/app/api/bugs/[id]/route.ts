@@ -62,10 +62,18 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     });
     if (!updated) return NextResponse.json({ error: "Update failed" }, { status: 500 });
     if (isAdmin && status === "FIXED" && existing.status !== "FIXED") {
+      const severityValue = severity ?? existing.severity;
+      const severityCoins: Record<Bug["severity"], number> = {
+        LOW: 1,
+        MEDIUM: 2,
+        HIGH: 3,
+        URGENT: 4,
+      };
+      const rewardIncrement = severityCoins[severityValue] ?? 1;
       try {
         await prisma.user.updateMany({
           where: { minecraftUsername: existing.minecraftIgn },
-          data: { rewardBalance: { increment: 1 } },
+          data: { rewardBalance: { increment: rewardIncrement } },
         });
       } catch {
         return NextResponse.json(updated);

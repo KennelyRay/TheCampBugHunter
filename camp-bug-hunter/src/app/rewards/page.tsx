@@ -226,7 +226,9 @@ export default function RewardsPage() {
             </div>
             <div className="rounded-2xl border border-black/30 bg-[#141922] p-4">
               <div className="text-sm font-semibold text-white">Fix</div>
-              <div className="mt-2 text-sm text-white/65">When a report is marked as fixed, you gain 1 reward coin.</div>
+              <div className="mt-2 text-sm text-white/65">
+                When a report is fixed, coins are awarded by severity: Low 1, Medium 2, High 3, Urgent 4.
+              </div>
             </div>
             <div className="rounded-2xl border border-black/30 bg-[#141922] p-4">
               <div className="text-sm font-semibold text-white">Redeem</div>
@@ -238,7 +240,7 @@ export default function RewardsPage() {
           <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Rewards at a glance</div>
           <div className="mt-4 grid gap-3">
             <div className="rounded-xl border border-black/30 bg-[#141922] px-4 py-3 text-sm text-white/70">
-              Each fixed report earns 1 coin.
+              Fixed reports earn coins by severity: Low 1, Medium 2, High 3, Urgent 4.
             </div>
             <div className="rounded-xl border border-black/30 bg-[#141922] px-4 py-3 text-sm text-white/70">
               Coins never expire.
@@ -269,55 +271,67 @@ export default function RewardsPage() {
         )}
         {!loading && !error && rewards.length > 0 && (
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {rewards.map((reward) => (
-              <div key={reward.id} className="group rounded-2xl border border-black/30 bg-[#141922]/90 p-5 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:border-black/40 hover:bg-[#151c25]">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={reward.iconUrl}
-                      alt={reward.name}
-                      width={48}
-                      height={48}
-                      unoptimized
-                      className="h-12 w-12 rounded-xl border border-white/10 bg-[#0f131a] object-cover"
-                    />
-                    <div>
-                      <div className="text-sm font-semibold text-white">{reward.name}</div>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-white/60">
-                        <span className="text-base font-semibold text-white">{reward.cost}</span>
-                        <Image
-                          src="/RewardCoinIcon.png"
-                          alt="Reward coin"
-                          width={16}
-                          height={16}
-                          className="h-4 w-4"
-                        />
+            {rewards.map((reward) => {
+              const isUnaffordable = balance !== null && balance < reward.cost;
+              return (
+                <div
+                  key={reward.id}
+                  className="group rounded-2xl border border-black/30 bg-[#141922]/90 p-5 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:border-black/40 hover:bg-[#151c25]"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={reward.iconUrl}
+                        alt={reward.name}
+                        width={48}
+                        height={48}
+                        unoptimized
+                        className="h-12 w-12 rounded-xl border border-white/10 bg-[#0f131a] object-cover"
+                      />
+                      <div>
+                        <div className="text-sm font-semibold text-white">{reward.name}</div>
+                        <div className="mt-1 flex items-center gap-2 text-xs text-white/60">
+                          <span className="text-base font-semibold text-white">{reward.cost}</span>
+                          <Image
+                            src="/RewardCoinIcon.png"
+                            alt="Reward coin"
+                            width={16}
+                            height={16}
+                            className="h-4 w-4"
+                          />
+                        </div>
                       </div>
                     </div>
+                    <div
+                      className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${
+                        isUnaffordable
+                          ? "border-rose-400/50 bg-rose-500/15 text-rose-200"
+                          : "border-white/10 bg-white/5 text-white/60"
+                      }`}
+                    >
+                      Reward
+                    </div>
                   </div>
-                  <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                    Reward
-                  </div>
-                </div>
-                <p
-                  className="mt-3 text-sm text-white/70"
-                  style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                >
-                  {reward.description}
-                </p>
-                <div className="mt-5 flex items-center justify-between gap-3">
-                  <div className="text-xs text-white/50">{username ? "Ready to redeem" : "Sign in to redeem"}</div>
-                  <button
-                    type="button"
-                    className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] disabled:cursor-not-allowed disabled:opacity-60"
-                    onClick={() => setConfirmReward(reward)}
-                    disabled={redeemPendingId === reward.id}
+                  <p
+                    className="mt-3 min-h-[3.75rem] text-sm text-white/70"
+                    style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
                   >
-                    {redeemPendingId === reward.id ? "Redeeming..." : "Redeem"}
-                  </button>
+                    {reward.description}
+                  </p>
+                  <div className="mt-5 flex items-center justify-between gap-3">
+                    <div className="text-xs text-white/50">{username ? "Ready to redeem" : "Sign in to redeem"}</div>
+                    <button
+                      type="button"
+                      className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] disabled:cursor-not-allowed disabled:opacity-60"
+                      onClick={() => setConfirmReward(reward)}
+                      disabled={redeemPendingId === reward.id}
+                    >
+                      {redeemPendingId === reward.id ? "Redeeming..." : "Redeem"}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
