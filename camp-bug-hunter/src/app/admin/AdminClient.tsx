@@ -595,10 +595,20 @@ export default function AdminClient() {
                               {b.hidden ? "Unhide" : "Hide"}
                             </button>
                             <button
-                              className="inline-flex items-center justify-center rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-200 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-red-400/70 hover:bg-red-500/20 hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/70"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-500/40 bg-red-500/10 text-red-200 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-red-400/70 hover:bg-red-500/20 hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/70"
                               onClick={() => setDeleteTarget(b)}
+                              aria-label="Delete report"
+                              title="Delete"
                             >
-                              Delete
+                              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                                <path
+                                  d="M6 6.5h8m-6 0V5a1 1 0 011-1h2a1 1 0 011 1v1.5m-6 0l.5 8a1 1 0 001 1h4a1 1 0 001-1l.5-8"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
                             </button>
                           </div>
                           {statusOpenFor === b.id && (
@@ -899,17 +909,37 @@ export default function AdminClient() {
                     </div>
                     <button
                       type="button"
-                      className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white/70 transition hover:border-white/20 hover:text-white"
                       onClick={() => startEditReward(reward)}
+                      aria-label="Edit reward"
+                      title="Edit"
                     >
-                      Edit
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                        <path
+                          d="M4 13.5V16h2.5l7.4-7.4-2.5-2.5L4 13.5zM13.6 5.4l1 1a1 1 0 001.4 0l.6-.6a1 1 0 000-1.4l-1-1a1 1 0 00-1.4 0l-.6.6a1 1 0 000 1.4z"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </button>
                     <button
                       type="button"
-                      className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-200 transition hover:border-red-400/70 hover:bg-red-500/20"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-500/40 bg-red-500/10 text-red-200 transition hover:border-red-400/70 hover:bg-red-500/20"
                       onClick={() => setRewardDeleteTarget(reward)}
+                      aria-label="Delete reward"
+                      title="Delete"
                     >
-                      Delete
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
+                        <path
+                          d="M6 6.5h8m-6 0V5a1 1 0 011-1h2a1 1 0 011 1v1.5m-6 0l.5 8a1 1 0 001 1h4a1 1 0 001-1l.5-8"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </div>
