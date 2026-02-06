@@ -244,7 +244,12 @@ export default function RewardsPage() {
                     Reward
                   </div>
                 </div>
-                <p className="mt-4 text-sm text-white/70">{reward.description}</p>
+                <p
+                  className="mt-3 text-sm text-white/70"
+                  style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+                >
+                  {reward.description}
+                </p>
                 <div className="mt-5 flex items-center justify-between gap-3">
                   <div className="text-xs text-white/50">{username ? "Ready to redeem" : "Sign in to redeem"}</div>
                   <button

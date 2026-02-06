@@ -73,6 +73,7 @@ export default function AdminClient() {
   const [usersError, setUsersError] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<{ id: string; minecraftUsername: string; email: string; rewardBalance: number } | null>(null);
   const [coinChangeAmount, setCoinChangeAmount] = useState("");
+  const [userPage, setUserPage] = useState(1);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -146,6 +147,10 @@ export default function AdminClient() {
     void loadRewards();
   }, [activeTab, loadRewards]);
 
+  useEffect(() => {
+    setUserPage(1);
+  }, [userSearch, users.length]);
+
   const counts = useMemo(() => {
     return {
       total: bugs.length,
@@ -155,6 +160,13 @@ export default function AdminClient() {
       urgent: bugs.filter((b) => b.severity === "URGENT").length,
     };
   }, [bugs]);
+
+  const usersPerPage = 6;
+  const totalUserPages = Math.max(1, Math.ceil(users.length / usersPerPage));
+  const visibleUsers = useMemo(() => {
+    const start = (userPage - 1) * usersPerPage;
+    return users.slice(start, start + usersPerPage);
+  }, [userPage, users]);
 
   async function updateStatus(id: string, s: Status) {
     const res = await fetch(`/api/bugs/${id}?admin=1`, {
@@ -832,7 +844,7 @@ export default function AdminClient() {
                     No users found.
                   </div>
                 )}
-                {!usersLoading && !usersError && users.map((user) => (
+                {!usersLoading && !usersError && visibleUsers.map((user) => (
                   <button
                     key={user.id}
                     type="button"
@@ -862,6 +874,31 @@ export default function AdminClient() {
                   </button>
                 ))}
               </div>
+              {!usersLoading && !usersError && users.length > usersPerPage && (
+                <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+                  <span>
+                    Page {userPage} of {totalUserPages}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={() => setUserPage((prev) => Math.max(1, prev - 1))}
+                      disabled={userPage === 1}
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={() => setUserPage((prev) => Math.min(totalUserPages, prev + 1))}
+                      disabled={userPage >= totalUserPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
@@ -904,8 +941,9 @@ export default function AdminClient() {
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
-                      {reward.cost} coins
+                    <div className="flex items-center gap-2 rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                      <span>{reward.cost}</span>
+                      <Image src="/RewardCoinIcon.png" alt="Reward coin" width={14} height={14} className="h-3.5 w-3.5" />
                     </div>
                     <button
                       type="button"
