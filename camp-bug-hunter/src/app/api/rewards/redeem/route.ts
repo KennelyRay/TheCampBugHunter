@@ -35,7 +35,15 @@ export async function POST(request: Request) {
         data: { rewardBalance: user.rewardBalance - reward.cost },
         select: { rewardBalance: true },
       });
-      const resolvedCommand = reward.command.replaceAll("{player}", minecraftUsername).trim();
+      let resolvedCommand = reward.command.trim();
+      resolvedCommand = resolvedCommand
+        .replaceAll("{player}", minecraftUsername)
+        .replaceAll("{username}", minecraftUsername)
+        .replaceAll("{minecraftUsername}", minecraftUsername)
+        .trim();
+      if (resolvedCommand.startsWith("/")) {
+        resolvedCommand = resolvedCommand.slice(1).trim();
+      }
       await tx.rewardRedemption.create({
         data: {
           minecraftUsername,
