@@ -28,6 +28,16 @@ type Reward = {
   active: boolean;
 };
 
+type RewardLog = {
+  id: string;
+  minecraftUsername: string;
+  rewardId: string;
+  command: string;
+  createdAt: string;
+  deliveredAt: string | null;
+  reward: { id: string; name: string; cost: number } | null;
+};
+
 export default function AdminClient() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,13 +76,16 @@ export default function AdminClient() {
   const [rewardDeletePending, setRewardDeletePending] = useState(false);
   const [coinPending, setCoinPending] = useState(false);
   const [coinMessage, setCoinMessage] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"bugs" | "rewards">("bugs");
+  const [activeTab, setActiveTab] = useState<"bugs" | "rewards" | "logs">("bugs");
   const [userSearch, setUserSearch] = useState("");
   const [users, setUsers] = useState<{ id: string; minecraftUsername: string; email: string; rewardBalance: number }[]>([]);
   const [usersLoading, setUsersLoading] = useState(false);
   const [usersError, setUsersError] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<{ id: string; minecraftUsername: string; email: string; rewardBalance: number } | null>(null);
   const [coinChangeAmount, setCoinChangeAmount] = useState("");
+  const [rewardLogs, setRewardLogs] = useState<RewardLog[]>([]);
+  const [rewardLogsLoading, setRewardLogsLoading] = useState(false);
+  const [rewardLogsError, setRewardLogsError] = useState<string | null>(null);
   const [userPage, setUserPage] = useState(1);
 
   const load = useCallback(async () => {
@@ -113,6 +126,21 @@ export default function AdminClient() {
     }
   }, []);
 
+  const loadRewardLogs = useCallback(async () => {
+    setRewardLogsLoading(true);
+    try {
+      const res = await fetch("/api/admin/rewards/logs");
+      if (!res.ok) throw new Error("Failed");
+      const data = (await res.json()) as { logs: RewardLog[] };
+      setRewardLogs(data.logs);
+      setRewardLogsError(null);
+    } catch {
+      setRewardLogsError("Unable to load reward logs.");
+    } finally {
+      setRewardLogsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab !== "rewards") return;
     let mounted = true;
@@ -146,6 +174,11 @@ export default function AdminClient() {
     if (activeTab !== "rewards") return;
     void loadRewards();
   }, [activeTab, loadRewards]);
+
+  useEffect(() => {
+    if (activeTab !== "logs") return;
+    void loadRewardLogs();
+  }, [activeTab, loadRewardLogs]);
 
   useEffect(() => {
     setUserPage(1);
@@ -450,6 +483,17 @@ export default function AdminClient() {
             type="button"
           >
             Rewards
+          </button>
+          <button
+            className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
+              activeTab === "logs"
+                ? "border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b]"
+                : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white/80"
+            }`}
+            onClick={() => setActiveTab("logs")}
+            type="button"
+          >
+            Logs
           </button>
         </div>
         {activeTab === "bugs" && (
@@ -983,6 +1027,51 @@ export default function AdminClient() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+      {activeTab === "logs" && (
+        <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="text-sm font-semibold text-white">Reward Logs</div>
+            <button
+              type="button"
+              className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+              onClick={loadRewardLogs}
+              disabled={rewardLogsLoading}
+            >
+              {rewardLogsLoading ? "Refreshing..." : "Refresh"}
+            </button>
+          </div>
+          <div className="mt-4 space-y-2">
+            {rewardLogsLoading && <div className="text-xs text-white/50">Loading logs...</div>}
+            {rewardLogsError && <div className="text-xs text-rose-300">{rewardLogsError}</div>}
+            {!rewardLogsLoading && !rewardLogsError && rewardLogs.length === 0 && (
+              <div className="rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3 text-xs text-white/60">
+                No reward logs found.
+              </div>
+            )}
+            {!rewardLogsLoading && !rewardLogsError && rewardLogs.map((entry) => {
+              const createdAt = new Date(entry.createdAt).toLocaleString();
+              const deliveredAt = entry.deliveredAt ? new Date(entry.deliveredAt).toLocaleString() : "Pending";
+              const rewardLabel = entry.reward ? `${entry.reward.name} • ${entry.reward.cost} coins` : entry.rewardId;
+              return (
+                <div
+                  key={entry.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/40 bg-[#141922] px-3 py-3 text-sm text-white/80"
+                >
+                  <div className="flex flex-col gap-1">
+                    <div className="text-sm font-semibold text-white">{entry.minecraftUsername}</div>
+                    <div className="text-xs text-white/60">{rewardLabel}</div>
+                    <div className="text-xs text-white/50">{entry.command}</div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 text-xs text-white/60">
+                    <span>Redeemed: {createdAt}</span>
+                    <span>Delivered: {deliveredAt}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
