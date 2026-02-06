@@ -35,6 +35,7 @@ export default function AdminClient() {
   const [rewardCost, setRewardCost] = useState("");
   const [rewardDescription, setRewardDescription] = useState("");
   const [rewardIconUrl, setRewardIconUrl] = useState("");
+  const [iconUploadKey, setIconUploadKey] = useState(0);
   const [rewardPending, setRewardPending] = useState(false);
   const [rewardMessage, setRewardMessage] = useState<string | null>(null);
   const [coinPending, setCoinPending] = useState(false);
@@ -151,7 +152,7 @@ export default function AdminClient() {
     if (rewardPending) return;
     const cost = Number(rewardCost);
     if (!rewardName.trim() || !rewardDescription.trim() || !rewardIconUrl.trim() || !Number.isFinite(cost) || cost <= 0) {
-      setRewardMessage("Enter a name, description, icon, and positive cost.");
+      setRewardMessage("Enter a name, description, icon image, and positive cost.");
       return;
     }
     setRewardPending(true);
@@ -171,11 +172,38 @@ export default function AdminClient() {
       setRewardDescription("");
       setRewardIconUrl("");
       setRewardCost("");
+      setIconUploadKey((prev) => prev + 1);
       setRewardMessage("Reward created.");
     } else {
       setRewardMessage("Failed to create reward.");
     }
     setRewardPending(false);
+  }
+
+  function handleIconUpload(file: File | null) {
+    if (!file) {
+      setRewardIconUrl("");
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setRewardMessage("Upload a valid image file.");
+      setIconUploadKey((prev) => prev + 1);
+      return;
+    }
+    setRewardMessage(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === "string" ? reader.result : "";
+      if (result) {
+        setRewardIconUrl(result);
+      } else {
+        setRewardMessage("Failed to read image.");
+      }
+    };
+    reader.onerror = () => {
+      setRewardMessage("Failed to read image.");
+    };
+    reader.readAsDataURL(file);
   }
 
   async function updateCoins(direction: "add" | "remove") {
@@ -204,7 +232,7 @@ export default function AdminClient() {
             : user
         )
       );
-      setSelectedUser((prev) => (prev ? { ...prev, rewardBalance: data.balance } : prev));
+      setSelectedUser(null);
     } else {
       setCoinMessage("Failed to update coins.");
     }
@@ -548,13 +576,27 @@ export default function AdminClient() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon URL</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon</label>
                   <input
+                    key={iconUploadKey}
+                    type="file"
+                    accept="image/*"
                     className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-                    value={rewardIconUrl}
-                    onChange={(e) => setRewardIconUrl(e.target.value)}
-                    placeholder="https://"
+                    onChange={(e) => handleIconUpload(e.target.files?.[0] ?? null)}
                   />
+                  {rewardIconUrl && (
+                    <div className="mt-3 flex items-center gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2">
+                      <Image
+                        src={rewardIconUrl}
+                        alt="Reward icon preview"
+                        width={36}
+                        height={36}
+                        unoptimized
+                        className="h-9 w-9 rounded-lg border border-white/10 object-cover"
+                      />
+                      <span className="text-xs text-white/60">Preview</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
