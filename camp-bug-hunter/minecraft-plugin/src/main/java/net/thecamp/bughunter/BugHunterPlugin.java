@@ -131,13 +131,24 @@ public final class BugHunterPlugin extends JavaPlugin {
       }
 
       HttpResponse<String> response = httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+      String rawBody = response.body();
       if (response.statusCode() != 200) {
-        getLogger().warning("Reward command service returned " + response.statusCode());
+        String message = "Reward command service returned " + response.statusCode();
+        if (rawBody != null && !rawBody.isBlank()) {
+          message += ": " + rawBody;
+        }
+        getLogger().warning(message);
+        if (response.statusCode() == 401) {
+          getLogger().warning("Check the plugin token configuration.");
+        }
         return;
       }
 
-      JsonObject body = gson.fromJson(response.body(), JsonObject.class);
+      JsonObject body = gson.fromJson(rawBody, JsonObject.class);
       if (body == null || !body.has("commands")) {
+        if (rawBody != null && !rawBody.isBlank()) {
+          getLogger().warning("Reward command response missing commands: " + rawBody);
+        }
         return;
       }
       JsonArray commands = body.getAsJsonArray("commands");
@@ -161,9 +172,13 @@ public final class BugHunterPlugin extends JavaPlugin {
         return;
       }
 
+      getLogger().info("Dispatching " + commandList.size() + " reward command(s).");
       Bukkit.getScheduler().runTask(this, () -> {
         for (String cmd : commandList) {
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+          boolean ok = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+          if (!ok) {
+            getLogger().warning("Reward command failed: " + cmd);
+          }
         }
       });
     } catch (Exception error) {
