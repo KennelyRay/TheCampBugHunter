@@ -18,6 +18,15 @@ const statusUpdateOptions: { value: Status; label: string }[] = [
   { value: "ON_INVESTIGATION", label: "On Investigation" },
 ];
 
+type Reward = {
+  id: string;
+  name: string;
+  description: string;
+  iconUrl: string;
+  cost: number;
+  active: boolean;
+};
+
 export default function AdminClient() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +47,18 @@ export default function AdminClient() {
   const [iconUploadKey, setIconUploadKey] = useState(0);
   const [rewardPending, setRewardPending] = useState(false);
   const [rewardMessage, setRewardMessage] = useState<string | null>(null);
+  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [rewardsLoading, setRewardsLoading] = useState(false);
+  const [rewardsError, setRewardsError] = useState<string | null>(null);
+  const [editReward, setEditReward] = useState<Reward | null>(null);
+  const [editRewardName, setEditRewardName] = useState("");
+  const [editRewardCost, setEditRewardCost] = useState("");
+  const [editRewardDescription, setEditRewardDescription] = useState("");
+  const [editRewardIconUrl, setEditRewardIconUrl] = useState("");
+  const [editIconUploadKey, setEditIconUploadKey] = useState(0);
+  const [editRewardPending, setEditRewardPending] = useState(false);
+  const [rewardDeleteTarget, setRewardDeleteTarget] = useState<Reward | null>(null);
+  const [rewardDeletePending, setRewardDeletePending] = useState(false);
   const [coinPending, setCoinPending] = useState(false);
   const [coinMessage, setCoinMessage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"bugs" | "rewards">("bugs");
@@ -71,6 +92,21 @@ export default function AdminClient() {
     load();
   }, [load]);
 
+  const loadRewards = useCallback(async () => {
+    setRewardsLoading(true);
+    try {
+      const res = await fetch("/api/rewards?includeInactive=true");
+      if (!res.ok) throw new Error("Failed");
+      const data = (await res.json()) as Reward[];
+      setRewards(data);
+      setRewardsError(null);
+    } catch {
+      setRewardsError("Unable to load rewards.");
+    } finally {
+      setRewardsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab !== "rewards") return;
     let mounted = true;
@@ -99,6 +135,11 @@ export default function AdminClient() {
       controller.abort();
     };
   }, [activeTab, userSearch]);
+
+  useEffect(() => {
+    if (activeTab !== "rewards") return;
+    void loadRewards();
+  }, [activeTab, loadRewards]);
 
   const counts = useMemo(() => {
     return {
@@ -168,11 +209,13 @@ export default function AdminClient() {
       }),
     });
     if (res.ok) {
+      const created = (await res.json()) as Reward;
       setRewardName("");
       setRewardDescription("");
       setRewardIconUrl("");
       setRewardCost("");
       setIconUploadKey((prev) => prev + 1);
+      setRewards((prev) => [...prev, created].sort((a, b) => a.cost - b.cost));
       setRewardMessage("Reward created.");
     } else {
       setRewardMessage("Failed to create reward.");
@@ -204,6 +247,100 @@ export default function AdminClient() {
       setRewardMessage("Failed to read image.");
     };
     reader.readAsDataURL(file);
+  }
+
+  function handleEditIconUpload(file: File | null) {
+    if (!file) {
+      setEditRewardIconUrl("");
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setRewardMessage("Upload a valid image file.");
+      setEditIconUploadKey((prev) => prev + 1);
+      return;
+    }
+    setRewardMessage(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === "string" ? reader.result : "";
+      if (result) {
+        setEditRewardIconUrl(result);
+      } else {
+        setRewardMessage("Failed to read image.");
+      }
+    };
+    reader.onerror = () => {
+      setRewardMessage("Failed to read image.");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function startEditReward(reward: Reward) {
+    setEditReward(reward);
+    setEditRewardName(reward.name);
+    setEditRewardDescription(reward.description);
+    setEditRewardCost(String(reward.cost));
+    setEditRewardIconUrl(reward.iconUrl);
+    setEditIconUploadKey((prev) => prev + 1);
+    setRewardMessage(null);
+  }
+
+  async function saveRewardEdits() {
+    if (!editReward || editRewardPending) return;
+    const cost = Number(editRewardCost);
+    if (
+      !editRewardName.trim() ||
+      !editRewardDescription.trim() ||
+      !editRewardIconUrl.trim() ||
+      !Number.isFinite(cost) ||
+      cost <= 0
+    ) {
+      setRewardMessage("Enter a name, description, icon image, and positive cost.");
+      return;
+    }
+    setEditRewardPending(true);
+    const res = await fetch("/api/rewards", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: editReward.id,
+        name: editRewardName.trim(),
+        description: editRewardDescription.trim(),
+        iconUrl: editRewardIconUrl.trim(),
+        cost,
+      }),
+    });
+    if (res.ok) {
+      const updated = (await res.json()) as Reward;
+      setRewards((prev) => prev.map((reward) => (reward.id === updated.id ? updated : reward)).sort((a, b) => a.cost - b.cost));
+      setRewardMessage("Reward updated.");
+      setEditReward(null);
+    } else {
+      setRewardMessage("Failed to update reward.");
+    }
+    setEditRewardPending(false);
+  }
+
+  async function deleteReward(id: string) {
+    const res = await fetch("/api/rewards", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    if (res.ok) {
+      setRewards((prev) => prev.filter((reward) => reward.id !== id));
+      setRewardMessage("Reward deleted.");
+    } else {
+      setRewardMessage("Failed to delete reward.");
+    }
+  }
+
+  async function confirmRewardDelete() {
+    if (!rewardDeleteTarget || rewardDeletePending) return;
+    setRewardDeletePending(true);
+    await deleteReward(rewardDeleteTarget.id);
+    setRewardDeletePending(false);
+    setRewardDeleteTarget(null);
   }
 
   async function updateCoins(direction: "add" | "remove") {
@@ -553,8 +690,9 @@ export default function AdminClient() {
         </>
       )}
       {activeTab === "rewards" && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+        <div className="space-y-4">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
             <div className="text-sm font-semibold text-white">Reward Adder</div>
             <div className="mt-3 grid gap-3">
               <div>
@@ -619,57 +757,246 @@ export default function AdminClient() {
               >
                 {rewardPending ? "Creating..." : "Create Reward"}
               </button>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+              <div className="text-sm font-semibold text-white">Registered Users</div>
+              <div className="mt-3">
+                <input
+                  className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  placeholder="Search by username or email"
+                  value={userSearch}
+                  onChange={(e) => setUserSearch(e.target.value)}
+                />
+              </div>
+              <div className="mt-4 space-y-2">
+                {usersLoading && <div className="text-xs text-white/50">Loading users...</div>}
+                {usersError && <div className="text-xs text-rose-300">{usersError}</div>}
+                {!usersLoading && !usersError && users.length === 0 && (
+                  <div className="rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3 text-xs text-white/60">
+                    No users found.
+                  </div>
+                )}
+                {!usersLoading && !usersError && users.map((user) => (
+                  <button
+                    key={user.id}
+                    type="button"
+                    className="flex w-full items-center justify-between rounded-xl border border-black/40 bg-[#141922] px-3 py-2 text-left text-sm text-white/80 transition hover:border-black/60 hover:bg-[#1a202a]"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setCoinMessage(null);
+                      setCoinChangeAmount("");
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={`https://minotar.net/helm/${encodeURIComponent(user.minecraftUsername || "Steve")}/32.png`}
+                        alt={`${user.minecraftUsername} skin`}
+                        width={28}
+                        height={28}
+                        className="h-7 w-7 rounded-md border border-white/10 bg-[#0f131a]/80"
+                      />
+                      <div>
+                        <div className="text-sm font-semibold text-white">{user.minecraftUsername}</div>
+                        <div className="text-xs text-white/60">{user.email}</div>
+                      </div>
+                    </div>
+                    <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                      {user.rewardBalance}
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
-          <div className="text-sm font-semibold text-white">Registered Users</div>
-          <div className="mt-3">
-            <input
-              className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
-              placeholder="Search by username or email"
-              value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
-            />
-          </div>
-          <div className="mt-4 space-y-2">
-            {usersLoading && <div className="text-xs text-white/50">Loading users...</div>}
-            {usersError && <div className="text-xs text-rose-300">{usersError}</div>}
-            {!usersLoading && !usersError && users.length === 0 && (
-              <div className="rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3 text-xs text-white/60">
-                No users found.
-              </div>
-            )}
-            {!usersLoading && !usersError && users.map((user) => (
+          <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-5 text-white shadow-lg shadow-black/30">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="text-sm font-semibold text-white">Rewards</div>
               <button
-                key={user.id}
                 type="button"
-                className="flex w-full items-center justify-between rounded-xl border border-black/40 bg-[#141922] px-3 py-2 text-left text-sm text-white/80 transition hover:border-black/60 hover:bg-[#1a202a]"
-                onClick={() => {
-                  setSelectedUser(user);
-                  setCoinMessage(null);
-                  setCoinChangeAmount("");
-                }}
+                className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                onClick={loadRewards}
+                disabled={rewardsLoading}
               >
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={`https://minotar.net/helm/${encodeURIComponent(user.minecraftUsername || "Steve")}/32.png`}
-                    alt={`${user.minecraftUsername} skin`}
-                    width={28}
-                    height={28}
-                    className="h-7 w-7 rounded-md border border-white/10 bg-[#0f131a]/80"
-                  />
-                  <div>
-                    <div className="text-sm font-semibold text-white">{user.minecraftUsername}</div>
-                    <div className="text-xs text-white/60">{user.email}</div>
+                {rewardsLoading ? "Refreshing..." : "Refresh"}
+              </button>
+            </div>
+            <div className="mt-4 space-y-2">
+              {rewardsLoading && <div className="text-xs text-white/50">Loading rewards...</div>}
+              {rewardsError && <div className="text-xs text-rose-300">{rewardsError}</div>}
+              {!rewardsLoading && !rewardsError && rewards.length === 0 && (
+                <div className="rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-3 text-xs text-white/60">
+                  No rewards found.
+                </div>
+              )}
+              {!rewardsLoading && !rewardsError && rewards.map((reward) => (
+                <div
+                  key={reward.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/40 bg-[#141922] px-3 py-3 text-sm text-white/80"
+                >
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={reward.iconUrl}
+                      alt={`${reward.name} icon`}
+                      width={40}
+                      height={40}
+                      unoptimized
+                      className="h-10 w-10 rounded-lg border border-white/10 object-cover"
+                    />
+                    <div>
+                      <div className="text-sm font-semibold text-white">{reward.name}</div>
+                      <div className="text-xs text-white/60">{reward.description}</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                      {reward.cost} coins
+                    </div>
+                    <button
+                      type="button"
+                      className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                      onClick={() => startEditReward(reward)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-200 transition hover:border-red-400/70 hover:bg-red-500/20"
+                      onClick={() => setRewardDeleteTarget(reward)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
-                <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
-                  {user.rewardBalance}
-                </div>
-              </button>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
+      )}
+      {editReward && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center bg-black/60 px-4 py-6 sm:items-center">
+            <div className="w-full max-w-md rounded-2xl border border-black/40 bg-[#151a21]/95 p-5 text-white shadow-2xl shadow-black/60 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">Edit Reward</div>
+                <button
+                  type="button"
+                  className="rounded-lg border border-white/10 px-3 py-1 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                  onClick={() => setEditReward(null)}
+                >
+                  Close
+                </button>
+              </div>
+              <div className="mt-4 grid gap-3">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Name</label>
+                  <input
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    value={editRewardName}
+                    onChange={(e) => setEditRewardName(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
+                    <input
+                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      value={editRewardCost}
+                      onChange={(e) => setEditRewardCost(e.target.value)}
+                      inputMode="numeric"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon</label>
+                    <input
+                      key={editIconUploadKey}
+                      type="file"
+                      accept="image/*"
+                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      onChange={(e) => handleEditIconUpload(e.target.files?.[0] ?? null)}
+                    />
+                    {editRewardIconUrl && (
+                      <div className="mt-3 flex items-center gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2">
+                        <Image
+                          src={editRewardIconUrl}
+                          alt="Reward icon preview"
+                          width={36}
+                          height={36}
+                          unoptimized
+                          className="h-9 w-9 rounded-lg border border-white/10 object-cover"
+                        />
+                        <span className="text-xs text-white/60">Preview</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Description</label>
+                  <textarea
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    rows={3}
+                    value={editRewardDescription}
+                    onChange={(e) => setEditRewardDescription(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                    onClick={() => setEditReward(null)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className={`rounded-lg px-5 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
+                      editRewardPending
+                        ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                        : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+                    }`}
+                    onClick={saveRewardEdits}
+                    disabled={editRewardPending}
+                  >
+                    {editRewardPending ? "Saving..." : "Save Reward"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {rewardDeleteTarget && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center bg-black/60 px-4 py-6 sm:items-center">
+            <div className="w-full max-w-md rounded-2xl border border-black/40 bg-[#151a21]/95 p-5 text-white shadow-2xl shadow-black/60 sm:p-6">
+              <div className="text-xs font-semibold uppercase tracking-wide text-rose-300/80">Confirm Delete</div>
+              <div className="mt-2 text-sm text-white/70">
+                Delete <span className="font-semibold text-white">{rewardDeleteTarget.name}</span>? This cannot be undone.
+              </div>
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <button
+                  type="button"
+                  className="rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+                  onClick={() => setRewardDeleteTarget(null)}
+                  disabled={rewardDeletePending}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={`rounded-lg px-5 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
+                    rewardDeletePending
+                      ? "cursor-not-allowed bg-red-500/40 text-red-100/60 shadow-none"
+                      : "bg-red-500/80 text-white shadow-red-500/30 hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-red-500/40"
+                  }`}
+                  onClick={confirmRewardDelete}
+                  disabled={rewardDeletePending}
+                >
+                  {rewardDeletePending ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       {selectedUser && (
