@@ -15,6 +15,7 @@ export default function RewardsPage() {
   const [redeemPendingId, setRedeemPendingId] = useState<string | null>(null);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [username, setUsername] = useState("");
+  const [confirmReward, setConfirmReward] = useState<Reward | null>(null);
 
   useEffect(() => {
     const readSession = () => {
@@ -103,6 +104,7 @@ export default function RewardsPage() {
       if (res.ok) {
         const data = (await res.json()) as { balance: number };
         setBalance(data.balance);
+        setModalMessage("Reward redeemed successfully.");
       } else if (res.status === 409) {
         setModalMessage("You don't have enough reward coins.");
       } else if (res.status === 400) {
@@ -132,6 +134,39 @@ export default function RewardsPage() {
                 onClick={() => setModalMessage(null)}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {confirmReward && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#141922]/95 p-6 text-white shadow-2xl shadow-black/50">
+            <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Confirm Redeem</div>
+            <div className="mt-3 text-sm text-white/80">
+              Redeem <span className="font-semibold text-white">{confirmReward.name}</span> for{" "}
+              <span className="font-semibold text-white">{confirmReward.cost}</span> coins?
+            </div>
+            <div className="mt-2 text-xs text-white/60">You must be online in Minecraft to receive the reward.</div>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                className="rounded-lg border border-white/10 bg-[#0f131a]/70 px-4 py-2 text-xs font-semibold text-white/80 transition hover:border-white/30 hover:text-white"
+                onClick={() => setConfirmReward(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => {
+                  const reward = confirmReward;
+                  setConfirmReward(null);
+                  void handleRedeem(reward);
+                }}
+                disabled={redeemPendingId === confirmReward.id}
+              >
+                {redeemPendingId === confirmReward.id ? "Redeeming..." : "Confirm"}
               </button>
             </div>
           </div>
@@ -223,6 +258,9 @@ export default function RewardsPage() {
           </div>
           {loading && <span className="text-xs text-white/50">Loading...</span>}
         </div>
+        <div className="mt-3 rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-xs text-amber-100">
+          You must be online in Minecraft to receive redeemed rewards.
+        </div>
         {error && <div className="mt-4 text-sm text-rose-300">{error}</div>}
         {!loading && !error && rewards.length === 0 && (
           <div className="mt-4 rounded-xl border border-dashed border-white/10 bg-[#141922]/70 px-4 py-6 text-sm text-white/60">
@@ -272,7 +310,7 @@ export default function RewardsPage() {
                   <button
                     type="button"
                     className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] disabled:cursor-not-allowed disabled:opacity-60"
-                    onClick={() => handleRedeem(reward)}
+                    onClick={() => setConfirmReward(reward)}
                     disabled={redeemPendingId === reward.id}
                   >
                     {redeemPendingId === reward.id ? "Redeeming..." : "Redeem"}
