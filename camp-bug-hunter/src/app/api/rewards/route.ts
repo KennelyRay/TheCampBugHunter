@@ -33,12 +33,13 @@ export async function POST(request: Request) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const description = typeof body.description === "string" ? body.description.trim() : "";
     const iconUrl = typeof body.iconUrl === "string" ? body.iconUrl.trim() : "";
+    const command = typeof body.command === "string" ? body.command.trim() : "";
     const cost = Number(body.cost);
-    if (!name || !description || !iconUrl || !Number.isFinite(cost) || cost <= 0) {
+    if (!name || !description || !iconUrl || !command || !Number.isFinite(cost) || cost <= 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
     const reward = await prisma.reward.create({
-      data: { name, description, iconUrl, cost },
+      data: { name, description, iconUrl, command, cost },
     });
     return NextResponse.json(reward);
   } catch {
@@ -58,8 +59,9 @@ export async function PATCH(request: Request) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const description = typeof body.description === "string" ? body.description.trim() : "";
     const iconUrl = typeof body.iconUrl === "string" ? body.iconUrl.trim() : "";
+    const command = typeof body.command === "string" ? body.command.trim() : "";
     const cost = Number(body.cost);
-    if (!id || !name || !description || !iconUrl || !Number.isFinite(cost) || cost <= 0) {
+    if (!id || !name || !description || !iconUrl || !command || !Number.isFinite(cost) || cost <= 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
     const existing = await prisma.reward.findUnique({ where: { id } });
@@ -68,7 +70,7 @@ export async function PATCH(request: Request) {
     }
     const reward = await prisma.reward.update({
       where: { id },
-      data: { name, description, iconUrl, cost },
+      data: { name, description, iconUrl, command, cost },
     });
     return NextResponse.json(reward);
   } catch {

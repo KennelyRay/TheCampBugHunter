@@ -64,10 +64,23 @@ model Reward {
   cost        Int
   description String
   iconUrl     String
+  command     String   @default("")
   active      Boolean  @default(true)
 
   @@index([active, cost])
   @@map("rewards")
+}
+
+model RewardRedemption {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  minecraftUsername String
+  rewardId          String
+  command           String
+  deliveredAt       DateTime?
+
+  @@index([deliveredAt, createdAt])
+  @@map("reward_redemptions")
 }
 
 model RegistrationCode {

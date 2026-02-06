@@ -5,5 +5,6 @@ export interface Reward {
   cost: number;
   description: string;
   iconUrl: string;
+  command: string;
   active: boolean;
 }

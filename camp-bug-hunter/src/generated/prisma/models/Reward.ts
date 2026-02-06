@@ -41,6 +41,7 @@ export type RewardMinAggregateOutputType = {
   cost: number | null
   description: string | null
   iconUrl: string | null
+  command: string | null
   active: boolean | null
 }
 
@@ -51,6 +52,7 @@ export type RewardMaxAggregateOutputType = {
   cost: number | null
   description: string | null
   iconUrl: string | null
+  command: string | null
   active: boolean | null
 }
 
@@ -61,6 +63,7 @@ export type RewardCountAggregateOutputType = {
   cost: number
   description: number
   iconUrl: number
+  command: number
   active: number
   _all: number
 }
@@ -81,6 +84,7 @@ export type RewardMinAggregateInputType = {
   cost?: true
   description?: true
   iconUrl?: true
+  command?: true
   active?: true
 }
 
@@ -91,6 +95,7 @@ export type RewardMaxAggregateInputType = {
   cost?: true
   description?: true
   iconUrl?: true
+  command?: true
   active?: true
 }
 
@@ -101,6 +106,7 @@ export type RewardCountAggregateInputType = {
   cost?: true
   description?: true
   iconUrl?: true
+  command?: true
   active?: true
   _all?: true
 }
@@ -198,6 +204,7 @@ export type RewardGroupByOutputType = {
   cost: number
   description: string
   iconUrl: string
+  command: string
   active: boolean
   _count: RewardCountAggregateOutputType | null
   _avg: RewardAvgAggregateOutputType | null
@@ -231,6 +238,7 @@ export type RewardWhereInput = {
   cost?: Prisma.IntFilter<"Reward"> | number
   description?: Prisma.StringFilter<"Reward"> | string
   iconUrl?: Prisma.StringFilter<"Reward"> | string
+  command?: Prisma.StringFilter<"Reward"> | string
   active?: Prisma.BoolFilter<"Reward"> | boolean
 }
 
@@ -241,6 +249,7 @@ export type RewardOrderByWithRelationInput = {
   cost?: Prisma.SortOrder
   description?: Prisma.SortOrder
   iconUrl?: Prisma.SortOrder
+  command?: Prisma.SortOrder
   active?: Prisma.SortOrder
 }
 
@@ -254,6 +263,7 @@ export type RewardWhereUniqueInput = Prisma.AtLeast<{
   cost?: Prisma.IntFilter<"Reward"> | number
   description?: Prisma.StringFilter<"Reward"> | string
   iconUrl?: Prisma.StringFilter<"Reward"> | string
+  command?: Prisma.StringFilter<"Reward"> | string
   active?: Prisma.BoolFilter<"Reward"> | boolean
 }, "id">
 
@@ -264,6 +274,7 @@ export type RewardOrderByWithAggregationInput = {
   cost?: Prisma.SortOrder
   description?: Prisma.SortOrder
   iconUrl?: Prisma.SortOrder
+  command?: Prisma.SortOrder
   active?: Prisma.SortOrder
   _count?: Prisma.RewardCountOrderByAggregateInput
   _avg?: Prisma.RewardAvgOrderByAggregateInput
@@ -282,6 +293,7 @@ export type RewardScalarWhereWithAggregatesInput = {
   cost?: Prisma.IntWithAggregatesFilter<"Reward"> | number
   description?: Prisma.StringWithAggregatesFilter<"Reward"> | string
   iconUrl?: Prisma.StringWithAggregatesFilter<"Reward"> | string
+  command?: Prisma.StringWithAggregatesFilter<"Reward"> | string
   active?: Prisma.BoolWithAggregatesFilter<"Reward"> | boolean
 }
 
@@ -292,6 +304,7 @@ export type RewardCreateInput = {
   cost: number
   description: string
   iconUrl: string
+  command?: string
   active?: boolean
 }
 
@@ -302,6 +315,7 @@ export type RewardUncheckedCreateInput = {
   cost: number
   description: string
   iconUrl: string
+  command?: string
   active?: boolean
 }
 
@@ -312,6 +326,7 @@ export type RewardUpdateInput = {
   cost?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   iconUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  command?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -322,6 +337,7 @@ export type RewardUncheckedUpdateInput = {
   cost?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   iconUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  command?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -332,6 +348,7 @@ export type RewardCreateManyInput = {
   cost: number
   description: string
   iconUrl: string
+  command?: string
   active?: boolean
 }
 
@@ -342,6 +359,7 @@ export type RewardUpdateManyMutationInput = {
   cost?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   iconUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  command?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -352,6 +370,7 @@ export type RewardUncheckedUpdateManyInput = {
   cost?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   iconUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  command?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -362,6 +381,7 @@ export type RewardCountOrderByAggregateInput = {
   cost?: Prisma.SortOrder
   description?: Prisma.SortOrder
   iconUrl?: Prisma.SortOrder
+  command?: Prisma.SortOrder
   active?: Prisma.SortOrder
 }
 
@@ -376,6 +396,7 @@ export type RewardMaxOrderByAggregateInput = {
   cost?: Prisma.SortOrder
   description?: Prisma.SortOrder
   iconUrl?: Prisma.SortOrder
+  command?: Prisma.SortOrder
   active?: Prisma.SortOrder
 }
 
@@ -386,6 +407,7 @@ export type RewardMinOrderByAggregateInput = {
   cost?: Prisma.SortOrder
   description?: Prisma.SortOrder
   iconUrl?: Prisma.SortOrder
+  command?: Prisma.SortOrder
   active?: Prisma.SortOrder
 }
 
@@ -402,6 +424,7 @@ export type RewardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   cost?: boolean
   description?: boolean
   iconUrl?: boolean
+  command?: boolean
   active?: boolean
 }, ExtArgs["result"]["reward"]>
 
@@ -412,6 +435,7 @@ export type RewardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   cost?: boolean
   description?: boolean
   iconUrl?: boolean
+  command?: boolean
   active?: boolean
 }, ExtArgs["result"]["reward"]>
 
@@ -422,6 +446,7 @@ export type RewardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   cost?: boolean
   description?: boolean
   iconUrl?: boolean
+  command?: boolean
   active?: boolean
 }, ExtArgs["result"]["reward"]>
 
@@ -432,10 +457,11 @@ export type RewardSelectScalar = {
   cost?: boolean
   description?: boolean
   iconUrl?: boolean
+  command?: boolean
   active?: boolean
 }
 
-export type RewardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "name" | "cost" | "description" | "iconUrl" | "active", ExtArgs["result"]["reward"]>
+export type RewardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "name" | "cost" | "description" | "iconUrl" | "command" | "active", ExtArgs["result"]["reward"]>
 
 export type $RewardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Reward"
@@ -447,6 +473,7 @@ export type $RewardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     cost: number
     description: string
     iconUrl: string
+    command: string
     active: boolean
   }, ExtArgs["result"]["reward"]>
   composites: {}
@@ -877,6 +904,7 @@ export interface RewardFieldRefs {
   readonly cost: Prisma.FieldRef<"Reward", 'Int'>
   readonly description: Prisma.FieldRef<"Reward", 'String'>
   readonly iconUrl: Prisma.FieldRef<"Reward", 'String'>
+  readonly command: Prisma.FieldRef<"Reward", 'String'>
   readonly active: Prisma.FieldRef<"Reward", 'Boolean'>
 }
     

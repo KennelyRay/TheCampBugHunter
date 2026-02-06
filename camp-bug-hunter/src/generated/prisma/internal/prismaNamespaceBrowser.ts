@@ -54,6 +54,7 @@ export const ModelName = {
   Bug: 'Bug',
   User: 'User',
   Reward: 'Reward',
+  RewardRedemption: 'RewardRedemption',
   RegistrationCode: 'RegistrationCode'
 } as const
 
@@ -110,10 +111,23 @@ export const RewardScalarFieldEnum = {
   cost: 'cost',
   description: 'description',
   iconUrl: 'iconUrl',
+  command: 'command',
   active: 'active'
 } as const
 
 export type RewardScalarFieldEnum = (typeof RewardScalarFieldEnum)[keyof typeof RewardScalarFieldEnum]
+
+
+export const RewardRedemptionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  minecraftUsername: 'minecraftUsername',
+  rewardId: 'rewardId',
+  command: 'command',
+  deliveredAt: 'deliveredAt'
+} as const
+
+export type RewardRedemptionScalarFieldEnum = (typeof RewardRedemptionScalarFieldEnum)[keyof typeof RewardRedemptionScalarFieldEnum]
 
 
 export const RegistrationCodeScalarFieldEnum = {

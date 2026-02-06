@@ -55,6 +55,11 @@ export type User = Prisma.UserModel
  */
 export type Reward = Prisma.RewardModel
 /**
+ * Model RewardRedemption
+ * 
+ */
+export type RewardRedemption = Prisma.RewardRedemptionModel
+/**
  * Model RegistrationCode
  * 
  */

@@ -1,2 +1,3 @@
 apiUrl: "https://the-camp-bug-hunter.vercel.app/api/auth/minecraft/register-code"
+rewardCommandsUrl: "https://the-camp-bug-hunter.vercel.app/api/rewards/commands"
 pluginToken: "supersecret123"

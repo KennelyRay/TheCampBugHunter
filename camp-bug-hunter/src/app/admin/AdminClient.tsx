@@ -23,6 +23,7 @@ type Reward = {
   name: string;
   description: string;
   iconUrl: string;
+  command: string;
   cost: number;
   active: boolean;
 };
@@ -44,6 +45,8 @@ export default function AdminClient() {
   const [rewardCost, setRewardCost] = useState("");
   const [rewardDescription, setRewardDescription] = useState("");
   const [rewardIconUrl, setRewardIconUrl] = useState("");
+  const [rewardIconName, setRewardIconName] = useState("No file chosen");
+  const [rewardCommand, setRewardCommand] = useState("");
   const [iconUploadKey, setIconUploadKey] = useState(0);
   const [rewardPending, setRewardPending] = useState(false);
   const [rewardMessage, setRewardMessage] = useState<string | null>(null);
@@ -55,6 +58,8 @@ export default function AdminClient() {
   const [editRewardCost, setEditRewardCost] = useState("");
   const [editRewardDescription, setEditRewardDescription] = useState("");
   const [editRewardIconUrl, setEditRewardIconUrl] = useState("");
+  const [editRewardIconName, setEditRewardIconName] = useState("No file chosen");
+  const [editRewardCommand, setEditRewardCommand] = useState("");
   const [editIconUploadKey, setEditIconUploadKey] = useState(0);
   const [editRewardPending, setEditRewardPending] = useState(false);
   const [rewardDeleteTarget, setRewardDeleteTarget] = useState<Reward | null>(null);
@@ -192,8 +197,8 @@ export default function AdminClient() {
   async function createReward() {
     if (rewardPending) return;
     const cost = Number(rewardCost);
-    if (!rewardName.trim() || !rewardDescription.trim() || !rewardIconUrl.trim() || !Number.isFinite(cost) || cost <= 0) {
-      setRewardMessage("Enter a name, description, icon image, and positive cost.");
+    if (!rewardName.trim() || !rewardDescription.trim() || !rewardIconUrl.trim() || !rewardCommand.trim() || !Number.isFinite(cost) || cost <= 0) {
+      setRewardMessage("Enter name, description, icon, command, and positive cost.");
       return;
     }
     setRewardPending(true);
@@ -205,6 +210,7 @@ export default function AdminClient() {
         name: rewardName.trim(),
         description: rewardDescription.trim(),
         iconUrl: rewardIconUrl.trim(),
+        command: rewardCommand.trim(),
         cost,
       }),
     });
@@ -213,7 +219,9 @@ export default function AdminClient() {
       setRewardName("");
       setRewardDescription("");
       setRewardIconUrl("");
+      setRewardIconName("No file chosen");
       setRewardCost("");
+      setRewardCommand("");
       setIconUploadKey((prev) => prev + 1);
       setRewards((prev) => [...prev, created].sort((a, b) => a.cost - b.cost));
       setRewardMessage("Reward created.");
@@ -226,14 +234,17 @@ export default function AdminClient() {
   function handleIconUpload(file: File | null) {
     if (!file) {
       setRewardIconUrl("");
+      setRewardIconName("No file chosen");
       return;
     }
     if (!file.type.startsWith("image/")) {
       setRewardMessage("Upload a valid image file.");
       setIconUploadKey((prev) => prev + 1);
+      setRewardIconName("No file chosen");
       return;
     }
     setRewardMessage(null);
+    setRewardIconName(file.name);
     const reader = new FileReader();
     reader.onload = () => {
       const result = typeof reader.result === "string" ? reader.result : "";
@@ -252,14 +263,17 @@ export default function AdminClient() {
   function handleEditIconUpload(file: File | null) {
     if (!file) {
       setEditRewardIconUrl("");
+      setEditRewardIconName("No file chosen");
       return;
     }
     if (!file.type.startsWith("image/")) {
       setRewardMessage("Upload a valid image file.");
       setEditIconUploadKey((prev) => prev + 1);
+      setEditRewardIconName("No file chosen");
       return;
     }
     setRewardMessage(null);
+    setEditRewardIconName(file.name);
     const reader = new FileReader();
     reader.onload = () => {
       const result = typeof reader.result === "string" ? reader.result : "";
@@ -281,6 +295,8 @@ export default function AdminClient() {
     setEditRewardDescription(reward.description);
     setEditRewardCost(String(reward.cost));
     setEditRewardIconUrl(reward.iconUrl);
+    setEditRewardIconName("Current icon");
+    setEditRewardCommand(reward.command || "");
     setEditIconUploadKey((prev) => prev + 1);
     setRewardMessage(null);
   }
@@ -292,10 +308,11 @@ export default function AdminClient() {
       !editRewardName.trim() ||
       !editRewardDescription.trim() ||
       !editRewardIconUrl.trim() ||
+      !editRewardCommand.trim() ||
       !Number.isFinite(cost) ||
       cost <= 0
     ) {
-      setRewardMessage("Enter a name, description, icon image, and positive cost.");
+      setRewardMessage("Enter name, description, icon, command, and positive cost.");
       return;
     }
     setEditRewardPending(true);
@@ -307,6 +324,7 @@ export default function AdminClient() {
         name: editRewardName.trim(),
         description: editRewardDescription.trim(),
         iconUrl: editRewardIconUrl.trim(),
+        command: editRewardCommand.trim(),
         cost,
       }),
     });
@@ -717,11 +735,30 @@ export default function AdminClient() {
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon</label>
                   <input
                     key={iconUploadKey}
+                    id="reward-icon-upload"
                     type="file"
                     accept="image/*"
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="sr-only"
                     onChange={(e) => handleIconUpload(e.target.files?.[0] ?? null)}
                   />
+                  <label
+                    htmlFor="reward-icon-upload"
+                    className="mt-1 flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 shadow-sm transition hover:border-black/60 hover:bg-[#171c24]"
+                  >
+                    <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                        <path
+                          d="M10 3.5v8m0-8l-3 3m3-3l3 3M4 12.5v3a1 1 0 001 1h10a1 1 0 001-1v-3"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      Upload
+                    </span>
+                    <span className="text-xs text-white/70">{rewardIconName}</span>
+                  </label>
                   {rewardIconUrl && (
                     <div className="mt-3 flex items-center gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2">
                       <Image
@@ -744,6 +781,14 @@ export default function AdminClient() {
                   rows={3}
                   value={rewardDescription}
                   onChange={(e) => setRewardDescription(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Command</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  value={rewardCommand}
+                  onChange={(e) => setRewardCommand(e.target.value)}
                 />
               </div>
               <button
@@ -910,11 +955,30 @@ export default function AdminClient() {
                     <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Icon</label>
                     <input
                       key={editIconUploadKey}
+                      id="reward-edit-icon-upload"
                       type="file"
                       accept="image/*"
-                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      className="sr-only"
                       onChange={(e) => handleEditIconUpload(e.target.files?.[0] ?? null)}
                     />
+                    <label
+                      htmlFor="reward-edit-icon-upload"
+                      className="mt-1 flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 shadow-sm transition hover:border-black/60 hover:bg-[#171c24]"
+                    >
+                      <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                          <path
+                            d="M10 3.5v8m0-8l-3 3m3-3l3 3M4 12.5v3a1 1 0 001 1h10a1 1 0 001-1v-3"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        Upload
+                      </span>
+                      <span className="text-xs text-white/70">{editRewardIconName}</span>
+                    </label>
                     {editRewardIconUrl && (
                       <div className="mt-3 flex items-center gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2">
                         <Image
@@ -937,6 +1001,14 @@ export default function AdminClient() {
                     rows={3}
                     value={editRewardDescription}
                     onChange={(e) => setEditRewardDescription(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Command</label>
+                  <input
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    value={editRewardCommand}
+                    onChange={(e) => setEditRewardCommand(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-3">

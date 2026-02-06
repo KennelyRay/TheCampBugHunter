@@ -387,6 +387,7 @@ export const ModelName = {
   Bug: 'Bug',
   User: 'User',
   Reward: 'Reward',
+  RewardRedemption: 'RewardRedemption',
   RegistrationCode: 'RegistrationCode'
 } as const
 
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "bug" | "user" | "reward" | "registrationCode"
+    modelProps: "bug" | "user" | "reward" | "rewardRedemption" | "registrationCode"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -629,6 +630,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RewardRedemption: {
+      payload: Prisma.$RewardRedemptionPayload<ExtArgs>
+      fields: Prisma.RewardRedemptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RewardRedemptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RewardRedemptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        findFirst: {
+          args: Prisma.RewardRedemptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RewardRedemptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        findMany: {
+          args: Prisma.RewardRedemptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>[]
+        }
+        create: {
+          args: Prisma.RewardRedemptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        createMany: {
+          args: Prisma.RewardRedemptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RewardRedemptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>[]
+        }
+        delete: {
+          args: Prisma.RewardRedemptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        update: {
+          args: Prisma.RewardRedemptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RewardRedemptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RewardRedemptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RewardRedemptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RewardRedemptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardRedemptionPayload>
+        }
+        aggregate: {
+          args: Prisma.RewardRedemptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRewardRedemption>
+        }
+        groupBy: {
+          args: Prisma.RewardRedemptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardRedemptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RewardRedemptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardRedemptionCountAggregateOutputType> | number
+        }
+      }
+    }
     RegistrationCode: {
       payload: Prisma.$RegistrationCodePayload<ExtArgs>
       fields: Prisma.RegistrationCodeFieldRefs
@@ -779,10 +854,23 @@ export const RewardScalarFieldEnum = {
   cost: 'cost',
   description: 'description',
   iconUrl: 'iconUrl',
+  command: 'command',
   active: 'active'
 } as const
 
 export type RewardScalarFieldEnum = (typeof RewardScalarFieldEnum)[keyof typeof RewardScalarFieldEnum]
+
+
+export const RewardRedemptionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  minecraftUsername: 'minecraftUsername',
+  rewardId: 'rewardId',
+  command: 'command',
+  deliveredAt: 'deliveredAt'
+} as const
+
+export type RewardRedemptionScalarFieldEnum = (typeof RewardRedemptionScalarFieldEnum)[keyof typeof RewardRedemptionScalarFieldEnum]
 
 
 export const RegistrationCodeScalarFieldEnum = {
@@ -1016,6 +1104,7 @@ export type GlobalOmitConfig = {
   bug?: Prisma.BugOmit
   user?: Prisma.UserOmit
   reward?: Prisma.RewardOmit
+  rewardRedemption?: Prisma.RewardRedemptionOmit
   registrationCode?: Prisma.RegistrationCodeOmit
 }
 

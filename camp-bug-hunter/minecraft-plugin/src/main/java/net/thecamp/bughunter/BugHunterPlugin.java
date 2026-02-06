@@ -1,11 +1,14 @@
 package net.thecamp.bughunter;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -20,6 +23,10 @@ public final class BugHunterPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     saveDefaultConfig();
+    String rewardCommandsUrl = getConfig().getString("rewardCommandsUrl", "");
+    if (!rewardCommandsUrl.isBlank()) {
+      Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> requestRewardCommands(rewardCommandsUrl), 20L, 200L);
+    }
   }
 
   @Override
@@ -109,5 +116,58 @@ public final class BugHunterPlugin extends JavaPlugin {
 
   private void sendMessage(Player player, String message) {
     Bukkit.getScheduler().runTask(this, () -> player.sendMessage(message));
+  }
+
+  private void requestRewardCommands(String rewardCommandsUrl) {
+    try {
+      HttpRequest.Builder builder =
+          HttpRequest.newBuilder(URI.create(rewardCommandsUrl))
+              .header("Accept", "application/json")
+              .GET();
+
+      String token = getConfig().getString("pluginToken", "");
+      if (!token.isBlank()) {
+        builder.header("x-plugin-token", token);
+      }
+
+      HttpResponse<String> response = httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+      if (response.statusCode() != 200) {
+        getLogger().warning("Reward command service returned " + response.statusCode());
+        return;
+      }
+
+      JsonObject body = gson.fromJson(response.body(), JsonObject.class);
+      if (body == null || !body.has("commands")) {
+        return;
+      }
+      JsonArray commands = body.getAsJsonArray("commands");
+      if (commands == null || commands.size() == 0) {
+        return;
+      }
+
+      List<String> commandList = new ArrayList<>();
+      for (int i = 0; i < commands.size(); i += 1) {
+        JsonObject entry = commands.get(i).getAsJsonObject();
+        if (entry == null || !entry.has("command")) {
+          continue;
+        }
+        String cmd = entry.get("command").getAsString();
+        if (cmd != null && !cmd.isBlank()) {
+          commandList.add(cmd);
+        }
+      }
+
+      if (commandList.isEmpty()) {
+        return;
+      }
+
+      Bukkit.getScheduler().runTask(this, () -> {
+        for (String cmd : commandList) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+      });
+    } catch (Exception error) {
+      getLogger().warning("Reward command request failed.");
+    }
   }
 }
