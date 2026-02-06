@@ -13,7 +13,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     const rewards = await prisma.reward.findMany({
-      where: includeInactive ? undefined : { active: true },
+      where: includeInactive ? undefined : { active: true, command: { not: "" } },
       orderBy: { cost: "asc" },
     });
     return NextResponse.json(rewards);

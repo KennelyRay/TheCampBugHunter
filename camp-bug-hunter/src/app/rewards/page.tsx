@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Reward } from "@/types/reward";
 
 type CampUser = { minecraftUsername?: string };
@@ -14,17 +14,31 @@ export default function RewardsPage() {
   const [error, setError] = useState<string | null>(null);
   const [redeemPendingId, setRedeemPendingId] = useState<string | null>(null);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
 
-  const username = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    const raw = window.localStorage.getItem("campUser");
-    if (!raw) return "";
-    try {
-      const parsed = JSON.parse(raw) as CampUser;
-      return parsed.minecraftUsername?.trim() ?? "";
-    } catch {
-      return "";
-    }
+  useEffect(() => {
+    const readSession = () => {
+      if (typeof window === "undefined") return;
+      const raw = window.localStorage.getItem("campUser");
+      if (!raw) {
+        setUsername("");
+        return;
+      }
+      try {
+        const parsed = JSON.parse(raw) as CampUser;
+        setUsername(parsed.minecraftUsername?.trim() ?? "");
+      } catch {
+        setUsername("");
+      }
+    };
+    readSession();
+    const handler = () => readSession();
+    window.addEventListener("storage", handler);
+    window.addEventListener("camp-auth", handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+      window.removeEventListener("camp-auth", handler);
+    };
   }, []);
 
   useEffect(() => {
@@ -91,6 +105,9 @@ export default function RewardsPage() {
         setBalance(data.balance);
       } else if (res.status === 409) {
         setModalMessage("You don't have enough reward coins.");
+      } else if (res.status === 400) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setModalMessage(data.error ?? "This reward is not ready to redeem yet.");
       } else {
         setModalMessage("Unable to redeem this reward right now.");
       }
