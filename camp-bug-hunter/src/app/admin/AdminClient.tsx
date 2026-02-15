@@ -96,6 +96,7 @@ export default function AdminClient() {
   const [rewardLogsUsername, setRewardLogsUsername] = useState("");
   const [rewardLogsActionPending, setRewardLogsActionPending] = useState(false);
   const [userPage, setUserPage] = useState(1);
+  const [rewardPage, setRewardPage] = useState(1);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -250,6 +251,10 @@ export default function AdminClient() {
     setUserPage(1);
   }, [userSearch, users.length]);
 
+  useEffect(() => {
+    setRewardPage(1);
+  }, [rewards.length]);
+
   const counts = useMemo(() => {
     return {
       total: bugs.length,
@@ -266,6 +271,13 @@ export default function AdminClient() {
     const start = (userPage - 1) * usersPerPage;
     return users.slice(start, start + usersPerPage);
   }, [userPage, users]);
+
+  const rewardsPerPage = 6;
+  const totalRewardPages = Math.max(1, Math.ceil(rewards.length / rewardsPerPage));
+  const visibleRewards = useMemo(() => {
+    const start = (rewardPage - 1) * rewardsPerPage;
+    return rewards.slice(start, start + rewardsPerPage);
+  }, [rewardPage, rewards]);
 
   async function updateStatus(id: string, s: Status) {
     const res = await fetch(`/api/bugs/${id}?admin=1`, {
@@ -1057,7 +1069,7 @@ export default function AdminClient() {
                   No rewards found.
                 </div>
               )}
-              {!rewardsLoading && !rewardsError && rewards.map((reward) => (
+              {!rewardsLoading && !rewardsError && visibleRewards.map((reward) => (
                 <div
                   key={reward.id}
                   className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/40 bg-[#141922] px-3 py-3 text-sm text-white/80"
@@ -1119,6 +1131,31 @@ export default function AdminClient() {
                 </div>
               ))}
             </div>
+            {!rewardsLoading && !rewardsError && rewards.length > rewardsPerPage && (
+              <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+                <span>
+                  Page {rewardPage} of {totalRewardPages}
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => setRewardPage((prev) => Math.max(1, prev - 1))}
+                    disabled={rewardPage === 1}
+                  >
+                    Prev
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => setRewardPage((prev) => Math.min(totalRewardPages, prev + 1))}
+                    disabled={rewardPage >= totalRewardPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
