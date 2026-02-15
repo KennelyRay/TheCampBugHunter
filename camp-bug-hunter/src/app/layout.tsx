@@ -21,7 +21,9 @@ export const metadata: Metadata = {
   title: "The Camp Bug Hunter",
   description: "Report, track, and review bugs for The Camp.",
   icons: {
-    icon: "/thecamp icon.png",
+    icon: [{ url: "/thecamp%20icon.png", type: "image/png" }],
+    shortcut: "/thecamp%20icon.png",
+    apple: "/thecamp%20icon.png",
   },
 };
 

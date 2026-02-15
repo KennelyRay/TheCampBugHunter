@@ -289,6 +289,20 @@ export default function RewardsPage() {
               const stockLabel =
                 remainingStock === null ? "Unlimited" : remainingStock === 0 ? "Out of stock" : `${remainingStock} in stock`;
               const statusText = !username ? "Sign in to redeem" : isOutOfStock ? "Out of stock" : isUnaffordable ? "Cannot afford" : "Available to redeem";
+              const stockTone = isOutOfStock ? "text-rose-100" : "text-emerald-100";
+              const stockBadge =
+                remainingStock === null
+                  ? "border-sky-400/40 bg-sky-500/15 text-sky-100"
+                  : remainingStock === 0
+                    ? "border-rose-400/40 bg-rose-500/15 text-rose-100"
+                    : "border-emerald-400/40 bg-emerald-500/15 text-emerald-100";
+              const statusBadge = !username
+                ? "border-white/10 bg-white/5 text-white/70"
+                : isOutOfStock
+                  ? "border-rose-400/40 bg-rose-500/15 text-rose-100"
+                  : isUnaffordable
+                    ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                    : "border-emerald-400/40 bg-emerald-500/15 text-emerald-100";
               return (
                 <div
                   key={reward.id}
@@ -336,9 +350,16 @@ export default function RewardsPage() {
                   >
                     {reward.description}
                   </p>
-                  <div className={`mt-3 text-xs ${isOutOfStock ? "text-rose-200" : "text-white/60"}`}>{stockLabel}</div>
+                  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                    <span className={`rounded-full border px-2.5 py-1 font-semibold uppercase tracking-[0.2em] ${stockBadge}`}>
+                      {stockLabel}
+                    </span>
+                    <span className={stockTone}>{isOutOfStock ? "Sold out" : "Live now"}</span>
+                  </div>
                   <div className="mt-5 flex items-center justify-between gap-3">
-                    <div className="text-xs text-white/50">{statusText}</div>
+                    <div className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${statusBadge}`}>
+                      {statusText}
+                    </div>
                     <button
                       type="button"
                       className={`rounded-lg px-4 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out transform-gpu focus-visible:outline-none focus-visible:ring-2 ${
