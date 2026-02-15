@@ -282,7 +282,6 @@ export default function RewardsPage() {
         {!loading && !error && rewards.length > 0 && (
           <div className="mt-6 grid min-h-[520px] content-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visibleRewards.map((reward) => {
-              const isAffordable = balance !== null && balance >= reward.cost;
               const isUnaffordable = balance !== null && balance < reward.cost;
               const remainingStock = reward.remainingStock;
               const isOutOfStock = remainingStock === 0;
@@ -308,7 +307,7 @@ export default function RewardsPage() {
                   key={reward.id}
                   className="group rounded-2xl border border-black/30 bg-[#141922]/90 p-5 shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:border-black/40 hover:bg-[#151c25]"
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
                     <div className="flex items-center gap-3">
                       <Image
                         src={reward.iconUrl}
@@ -331,17 +330,6 @@ export default function RewardsPage() {
                           />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${
-                        isAffordable
-                          ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-200"
-                          : isUnaffordable
-                            ? "border-rose-400/50 bg-rose-500/15 text-rose-200"
-                            : "border-white/10 bg-white/5 text-white/60"
-                      }`}
-                    >
-                      Reward
                     </div>
                   </div>
                   <p

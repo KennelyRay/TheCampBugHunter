@@ -84,7 +84,7 @@ export default function NavBar() {
   const avatarFailed = Boolean(user && avatarFailedFor === user.minecraftUsername);
 
   return (
-    <nav className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wide">
+    <nav className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide">
       {isClient &&
         statusMessage &&
         createPortal(

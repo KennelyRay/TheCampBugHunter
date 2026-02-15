@@ -37,16 +37,16 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="min-h-screen bg-[#12151b] text-foreground flex flex-col">
           <header className="sticky top-0 z-40 border-b border-black/40 bg-gradient-to-r from-[#12161d] via-[#171d25] to-[#12161d] shadow-lg shadow-black/30 backdrop-blur">
-            <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+            <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <BrandLink />
               <NavBar />
             </div>
           </header>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
             <PageTransition>{children}</PageTransition>
           </main>
           <footer className="relative z-20 mt-16 border-t border-white/10 bg-gradient-to-r from-[#141922] via-[#1a202a] to-[#141922] py-10 text-white/70">
-            <div className="mx-auto max-w-6xl px-6 grid gap-6 sm:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-3 sm:px-6">
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <Image src="/thecamp icon.png" alt="The Camp icon" width={36} height={36} className="h-9 w-9 rounded-full border border-white/10 bg-black/20 p-1" />
