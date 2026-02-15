@@ -65,6 +65,7 @@ model Reward {
   description String
   iconUrl     String
   command     String   @default("")
+  stock       Int      @default(-1)
   active      Boolean  @default(true)
 
   @@index([active, cost])

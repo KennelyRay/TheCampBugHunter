@@ -855,6 +855,7 @@ export const RewardScalarFieldEnum = {
   description: 'description',
   iconUrl: 'iconUrl',
   command: 'command',
+  stock: 'stock',
   active: 'active'
 } as const
 

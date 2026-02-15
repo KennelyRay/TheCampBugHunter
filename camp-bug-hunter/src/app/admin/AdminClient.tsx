@@ -25,6 +25,7 @@ type Reward = {
   iconUrl: string;
   command: string;
   cost: number;
+  stock: number;
   active: boolean;
 };
 
@@ -53,6 +54,7 @@ export default function AdminClient() {
   const [deletePending, setDeletePending] = useState(false);
   const [rewardName, setRewardName] = useState("");
   const [rewardCost, setRewardCost] = useState("");
+  const [rewardStock, setRewardStock] = useState("-1");
   const [rewardDescription, setRewardDescription] = useState("");
   const [rewardIconUrl, setRewardIconUrl] = useState("");
   const [rewardIconName, setRewardIconName] = useState("No file chosen");
@@ -66,6 +68,7 @@ export default function AdminClient() {
   const [editReward, setEditReward] = useState<Reward | null>(null);
   const [editRewardName, setEditRewardName] = useState("");
   const [editRewardCost, setEditRewardCost] = useState("");
+  const [editRewardStock, setEditRewardStock] = useState("-1");
   const [editRewardDescription, setEditRewardDescription] = useState("");
   const [editRewardIconUrl, setEditRewardIconUrl] = useState("");
   const [editRewardIconName, setEditRewardIconName] = useState("No file chosen");
@@ -305,8 +308,18 @@ export default function AdminClient() {
   async function createReward() {
     if (rewardPending) return;
     const cost = Number(rewardCost);
-    if (!rewardName.trim() || !rewardDescription.trim() || !rewardIconUrl.trim() || !rewardCommand.trim() || !Number.isFinite(cost) || cost <= 0) {
-      setRewardMessage("Enter name, description, icon, command, and positive cost.");
+    const stock = Number(rewardStock);
+    const stockValid = Number.isInteger(stock) && (stock === -1 || stock >= 0);
+    if (
+      !rewardName.trim() ||
+      !rewardDescription.trim() ||
+      !rewardIconUrl.trim() ||
+      !rewardCommand.trim() ||
+      !Number.isFinite(cost) ||
+      cost <= 0 ||
+      !stockValid
+    ) {
+      setRewardMessage("Enter name, description, icon, command, positive cost, and valid stock.");
       return;
     }
     setRewardPending(true);
@@ -320,6 +333,7 @@ export default function AdminClient() {
         iconUrl: rewardIconUrl.trim(),
         command: rewardCommand.trim(),
         cost,
+        stock,
       }),
     });
     if (res.ok) {
@@ -329,6 +343,7 @@ export default function AdminClient() {
       setRewardIconUrl("");
       setRewardIconName("No file chosen");
       setRewardCost("");
+      setRewardStock("-1");
       setRewardCommand("");
       setIconUploadKey((prev) => prev + 1);
       setRewards((prev) => [...prev, created].sort((a, b) => a.cost - b.cost));
@@ -402,6 +417,7 @@ export default function AdminClient() {
     setEditRewardName(reward.name);
     setEditRewardDescription(reward.description);
     setEditRewardCost(String(reward.cost));
+    setEditRewardStock(String(reward.stock));
     setEditRewardIconUrl(reward.iconUrl);
     setEditRewardIconName("Current icon");
     setEditRewardCommand(reward.command || "");
@@ -412,15 +428,18 @@ export default function AdminClient() {
   async function saveRewardEdits() {
     if (!editReward || editRewardPending) return;
     const cost = Number(editRewardCost);
+    const stock = Number(editRewardStock);
+    const stockValid = Number.isInteger(stock) && (stock === -1 || stock >= 0);
     if (
       !editRewardName.trim() ||
       !editRewardDescription.trim() ||
       !editRewardIconUrl.trim() ||
       !editRewardCommand.trim() ||
       !Number.isFinite(cost) ||
-      cost <= 0
+      cost <= 0 ||
+      !stockValid
     ) {
-      setRewardMessage("Enter name, description, icon, command, and positive cost.");
+      setRewardMessage("Enter name, description, icon, command, positive cost, and valid stock.");
       return;
     }
     setEditRewardPending(true);
@@ -434,6 +453,7 @@ export default function AdminClient() {
         iconUrl: editRewardIconUrl.trim(),
         command: editRewardCommand.trim(),
         cost,
+        stock,
       }),
     });
     if (res.ok) {
@@ -850,13 +870,22 @@ export default function AdminClient() {
                   onChange={(e) => setRewardName(e.target.value)}
                 />
               </div>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-3">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
                   <input
                     className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
                     value={rewardCost}
                     onChange={(e) => setRewardCost(e.target.value)}
+                    inputMode="numeric"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Stock</label>
+                  <input
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    value={rewardStock}
+                    onChange={(e) => setRewardStock(e.target.value)}
                     inputMode="numeric"
                   />
                 </div>
@@ -1225,13 +1254,22 @@ export default function AdminClient() {
                     onChange={(e) => setEditRewardName(e.target.value)}
                   />
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-3">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
                     <input
                       className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
                       value={editRewardCost}
                       onChange={(e) => setEditRewardCost(e.target.value)}
+                      inputMode="numeric"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Stock</label>
+                    <input
+                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      value={editRewardStock}
+                      onChange={(e) => setEditRewardStock(e.target.value)}
                       inputMode="numeric"
                     />
                   </div>

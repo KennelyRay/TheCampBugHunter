@@ -9,23 +9,32 @@ export async function POST(request: Request) {
     if (!minecraftUsername || !rewardId) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
-    const reward = await prisma.reward.findUnique({
-      where: { id: rewardId },
-      select: { cost: true, active: true, command: true },
-    });
-    if (!reward || !reward.active) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
-    if (!reward.command?.trim()) {
-      return NextResponse.json({ error: "Reward not configured" }, { status: 400 });
-    }
     const updated = await prisma.$transaction(async (tx) => {
+      const reward = await tx.reward.findUnique({
+        where: { id: rewardId },
+        select: { cost: true, active: true, command: true, stock: true },
+      });
+      if (!reward || !reward.active) {
+        throw new Error("REWARD_NOT_FOUND");
+      }
+      if (!reward.command?.trim()) {
+        throw new Error("REWARD_NOT_CONFIGURED");
+      }
+      if (reward.stock === 0) {
+        throw new Error("OUT_OF_STOCK");
+      }
+      if (reward.stock > 0) {
+        const redeemedCount = await tx.rewardRedemption.count({ where: { rewardId } });
+        if (redeemedCount >= reward.stock) {
+          throw new Error("OUT_OF_STOCK");
+        }
+      }
       const user = await tx.user.findUnique({
         where: { minecraftUsername },
         select: { rewardBalance: true },
       });
       if (!user) {
-        return null;
+        throw new Error("USER_NOT_FOUND");
       }
       if (user.rewardBalance < reward.cost) {
         throw new Error("INSUFFICIENT_BALANCE");
@@ -53,13 +62,19 @@ export async function POST(request: Request) {
       });
       return next;
     });
-    if (!updated) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
     return NextResponse.json({ balance: updated.rewardBalance });
   } catch (error) {
+    if (error instanceof Error && (error.message === "REWARD_NOT_FOUND" || error.message === "USER_NOT_FOUND")) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    if (error instanceof Error && error.message === "REWARD_NOT_CONFIGURED") {
+      return NextResponse.json({ error: "Reward not configured" }, { status: 400 });
+    }
     if (error instanceof Error && error.message === "INSUFFICIENT_BALANCE") {
       return NextResponse.json({ error: "Insufficient balance" }, { status: 409 });
+    }
+    if (error instanceof Error && error.message === "OUT_OF_STOCK") {
+      return NextResponse.json({ error: "Out of stock" }, { status: 409 });
     }
     return NextResponse.json({ error: "Failed to redeem reward" }, { status: 500 });
   }

@@ -6,5 +6,8 @@ export interface Reward {
   description: string;
   iconUrl: string;
   command: string;
+  stock: number;
   active: boolean;
+  redeemedCount?: number;
+  remainingStock?: number | null;
 }

@@ -272,7 +272,13 @@ export default function RewardsPage() {
         {!loading && !error && rewards.length > 0 && (
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {rewards.map((reward) => {
+              const isAffordable = balance !== null && balance >= reward.cost;
               const isUnaffordable = balance !== null && balance < reward.cost;
+              const remainingStock = reward.remainingStock;
+              const isOutOfStock = remainingStock === 0;
+              const stockLabel =
+                remainingStock === null ? "Unlimited stock" : remainingStock === 0 ? "Out of stock" : `${remainingStock} left`;
+              const statusText = !username ? "Sign in to redeem" : isOutOfStock ? "Out of stock" : isUnaffordable ? "Cannot afford" : "Ready to redeem";
               return (
                 <div
                   key={reward.id}
@@ -304,9 +310,11 @@ export default function RewardsPage() {
                     </div>
                     <div
                       className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${
-                        isUnaffordable
-                          ? "border-rose-400/50 bg-rose-500/15 text-rose-200"
-                          : "border-white/10 bg-white/5 text-white/60"
+                        isAffordable
+                          ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-200"
+                          : isUnaffordable
+                            ? "border-rose-400/50 bg-rose-500/15 text-rose-200"
+                            : "border-white/10 bg-white/5 text-white/60"
                       }`}
                     >
                       Reward
@@ -318,8 +326,9 @@ export default function RewardsPage() {
                   >
                     {reward.description}
                   </p>
+                  <div className={`mt-3 text-xs ${isOutOfStock ? "text-rose-200" : "text-white/60"}`}>{stockLabel}</div>
                   <div className="mt-5 flex items-center justify-between gap-3">
-                    <div className="text-xs text-white/50">{username ? "Ready to redeem" : "Sign in to redeem"}</div>
+                    <div className="text-xs text-white/50">{statusText}</div>
                     <button
                       type="button"
                       className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] disabled:cursor-not-allowed disabled:opacity-60"

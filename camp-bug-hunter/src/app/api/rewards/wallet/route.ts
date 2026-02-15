@@ -16,21 +16,26 @@ export async function POST(request: Request) {
     if (!minecraftUsername || !Number.isFinite(amount) || amount === 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
-    const current = await prisma.user.findUnique({
-      where: { minecraftUsername },
-      select: { rewardBalance: true },
-    });
-    if (!current) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
-    const nextBalance = Math.max(0, current.rewardBalance + amount);
-    const updated = await prisma.user.update({
-      where: { minecraftUsername },
-      data: { rewardBalance: nextBalance },
-      select: { rewardBalance: true },
+    const updated = await prisma.$transaction(async (tx) => {
+      const current = await tx.user.findUnique({
+        where: { minecraftUsername },
+        select: { rewardBalance: true },
+      });
+      if (!current) {
+        throw new Error("USER_NOT_FOUND");
+      }
+      const nextBalance = Math.max(0, current.rewardBalance + amount);
+      return tx.user.update({
+        where: { minecraftUsername },
+        data: { rewardBalance: nextBalance },
+        select: { rewardBalance: true },
+      });
     });
     return NextResponse.json({ balance: updated.rewardBalance });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message === "USER_NOT_FOUND") {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
     return NextResponse.json({ error: "Failed to update balance" }, { status: 500 });
   }
 }
