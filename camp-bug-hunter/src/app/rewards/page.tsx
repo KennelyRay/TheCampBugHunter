@@ -280,7 +280,7 @@ export default function RewardsPage() {
           </div>
         )}
         {!loading && !error && rewards.length > 0 && (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid min-h-[520px] content-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visibleRewards.map((reward) => {
               const isAffordable = balance !== null && balance >= reward.cost;
               const isUnaffordable = balance !== null && balance < reward.cost;
