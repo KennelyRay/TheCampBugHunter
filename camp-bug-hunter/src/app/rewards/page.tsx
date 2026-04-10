@@ -206,7 +206,7 @@ export default function RewardsPage() {
         <div className="relative z-10 grid gap-8 p-8 sm:p-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <div>
             <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">
-              The Camp rewards
+              MasterCraft rewards
             </span>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Bug Rewards</h1>
             <p className="mt-4 max-w-2xl text-base text-white/80">

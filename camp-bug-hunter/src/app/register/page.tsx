@@ -209,7 +209,7 @@ export default function RegisterPage() {
         </div>
       )}
       <div className="fixed inset-0 z-0 h-screen w-screen">
-        <Image src="/LandingPage.png" alt="The Camp landscape" fill className="object-cover object-center" priority sizes="100vw" />
+        <Image src="/LandingPage.png" alt="MasterCraft landscape" fill className="object-cover object-center" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/65 to-black/40"></div>
       </div>
       <div
@@ -221,8 +221,8 @@ export default function RegisterPage() {
           <div className="flex flex-col items-center text-center">
             <div className="mb-5 flex items-center gap-4">
               <Image
-                src="/Thecamplogo.png"
-                alt="The Camp Logo"
+                src="/MasterCraftLogo.png"
+                alt="MasterCraft Logo"
                 width={140}
                 height={60}
                 className="h-12 w-auto"
@@ -248,7 +248,7 @@ export default function RegisterPage() {
               <input
                 className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
                 type="text"
-                placeholder="CampHunter"
+                placeholder="MasterCraftHunter"
                 value={minecraftUsername}
                 onChange={(event) => setMinecraftUsername(event.target.value)}
               />

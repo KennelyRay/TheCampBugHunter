@@ -32,15 +32,15 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       <section className="relative overflow-hidden rounded-[32px] border border-black/40 bg-[#12161d]/95 shadow-2xl shadow-black/50">
-        <Image src="/LandingPage.png" alt="The Camp world" fill className="object-cover object-center opacity-70" priority />
+        <Image src="/LandingPage.png" alt="MasterCraft world" fill className="object-cover object-center opacity-70" priority />
         <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-transparent"></div>
         <div className="relative z-10 grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <div>
             <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">
-              The Camp bug bounty
+              MasterCraft bug bounty
             </span>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              The Camp Bug Hunter
+              MasterCraft Bug Hunter
             </h1>
             <p className="mt-4 max-w-2xl text-base text-white/80">
               Built for bug reporting only, with clean tracking, organized triage, and reward points for confirmed fixes.
