@@ -209,7 +209,7 @@ export default function RegisterPage() {
         </div>
       )}
       <div className="fixed inset-0 z-0 h-screen w-screen">
-        <Image src="/LandingPage.png" alt="MasterCraft landscape" fill className="object-cover object-center" priority sizes="100vw" />
+        <Image src="/background.png" alt="MasterCraft landscape" fill className="object-cover object-center" priority sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/65 to-black/40"></div>
       </div>
       <div

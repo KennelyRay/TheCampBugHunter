@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       <section className="relative overflow-hidden rounded-[32px] border border-black/40 bg-[#12161d]/95 shadow-2xl shadow-black/50">
-        <Image src="/LandingPage.png" alt="MasterCraft world" fill className="object-cover object-center opacity-70" priority />
+        <Image src="/background.png" alt="MasterCraft world" fill className="object-cover object-center opacity-70" priority />
         <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-transparent"></div>
         <div className="relative z-10 grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <div>
