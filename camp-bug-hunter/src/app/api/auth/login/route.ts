@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyPassword } from "@/lib/password";
+import { hashPassword, verifyPassword } from "@/lib/password";
 import { adminSessionCookieName, createAdminSession } from "@/lib/adminSession";
 
 export async function POST(request: Request) {
@@ -16,9 +16,35 @@ export async function POST(request: Request) {
     const minecraftUsername = String(body.minecraftUsername).trim();
     const password = String(body.password);
 
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { minecraftUsername },
     });
+
+    if (!user) {
+      const bootstrapUsername = process.env.DEFAULT_ADMIN_USERNAME?.trim() ?? "";
+      const bootstrapPassword = process.env.DEFAULT_ADMIN_PASSWORD ?? "";
+      if (bootstrapUsername && bootstrapPassword && minecraftUsername === bootstrapUsername && password === bootstrapPassword) {
+        const existingAdmin = await prisma.user.findFirst({
+          where: { isAdmin: true },
+          select: { id: true },
+        });
+        if (!existingAdmin) {
+          const email = (process.env.DEFAULT_ADMIN_EMAIL?.trim() ?? `${bootstrapUsername.toLowerCase()}@mastercraft.local`).toLowerCase();
+          const passwordHash = hashPassword(bootstrapPassword);
+          const byUsername = await prisma.user.findUnique({ where: { minecraftUsername: bootstrapUsername } });
+          const byEmail = byUsername ? null : await prisma.user.findUnique({ where: { email } });
+          const existing = byUsername ?? byEmail;
+          user = existing
+            ? await prisma.user.update({
+                where: { id: existing.id },
+                data: { email, minecraftUsername: bootstrapUsername, passwordHash, isAdmin: true },
+              })
+            : await prisma.user.create({
+                data: { email, minecraftUsername: bootstrapUsername, passwordHash, isAdmin: true },
+              });
+        }
+      }
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
