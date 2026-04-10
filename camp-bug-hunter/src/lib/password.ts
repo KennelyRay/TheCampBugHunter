@@ -7,8 +7,9 @@ export function hashPassword(password: string) {
 }
 
 export function verifyPassword(password: string, stored: string) {
-  const [salt, hash] = stored.split(":");
-  if (!salt || !hash) return false;
+  const [salt, hash, extra] = stored.split(":");
+  if (!salt || !hash || extra) return false;
+  if (!/^[0-9a-f]+$/i.test(salt) || !/^[0-9a-f]+$/i.test(hash)) return false;
   const hashedBuffer = scryptSync(password, salt, 64);
   const storedBuffer = Buffer.from(hash, "hex");
   if (storedBuffer.length !== hashedBuffer.length) return false;

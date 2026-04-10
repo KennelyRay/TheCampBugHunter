@@ -50,7 +50,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const valid = verifyPassword(password, user.passwordHash);
+    let valid = verifyPassword(password, user.passwordHash);
+    const allowPlaintextPasswords =
+      process.env.ALLOW_PLAINTEXT_PASSWORDS === "true" || process.env.NODE_ENV !== "production";
+    if (!valid && allowPlaintextPasswords && user.passwordHash === password) {
+      const nextHash = hashPassword(password);
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash: nextHash },
+      });
+      valid = true;
+    }
     if (!valid) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
