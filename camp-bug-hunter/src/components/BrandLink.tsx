@@ -34,7 +34,7 @@ export default function BrandLink() {
 
   return (
     <Link href={href} className="flex items-center gap-3">
-      <Image src="/MasterCraftLogo.png" alt="MasterCraft" width={160} height={36} className="h-7 w-auto object-contain sm:h-8" />
+      <Image src="/MasterCraftIcon.png" alt="MasterCraft" width={40} height={40} className="h-10 w-10 rounded-full border border-white/10 bg-black/20 p-1 object-contain" />
       <span className="sr-only">MasterCraft Bug Hunter</span>
     </Link>
   );

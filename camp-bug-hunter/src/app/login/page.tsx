@@ -124,7 +124,7 @@ export default function LoginPage() {
                 alt="MasterCraft Logo"
                 width={140}
                 height={60}
-                className="h-12 w-auto"
+                className="h-14 w-auto sm:h-16"
                 quality={100}
                 priority
               />
