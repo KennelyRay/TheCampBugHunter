@@ -84,10 +84,10 @@ export default async function AdminBugPage({ params }: { params: Promise<{ id: s
         {bug.evidenceLinks.length > 0 && (
           <section className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
             <h3 className="text-lg font-semibold text-white">Evidence Links</h3>
-            <ul className="mt-3 space-y-2 text-sm text-[#f3a46b]">
+            <ul className="mt-3 space-y-2 text-sm text-[#22d3ee]">
               {bug.evidenceLinks.map((link, index) => (
                 <li key={`${link}-${index}`}>
-                  <a className="hover:text-[#ee9960]" href={link} target="_blank" rel="noreferrer">
+                  <a className="hover:text-[#06b6d4]" href={link} target="_blank" rel="noreferrer">
                     {link}
                   </a>
                 </li>

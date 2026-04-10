@@ -116,7 +116,7 @@ export default async function Home() {
         <div className="rounded-2xl border border-black/30 bg-[#1a1f26]/90 p-6 text-white shadow-lg shadow-black/20">
           <div className="flex items-center justify-between">
             <div className="text-xs font-semibold uppercase tracking-wide text-white/60">Recent Bugs</div>
-            <Link href={viewBugsHref} className="text-xs font-semibold text-[#f3a46b] hover:text-[#ee9960]">
+            <Link href={viewBugsHref} className="text-xs font-semibold text-[#22d3ee] hover:text-[#06b6d4]">
               View all
             </Link>
           </div>
@@ -185,7 +185,7 @@ export default async function Home() {
                       <div className="mt-1 text-xs text-white/60">{reporter.discordId}</div>
                     </div>
                   </div>
-                  <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                  <div className="rounded-full border border-[#22d3ee]/40 bg-[#22d3ee]/10 px-3 py-1 text-xs font-semibold text-[#22d3ee]">
                     {reporter.count}
                   </div>
                 </li>

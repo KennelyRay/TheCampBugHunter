@@ -136,11 +136,11 @@ export default function RegisterPage() {
           >
             <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-[#141922]/80 px-8 py-6 text-white shadow-2xl shadow-black/50">
               <div className="relative flex items-center justify-center">
-                <span className="absolute h-12 w-12 rounded-full bg-[#f3a46b]/20 blur-xl"></span>
-                <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#f3a46b]/30 border-t-[#f3a46b]"></span>
+                <span className="absolute h-12 w-12 rounded-full bg-[#22d3ee]/20 blur-xl"></span>
+                <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#22d3ee]/30 border-t-[#22d3ee]"></span>
               </div>
               <div className="text-center">
-                <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">
+                <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#22d3ee]/90">
                   {statusMessage ? "Success" : "Loading"}
                 </div>
                 <div className="mt-2 text-xs text-white/70">
@@ -156,7 +156,7 @@ export default function RegisterPage() {
           <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#151a21]/95 p-6 text-white shadow-2xl shadow-black/50 sm:p-7">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.35em] text-[#f3a46b]/80">Verification</div>
+                <div className="text-xs font-semibold uppercase tracking-[0.35em] text-[#22d3ee]/80">Verification</div>
                 <h2 className="mt-2 text-xl font-semibold text-white">Enter your code</h2>
               </div>
               <button
@@ -172,14 +172,14 @@ export default function RegisterPage() {
               <div className="text-sm font-semibold text-white/90">Get your code in-game</div>
               <div className="mt-2 grid gap-2 text-xs text-white/70">
                 <div>1. Join the Minecraft server.</div>
-                <div>2. Run <span className="text-[#f3a46b]">/bughunter register</span>.</div>
+                <div>2. Run <span className="text-[#22d3ee]">/bughunter register</span>.</div>
                 <div>3. Paste the code below within 10 minutes.</div>
               </div>
             </div>
             <div className="mt-4">
               <label className="block text-sm font-medium text-white/80">Verification Code</label>
               <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm uppercase tracking-[0.2em] text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm uppercase tracking-[0.2em] text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                 type="text"
                 placeholder="ENTER CODE"
                 value={verificationCode}
@@ -197,7 +197,7 @@ export default function RegisterPage() {
                 Back
               </button>
               <button
-                className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                className="rounded-lg bg-[#22d3ee] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 type="button"
                 onClick={confirmVerification}
                 disabled={submitting}
@@ -236,7 +236,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-white/80">Email</label>
               <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
@@ -246,7 +246,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-white/80">Minecraft Username</label>
               <input
-                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                 type="text"
                 placeholder="MasterCraftHunter"
                 value={minecraftUsername}
@@ -257,7 +257,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-white/80">Password</label>
               <div className="relative">
                 <input
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 pr-16 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 pr-16 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
@@ -265,7 +265,7 @@ export default function RegisterPage() {
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md border border-white/10 bg-[#0f131a]/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white/70 transition hover:border-[#f3a46b]/60 hover:text-[#f3a46b]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md border border-white/10 bg-[#0f131a]/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white/70 transition hover:border-[#22d3ee]/60 hover:text-[#22d3ee]"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? "Hide" : "Show"}
@@ -284,7 +284,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-white/80">Confirm Password</label>
               <div className="relative">
                 <input
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 pr-16 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 pr-16 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={confirmPassword}
@@ -292,7 +292,7 @@ export default function RegisterPage() {
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md border border-white/10 bg-[#0f131a]/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white/70 transition hover:border-[#f3a46b]/60 hover:text-[#f3a46b]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md border border-white/10 bg-[#0f131a]/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white/70 transition hover:border-[#22d3ee]/60 hover:text-[#22d3ee]"
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
                 >
                   {showConfirmPassword ? "Hide" : "Show"}
@@ -302,7 +302,7 @@ export default function RegisterPage() {
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
             <button
-              className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="rounded-lg bg-[#22d3ee] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               type="button"
               disabled={submitting}
               onClick={handleRegister}
@@ -311,7 +311,7 @@ export default function RegisterPage() {
             </button>
             <span className="text-sm text-white/60">
               Already have an account?{" "}
-              <Link href="/login" className="text-[#f3a46b] hover:text-[#ee9960]">
+              <Link href="/login" className="text-[#22d3ee] hover:text-[#06b6d4]">
                 Sign in
               </Link>
             </span>

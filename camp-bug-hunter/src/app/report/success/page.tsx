@@ -21,8 +21,8 @@ export default function ReportSuccessPage() {
       <div className="rounded-3xl border border-black/40 bg-gradient-to-br from-[#141922]/95 via-[#121720]/95 to-[#0f131a]/95 p-6 text-white shadow-2xl shadow-black/40">
         <div className="flex flex-wrap items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#f3a46b]/30 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#f3a46b]">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f3a46b] text-[11px] font-bold text-[#1f1a16]">✓</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#22d3ee]/30 bg-[#22d3ee]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#22d3ee]">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#22d3ee] text-[11px] font-bold text-[#1f1a16]">✓</span>
               Submission received
             </div>
             <h2 className="text-3xl font-semibold text-white">Report Summary</h2>
@@ -46,10 +46,10 @@ export default function ReportSuccessPage() {
             </div>
             <span className="h-px w-8 bg-white/20"></span>
             <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/20 text-[#f3a46b]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/20 text-[#22d3ee]">
                 3
               </span>
-              <span className="text-[#f3a46b]">Summary</span>
+              <span className="text-[#22d3ee]">Summary</span>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function ReportSuccessPage() {
         </div>
         <div className="space-y-4">
           <div className="rounded-2xl border border-black/40 bg-[#141922]/90 p-6 text-white shadow-lg shadow-black/30">
-            <div className="text-xs font-semibold uppercase tracking-wide text-[#f3a46b]">What happens next</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[#22d3ee]">What happens next</div>
             <div className="mt-4 grid gap-3">
               <div className="rounded-xl border border-white/10 bg-[#0f131a]/70 p-4">
                 <div className="text-xs font-semibold uppercase tracking-wide text-white/50">Review</div>

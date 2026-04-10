@@ -135,7 +135,7 @@ export default function RewardsPage() {
       {modalMessage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#141922]/95 p-6 text-white shadow-2xl shadow-black/50">
-            <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Reward Notice</div>
+            <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#22d3ee]/90">Reward Notice</div>
             <div className="mt-3 text-sm text-white/80">{modalMessage}</div>
             <div className="mt-6 flex items-center justify-end gap-3">
               <button
@@ -152,7 +152,7 @@ export default function RewardsPage() {
       {confirmReward && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#141922]/95 p-6 text-white shadow-2xl shadow-black/50">
-            <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Confirm Redeem</div>
+            <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#22d3ee]/90">Confirm Redeem</div>
             <div className="mt-3 text-sm text-white/80">
               Redeem <span className="font-semibold text-white">{confirmReward.name}</span> for{" "}
               <span className="font-semibold text-white">{confirmReward.cost}</span> coins?
@@ -168,7 +168,7 @@ export default function RewardsPage() {
               </button>
               <button
                 type="button"
-                className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-lg bg-[#22d3ee] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 disabled:cursor-not-allowed disabled:opacity-60"
                 onClick={() => {
                   const reward = confirmReward;
                   setConfirmReward(null);
@@ -353,7 +353,7 @@ export default function RewardsPage() {
                       className={`rounded-lg px-4 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out transform-gpu focus-visible:outline-none focus-visible:ring-2 ${
                         isOutOfStock
                           ? "bg-white/10 text-white/50 shadow-none"
-                          : "bg-[#f3a46b] text-[#1f1a16] shadow-black/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:ring-[#f3a46b]"
+                          : "bg-[#22d3ee] text-[#1f1a16] shadow-black/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:ring-[#22d3ee]"
                       } disabled:cursor-not-allowed disabled:opacity-60`}
                       onClick={() => setConfirmReward(reward)}
                       disabled={redeemPendingId === reward.id || isOutOfStock}

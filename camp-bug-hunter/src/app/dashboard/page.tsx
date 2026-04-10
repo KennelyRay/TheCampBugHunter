@@ -185,7 +185,7 @@ export default function DashboardPage() {
           </p>
           <Link
             href="/login"
-            className="mt-5 inline-flex items-center justify-center rounded-lg bg-[#f3a46b] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98]"
+            className="mt-5 inline-flex items-center justify-center rounded-lg bg-[#22d3ee] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98]"
           >
             Go to Login
           </Link>
@@ -307,7 +307,7 @@ export default function DashboardPage() {
                 <input
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
-                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 />
               </div>
               <div>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
                 <select
                   value={severity}
                   onChange={(event) => setSeverity(event.target.value as Severity)}
-                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 >
                   {severityOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -330,7 +330,7 @@ export default function DashboardPage() {
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   rows={4}
-                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-2 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 />
               </div>
               <div>
@@ -340,7 +340,7 @@ export default function DashboardPage() {
                     <div className="text-sm font-semibold text-white">Steps</div>
                     <button
                       type="button"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                       onClick={() => setReproductionSteps((prev) => [...prev, ""])}
                       aria-label="Add reproduction step"
                     >
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                             setReproductionSteps((prev) => prev.map((item, i) => (i === index ? value : item)));
                           }}
                           placeholder={`Step ${index + 1}`}
-                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                         />
                         <div className="flex items-center gap-2">
                           {reproductionSteps.length > 1 && (
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                     <div className="text-sm font-semibold text-white">Links</div>
                     <button
                       type="button"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                       onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
                       aria-label="Add evidence link"
                     >
@@ -418,7 +418,7 @@ export default function DashboardPage() {
                             setEvidenceLinks((prev) => prev.map((item, i) => (i === index ? value : item)));
                           }}
                           placeholder="https://"
-                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                          className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                         />
                         <div className="flex items-center gap-2">
                           {evidenceLinks.length > 1 && (
@@ -439,7 +439,7 @@ export default function DashboardPage() {
               <div className="flex flex-wrap gap-3">
                 <button
                   type="button"
-                  className="rounded-lg bg-[#f3a46b] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98]"
+                  className="rounded-lg bg-[#22d3ee] px-4 py-2 text-xs font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98]"
                   onClick={saveEdit}
                   disabled={loading}
                 >

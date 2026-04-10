@@ -560,7 +560,7 @@ export default function AdminClient() {
           <button
             className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
               activeTab === "bugs"
-                ? "border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b]"
+                ? "border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee]"
                 : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white/80"
             }`}
             onClick={() => setActiveTab("bugs")}
@@ -571,7 +571,7 @@ export default function AdminClient() {
           <button
             className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
               activeTab === "rewards"
-                ? "border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b]"
+                ? "border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee]"
                 : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white/80"
             }`}
             onClick={() => setActiveTab("rewards")}
@@ -582,7 +582,7 @@ export default function AdminClient() {
           <button
             className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
               activeTab === "logs"
-                ? "border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b]"
+                ? "border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee]"
                 : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white/80"
             }`}
             onClick={() => setActiveTab("logs")}
@@ -596,7 +596,7 @@ export default function AdminClient() {
           <div>
             <label className="block text-sm font-medium text-white/80">Status</label>
             <select
-              className="mt-1 w-48 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="mt-1 w-48 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               value={status}
               onChange={(e) => setStatus(e.target.value as Status | "")}
             >
@@ -611,7 +611,7 @@ export default function AdminClient() {
           <div>
             <label className="block text-sm font-medium text-white/80">Severity</label>
             <select
-              className="mt-1 w-48 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="mt-1 w-48 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               value={severity}
               onChange={(e) => setSeverity(e.target.value as Severity | "")}
             >
@@ -625,13 +625,13 @@ export default function AdminClient() {
           <div className="flex-1">
             <label className="block text-sm font-medium text-white/80">Discord ID</label>
             <input
-              className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               value={discordId}
               onChange={(e) => setDiscordId(e.target.value)}
             />
           </div>
           <button
-            className="rounded-lg bg-[#f3a46b] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+            className="rounded-lg bg-[#22d3ee] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
             onClick={load}
           >
             Apply
@@ -725,12 +725,12 @@ export default function AdminClient() {
                           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                             <Link
                               href={`/admin/bugs/${b.id}`}
-                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                             >
                               View
                             </Link>
                             <button
-                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                               onClick={() => {
                                 setStatusSelection(b.status);
                                 setStatusOpenFor(b.id);
@@ -740,7 +740,7 @@ export default function AdminClient() {
                               Status
                             </button>
                             <button
-                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                              className="inline-flex items-center justify-center rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1 text-xs font-semibold text-white/80 shadow-sm transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:shadow-black/30 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                               onClick={() => updateHidden(b.id, !b.hidden)}
                             >
                               {b.hidden ? "Unhide" : "Hide"}
@@ -784,19 +784,19 @@ export default function AdminClient() {
                                           type="button"
                                           className={`flex w-full items-center justify-between rounded-lg border px-4 py-3 text-sm font-semibold transition-all duration-200 ease-out ${
                                             isSelected
-                                              ? "border-[#f3a46b]/70 bg-[#f3a46b]/10 text-[#f3a46b] shadow-lg shadow-black/30"
+                                              ? "border-[#22d3ee]/70 bg-[#22d3ee]/10 text-[#22d3ee] shadow-lg shadow-black/30"
                                               : "border-black/40 bg-[#0f131a]/80 text-white/80 hover:-translate-y-0.5 hover:border-black/60 hover:bg-[#171c24] hover:text-white"
                                           }`}
                                           onClick={() => setStatusSelection(option.value)}
                                         >
                                           <span>{option.label}</span>
                                           {isSelected && (
-                                            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#f3a46b]/20">
+                                            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#22d3ee]/20">
                                               <svg
                                                 viewBox="0 0 20 20"
                                                 fill="none"
                                                 aria-hidden="true"
-                                                className="h-3.5 w-3.5 text-[#f3a46b]"
+                                                className="h-3.5 w-3.5 text-[#22d3ee]"
                                               >
                                                 <path
                                                   d="M5 10.5l3.2 3.2L15 7.5"
@@ -827,8 +827,8 @@ export default function AdminClient() {
                                       type="button"
                                       className={`rounded-lg px-5 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
                                         statusSelection && !statusPending
-                                          ? "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
-                                          : "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                                          ? "bg-[#22d3ee] text-[#1f1a16] shadow-[#22d3ee]/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-[#22d3ee]/40"
+                                          : "cursor-not-allowed bg-[#22d3ee]/40 text-[#1f1a16]/60 shadow-none"
                                       }`}
                                       disabled={!statusSelection || statusPending}
                                       onClick={async () => {
@@ -877,7 +877,7 @@ export default function AdminClient() {
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Name</label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   value={rewardName}
                   onChange={(e) => setRewardName(e.target.value)}
                 />
@@ -886,7 +886,7 @@ export default function AdminClient() {
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     value={rewardCost}
                     onChange={(e) => setRewardCost(e.target.value)}
                     inputMode="numeric"
@@ -895,7 +895,7 @@ export default function AdminClient() {
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Stock</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     value={rewardStock}
                     onChange={(e) => setRewardStock(e.target.value)}
                     inputMode="numeric"
@@ -916,7 +916,7 @@ export default function AdminClient() {
                     className="mt-1 flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 shadow-sm transition hover:border-black/60 hover:bg-[#171c24]"
                   >
                     <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
-                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#22d3ee]">
                         <path
                           d="M10 3.5v8m0-8l-3 3m3-3l3 3M4 12.5v3a1 1 0 001 1h10a1 1 0 001-1v-3"
                           stroke="currentColor"
@@ -947,7 +947,7 @@ export default function AdminClient() {
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Description</label>
                 <textarea
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   rows={3}
                   value={rewardDescription}
                   onChange={(e) => setRewardDescription(e.target.value)}
@@ -956,7 +956,7 @@ export default function AdminClient() {
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Command</label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   value={rewardCommand}
                   onChange={(e) => setRewardCommand(e.target.value)}
                 />
@@ -964,8 +964,8 @@ export default function AdminClient() {
               <button
                 className={`w-fit rounded-lg px-4 py-2 text-sm font-semibold shadow-lg transition-all duration-200 ease-out ${
                   rewardPending
-                    ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
-                    : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+                    ? "cursor-not-allowed bg-[#22d3ee]/40 text-[#1f1a16]/60 shadow-none"
+                    : "bg-[#22d3ee] text-[#1f1a16] shadow-[#22d3ee]/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-[#22d3ee]/40"
                 }`}
                 onClick={createReward}
                 disabled={rewardPending}
@@ -978,7 +978,7 @@ export default function AdminClient() {
               <div className="text-sm font-semibold text-white">Registered Users</div>
               <div className="mt-3">
                 <input
-                  className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   placeholder="Search by username or email"
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
@@ -1016,7 +1016,7 @@ export default function AdminClient() {
                         <div className="text-xs text-white/60">{user.email}</div>
                       </div>
                     </div>
-                    <div className="rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                    <div className="rounded-full border border-[#22d3ee]/40 bg-[#22d3ee]/10 px-3 py-1 text-xs font-semibold text-[#22d3ee]">
                       {user.rewardBalance}
                     </div>
                   </button>
@@ -1089,7 +1089,7 @@ export default function AdminClient() {
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <div className="flex items-center gap-2 rounded-full border border-[#f3a46b]/40 bg-[#f3a46b]/10 px-3 py-1 text-xs font-semibold text-[#f3a46b]">
+                    <div className="flex items-center gap-2 rounded-full border border-[#22d3ee]/40 bg-[#22d3ee]/10 px-3 py-1 text-xs font-semibold text-[#22d3ee]">
                       <span>{reward.cost}</span>
                       <Image src="/RewardCoinIcon.png" alt="Reward coin" width={14} height={14} className="h-3.5 w-3.5" />
                     </div>
@@ -1165,7 +1165,7 @@ export default function AdminClient() {
             <div className="flex flex-wrap items-center gap-3">
               <div className="text-sm font-semibold text-white">Reward Logs</div>
               <select
-                className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                className="rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 value={rewardLogsRange}
                 onChange={(e) => setRewardLogsRange(e.target.value as "day" | "week" | "month" | "year" | "all")}
               >
@@ -1176,7 +1176,7 @@ export default function AdminClient() {
                 <option value="year">Last year</option>
               </select>
               <input
-                className="w-56 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                className="w-56 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-1.5 text-xs text-white/80 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                 placeholder="Search username"
                 value={rewardLogsUsername}
                 onChange={(e) => setRewardLogsUsername(e.target.value)}
@@ -1286,7 +1286,7 @@ export default function AdminClient() {
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Name</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     value={editRewardName}
                     onChange={(e) => setEditRewardName(e.target.value)}
                   />
@@ -1295,7 +1295,7 @@ export default function AdminClient() {
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Cost</label>
                     <input
-                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                       value={editRewardCost}
                       onChange={(e) => setEditRewardCost(e.target.value)}
                       inputMode="numeric"
@@ -1304,7 +1304,7 @@ export default function AdminClient() {
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Stock</label>
                     <input
-                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                      className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                       value={editRewardStock}
                       onChange={(e) => setEditRewardStock(e.target.value)}
                       inputMode="numeric"
@@ -1325,7 +1325,7 @@ export default function AdminClient() {
                       className="mt-1 flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/80 shadow-sm transition hover:border-black/60 hover:bg-[#171c24]"
                     >
                       <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
-                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#22d3ee]">
                           <path
                             d="M10 3.5v8m0-8l-3 3m3-3l3 3M4 12.5v3a1 1 0 001 1h10a1 1 0 001-1v-3"
                             stroke="currentColor"
@@ -1356,7 +1356,7 @@ export default function AdminClient() {
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Description</label>
                   <textarea
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     rows={3}
                     value={editRewardDescription}
                     onChange={(e) => setEditRewardDescription(e.target.value)}
@@ -1365,7 +1365,7 @@ export default function AdminClient() {
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Reward Command</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     value={editRewardCommand}
                     onChange={(e) => setEditRewardCommand(e.target.value)}
                   />
@@ -1382,8 +1382,8 @@ export default function AdminClient() {
                     type="button"
                     className={`rounded-lg px-5 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
                       editRewardPending
-                        ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
-                        : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+                        ? "cursor-not-allowed bg-[#22d3ee]/40 text-[#1f1a16]/60 shadow-none"
+                        : "bg-[#22d3ee] text-[#1f1a16] shadow-[#22d3ee]/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-[#22d3ee]/40"
                     }`}
                     onClick={saveRewardEdits}
                     disabled={editRewardPending}
@@ -1463,7 +1463,7 @@ export default function AdminClient() {
               <div className="mt-4">
                 <label className="block text-xs font-semibold uppercase tracking-wide text-white/60">Change Amount</label>
                 <input
-                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   value={coinChangeAmount}
                   onChange={(e) => setCoinChangeAmount(e.target.value)}
                   inputMode="numeric"
@@ -1475,8 +1475,8 @@ export default function AdminClient() {
                   type="button"
                   className={`rounded-lg px-4 py-2 text-xs font-semibold shadow-lg transition-all duration-200 ease-out ${
                     coinPending
-                      ? "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
-                      : "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40"
+                      ? "cursor-not-allowed bg-[#22d3ee]/40 text-[#1f1a16]/60 shadow-none"
+                      : "bg-[#22d3ee] text-[#1f1a16] shadow-[#22d3ee]/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-[#22d3ee]/40"
                   }`}
                   onClick={() => updateCoins("add")}
                   disabled={coinPending}

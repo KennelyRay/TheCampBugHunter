@@ -101,7 +101,7 @@ export default function NewReportPage() {
               </button>
               <button
                 type="button"
-                className="rounded-lg bg-[#f3a46b] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition hover:bg-[#ee9960]"
+                className="rounded-lg bg-[#22d3ee] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition hover:bg-[#06b6d4]"
                 onClick={() => router.push("/login")}
               >
                 Login
@@ -118,11 +118,11 @@ export default function NewReportPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f131a]/90 backdrop-blur transition-opacity duration-500">
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-[#141922]/80 px-8 py-6 text-white shadow-2xl shadow-black/50">
             <div className="relative flex items-center justify-center">
-              <span className="absolute h-12 w-12 rounded-full bg-[#f3a46b]/20 blur-xl"></span>
-              <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#f3a46b]/30 border-t-[#f3a46b]"></span>
+              <span className="absolute h-12 w-12 rounded-full bg-[#22d3ee]/20 blur-xl"></span>
+              <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#22d3ee]/30 border-t-[#22d3ee]"></span>
             </div>
             <div className="text-center">
-              <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Success</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#22d3ee]/90">Success</div>
               <div className="mt-2 text-xs text-white/70">Finalizing your summary</div>
             </div>
           </div>
@@ -143,10 +143,10 @@ export default function NewReportPage() {
             </div>
             <span className="h-px w-8 bg-white/20"></span>
             <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/20 text-[#f3a46b]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/20 text-[#22d3ee]">
                 2
               </span>
-              <span className="text-[#f3a46b]">Report</span>
+              <span className="text-[#22d3ee]">Report</span>
             </div>
             <span className="h-px w-8 bg-white/20"></span>
             <div className="flex items-center gap-2">
@@ -169,7 +169,7 @@ export default function NewReportPage() {
                 <div>
                   <label className="block text-sm font-medium text-white/80">Discord ID</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                     placeholder="User#0000"
                     value={discordId}
                     onChange={(e) => setDiscordId(e.target.value)}
@@ -178,7 +178,7 @@ export default function NewReportPage() {
                 <div>
                   <label className="block text-sm font-medium text-white/80">Minecraft IGN</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                     placeholder="PlayerName"
                     value={minecraftIgn}
                     onChange={(e) => setMinecraftIgn(e.target.value)}
@@ -193,7 +193,7 @@ export default function NewReportPage() {
                 <div>
                   <label className="block text-sm font-medium text-white/80">Bug Title</label>
                   <input
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                     placeholder="Mob stack drops duplicated items"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -202,7 +202,7 @@ export default function NewReportPage() {
                 <div>
                   <label className="block text-sm font-medium text-white/80">Bug Description</label>
                   <textarea
-                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                    className="mt-1 w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                     rows={4}
                     placeholder="Explain what happened, what you expected, and where it occurred."
                     value={description}
@@ -219,7 +219,7 @@ export default function NewReportPage() {
                   <div className="text-sm font-semibold text-white">Bug Reproduction Steps</div>
                   <button
                     type="button"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                     onClick={() => setReproSteps((prev) => [...prev, ""])}
                     aria-label="Add reproduction step"
                   >
@@ -240,7 +240,7 @@ export default function NewReportPage() {
                         {index + 1}
                       </div>
                       <input
-                        className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                        className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                         placeholder={`Step ${index + 1}`}
                         value={step}
                         onChange={(e) => {
@@ -277,8 +277,8 @@ export default function NewReportPage() {
                       onClick={() => setSeverity(option.value)}
                       className={`rounded-lg border px-4 py-3 text-left text-sm font-semibold transition-all duration-200 ease-out ${
                         isActive
-                          ? "border-[#f3a46b] bg-[#f3a46b]/15 text-[#f3a46b] shadow-lg shadow-black/30"
-                          : "border-black/40 bg-[#0f131a]/80 text-white/80 hover:border-[#f3a46b]/60 hover:bg-[#151b23]"
+                          ? "border-[#22d3ee] bg-[#22d3ee]/15 text-[#22d3ee] shadow-lg shadow-black/30"
+                          : "border-black/40 bg-[#0f131a]/80 text-white/80 hover:border-[#22d3ee]/60 hover:bg-[#151b23]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -288,7 +288,7 @@ export default function NewReportPage() {
                         </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            isActive ? "bg-[#f3a46b]" : "bg-white/30"
+                            isActive ? "bg-[#22d3ee]" : "bg-white/30"
                           }`}
                         ></span>
                       </div>
@@ -303,7 +303,7 @@ export default function NewReportPage() {
                 <div className="text-sm font-semibold text-white">Evidence Links</div>
                 <button
                   type="button"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/10 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/10 text-[#22d3ee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
                   onClick={() => setEvidenceLinks((prev) => [...prev, ""])}
                   aria-label="Add evidence link"
                 >
@@ -321,7 +321,7 @@ export default function NewReportPage() {
                 {evidenceLinks.map((link, index) => (
                   <div key={`evidence-link-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <input
-                      className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#f3a46b] placeholder:text-white/40"
+                      className="w-full rounded-lg border border-black/40 bg-[#0f131a]/80 px-3 py-2 text-sm text-white/90 shadow-sm outline-none ring-1 ring-transparent transition focus-visible:ring-2 focus-visible:ring-[#22d3ee] placeholder:text-white/40"
                       placeholder="https://"
                       value={link}
                       onChange={(e) => {
@@ -351,12 +351,12 @@ export default function NewReportPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Link
               href="/report"
-              className="inline-flex items-center justify-center rounded-lg px-5 py-2 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#f3a46b]/60 text-[#f3a46b] hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:shadow-[#f3a46b]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="inline-flex items-center justify-center rounded-lg px-5 py-2 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#22d3ee]/60 text-[#22d3ee] hover:border-[#22d3ee] hover:bg-[#22d3ee]/10 hover:shadow-[#22d3ee]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
             >
               Back
             </Link>
             <button
-              className="rounded-lg bg-[#f3a46b] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+              className="rounded-lg bg-[#22d3ee] px-5 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition-all duration-200 ease-out transform-gpu hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-black/40 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               disabled={submitting}
               onClick={submit}
             >
@@ -366,7 +366,7 @@ export default function NewReportPage() {
         </div>
         <div className="space-y-4">
           <div className="rounded-2xl border border-black/40 bg-[#151a21]/90 p-6 text-white shadow-lg shadow-black/30">
-            <div className="text-xs font-semibold uppercase tracking-wide text-[#f3a46b]">Submission checklist</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[#22d3ee]">Submission checklist</div>
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               <li>Include a clear title and where it happens.</li>
               <li>Write steps that anyone can follow.</li>

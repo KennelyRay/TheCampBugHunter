@@ -59,9 +59,9 @@ export default function RootLayout({
               </div>
               <div className="flex flex-col gap-2 text-xs">
                 <span className="text-xs font-semibold uppercase tracking-wide text-white/60">Quick Links</span>
-                <Link href="/" className="text-white/70 hover:text-[#f3a46b]">Home</Link>
-                <Link href="/bugs" className="text-white/70 hover:text-[#f3a46b]">Bugs</Link>
-                <Link href="/report" className="text-white/70 hover:text-[#f3a46b]">Report</Link>
+                <Link href="/" className="text-white/70 hover:text-[#22d3ee]">Home</Link>
+                <Link href="/bugs" className="text-white/70 hover:text-[#22d3ee]">Bugs</Link>
+                <Link href="/report" className="text-white/70 hover:text-[#22d3ee]">Report</Link>
               </div>
               <div className="flex flex-col gap-2 text-xs sm:items-end">
                 <span className="text-xs font-semibold uppercase tracking-wide text-white/60">Community</span>

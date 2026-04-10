@@ -51,7 +51,7 @@ export default function ReportIntroPage() {
               </button>
               <button
                 type="button"
-                className="rounded-lg bg-[#f3a46b] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition hover:bg-[#ee9960]"
+                className="rounded-lg bg-[#22d3ee] px-4 py-2 text-sm font-semibold text-[#1f1a16] shadow-lg shadow-black/30 transition hover:bg-[#06b6d4]"
                 onClick={() => router.push("/login")}
               >
                 Login
@@ -68,10 +68,10 @@ export default function ReportIntroPage() {
           </div>
           <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wide text-white/50">
             <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#f3a46b]/60 bg-[#f3a46b]/20 text-[#f3a46b]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#22d3ee]/60 bg-[#22d3ee]/20 text-[#22d3ee]">
                 1
               </span>
-              <span className="text-[#f3a46b]">Guidelines</span>
+              <span className="text-[#22d3ee]">Guidelines</span>
             </div>
             <span className="h-px w-8 bg-white/20"></span>
             <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function ReportIntroPage() {
         </div>
         <div className="space-y-4">
           <div className="rounded-2xl border border-black/40 bg-[#141922]/90 p-6 text-white shadow-lg shadow-black/30">
-            <div className="text-xs font-semibold uppercase tracking-wide text-[#f3a46b]">Important Note</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[#22d3ee]">Important Note</div>
             <p className="mt-3 text-sm text-white/70">
               DO NOT USE THIS TO REPORT THAT YOUR ITEM IS MISSING, OR YOU DIED AND LOST YOUR ITEMS BECAUSE OF SERVER FAULT, WE HAVE A TICKET CHANNEL ON DISCORD.
             </p>
@@ -144,14 +144,14 @@ export default function ReportIntroPage() {
                 type="checkbox"
                 checked={acknowledged}
                 onChange={(event) => setAcknowledged(event.target.checked)}
-                className="h-4 w-4 rounded border border-white/30 bg-[#0f131a]/80 text-[#f3a46b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b]"
+                className="h-4 w-4 rounded border border-white/30 bg-[#0f131a]/80 text-[#22d3ee] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee]"
               />
               <span>I fully read and understood the guidelines.</span>
             </label>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 href="/"
-                className="inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#f3a46b]/60 text-[#f3a46b] hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:shadow-[#f3a46b]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu border border-[#22d3ee]/60 text-[#22d3ee] hover:border-[#22d3ee] hover:bg-[#22d3ee]/10 hover:shadow-[#22d3ee]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Back
               </Link>
@@ -159,10 +159,10 @@ export default function ReportIntroPage() {
                 type="button"
                 disabled={!acknowledged}
                 onClick={() => router.push("/report/new")}
-                className={`inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3a46b] focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                className={`inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-out transform-gpu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22d3ee] focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                   acknowledged
-                    ? "bg-[#f3a46b] text-[#1f1a16] shadow-[#f3a46b]/30 hover:-translate-y-0.5 hover:bg-[#ee9960] hover:shadow-[#f3a46b]/40 active:translate-y-0 active:scale-[0.98]"
-                    : "cursor-not-allowed bg-[#f3a46b]/40 text-[#1f1a16]/60 shadow-none"
+                    ? "bg-[#22d3ee] text-[#1f1a16] shadow-[#22d3ee]/30 hover:-translate-y-0.5 hover:bg-[#06b6d4] hover:shadow-[#22d3ee]/40 active:translate-y-0 active:scale-[0.98]"
+                    : "cursor-not-allowed bg-[#22d3ee]/40 text-[#1f1a16]/60 shadow-none"
                 }`}
               >
                 Next

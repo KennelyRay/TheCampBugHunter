@@ -91,11 +91,11 @@ export default function NavBar() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f131a]/90 backdrop-blur transition-opacity duration-500">
             <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-[#141922]/80 px-8 py-6 text-white shadow-2xl shadow-black/50">
               <div className="relative flex items-center justify-center">
-                <span className="absolute h-12 w-12 rounded-full bg-[#f3a46b]/20 blur-xl"></span>
-                <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#f3a46b]/30 border-t-[#f3a46b]"></span>
+                <span className="absolute h-12 w-12 rounded-full bg-[#22d3ee]/20 blur-xl"></span>
+                <span className="h-10 w-10 animate-spin rounded-full border-2 border-[#22d3ee]/30 border-t-[#22d3ee]"></span>
               </div>
               <div className="text-center">
-                <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#f3a46b]/90">Success</div>
+                <div className="text-sm font-semibold uppercase tracking-[0.3em] text-[#22d3ee]/90">Success</div>
                 <div className="mt-2 text-xs text-white/70">{statusMessage}</div>
               </div>
             </div>
@@ -103,9 +103,9 @@ export default function NavBar() {
           document.body
         )}
       {showTabs && (
-        <div className="relative grid grid-cols-3 items-center gap-1 rounded-full border border-[#f3a46b]/20 bg-[#0f131a]/80 p-1 shadow-sm shadow-black/40">
+        <div className="relative grid grid-cols-3 items-center gap-1 rounded-full border border-[#22d3ee]/20 bg-[#0f131a]/80 p-1 shadow-sm shadow-black/40">
           <div
-            className="absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full bg-[#f3a46b] transition-transform duration-300 ease-out"
+            className="absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full bg-[#22d3ee] transition-transform duration-300 ease-out"
             style={{ transform: `translateX(${activeIndex * 100}%)` }}
           />
           {items.map((item, index) => (
@@ -126,7 +126,7 @@ export default function NavBar() {
         <div className="relative">
           <button
             type="button"
-            className="flex items-center gap-2 rounded-full border border-[#f3a46b]/40 bg-[#0f131a]/80 px-3 py-2 text-[#f3a46b] shadow-lg shadow-black/40 transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/10"
+            className="flex items-center gap-2 rounded-full border border-[#22d3ee]/40 bg-[#0f131a]/80 px-3 py-2 text-[#22d3ee] shadow-lg shadow-black/40 transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/10"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <Image
@@ -140,7 +140,7 @@ export default function NavBar() {
             <span className="hidden text-[11px] sm:inline">{user.minecraftUsername}</span>
           </button>
           {menuOpen && (
-            <div className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-[#f3a46b]/20 bg-[#0f131a]/95 shadow-2xl shadow-black/50">
+            <div className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-[#22d3ee]/20 bg-[#0f131a]/95 shadow-2xl shadow-black/50">
               <div className="flex items-center gap-3 border-b border-white/5 px-4 py-3">
                 <Image
                   src={avatarFailed ? fallbackUrl : avatarUrl}
@@ -161,7 +161,7 @@ export default function NavBar() {
                   className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-[#141922] hover:text-white"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#22d3ee]">
                     <path
                       d="M3.5 10.5h5v6h-5v-6ZM11.5 3.5h5v13h-5v-13ZM3.5 3.5h5v5h-5v-5Z"
                       stroke="currentColor"
@@ -177,7 +177,7 @@ export default function NavBar() {
                   className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-[#141922] hover:text-white"
                   onClick={handleLogout}
                 >
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#f3a46b]">
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4 text-[#22d3ee]">
                     <path
                       d="M8 4h5a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8"
                       stroke="currentColor"
@@ -202,7 +202,7 @@ export default function NavBar() {
       ) : (
         <Link
           href="/login"
-          className="rounded-full border border-[#f3a46b]/60 px-4 py-2 text-[#f3a46b] transition hover:border-[#f3a46b] hover:bg-[#f3a46b]/10 hover:text-[#f3a46b]"
+          className="rounded-full border border-[#22d3ee]/60 px-4 py-2 text-[#22d3ee] transition hover:border-[#22d3ee] hover:bg-[#22d3ee]/10 hover:text-[#22d3ee]"
         >
           Login
         </Link>
